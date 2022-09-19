@@ -1,57 +1,94 @@
 import { getColorSchema } from '@utils/color-generator';
 
-const Light = {
-  primary: getColorSchema('#4850FF'),
-  secondary: getColorSchema('#7B61FF'),
-  warning: getColorSchema('#FF6060'),
-  success: getColorSchema('#4850FF'),
+const AllColor = {
+  primary: {
+    100: '#FFE8D7',
+    500: '#FF710B',
+  },
+  secondary: {
+    100: '#FFF3E0',
+    500: '#FFAB2E',
+  },
+  point: '#FFAB2E',
+  pointSub: '#FFFCEF',
+  warning: '#FF6060',
+  warningSub: '#FFE3E6',
+  success: '#FF710B',
+  successSub: '#CFE8FF',
+  white: '#FFFFFF',
   gray: {
-    50: '#FAFAFA',
-    100: '#F7F7F7',
+    50: '#FDFDFD',
+    100: '#F9F9F9',
     200: '#F2F3F4',
-    300: '#E5E7EC',
-    400: '#D1D4DD',
-    500: '#B8BCC8',
+    300: '#EAECF0',
+    400: '#CBCED6',
+    500: '#A8ADBA',
     600: '#8C919F',
     700: '#757983',
     800: '#4A4D55',
     900: '#292A2E',
   },
   black: '#1A1A1A',
-  white: '#FFFFFF',
-  background: {
+  backgroundColor: {
     primary: '#FFFFFF',
-    secondary: '#FAFAFA',
-    tertiary: '#F0F0F0',
+    secondary: '#F9F9F9',
+    tertiary: '#F2F3F4',
   },
-  modal: '#FFFFFF',
+  dim: '#1A1A1A',
+} 
+
+const Light = {
+  // primary: getColorSchema('#4850FF'),
+  // secondary: getColorSchema('#7B61FF'),
+  // warning: getColorSchema('#FF6060'),
+  // success: getColorSchema('#4850FF'),
+  // gray: {
+  //   50: '#FAFAFA',
+  //   100: '#F7F7F7',
+  //   200: '#F2F3F4',
+  //   300: '#E5E7EC',
+  //   400: '#D1D4DD',
+  //   500: '#B8BCC8',
+  //   600: '#8C919F',
+  //   700: '#757983',
+  //   800: '#4A4D55',
+  //   900: '#292A2E',
+  // },
+  // black: '#1A1A1A',
+  // white: '#FFFFFF',
+  // background: {
+  //   primary: '#FFFFFF',
+  //   secondary: '#FAFAFA',
+  //   tertiary: '#F0F0F0',
+  // },
+  // modal: '#FFFFFF',
 };
 
 const Dark = {
-  primary: getColorSchema('#485BFF'),
-  secondary: getColorSchema('#755AFF'),
-  warning: getColorSchema('#FF6060'),
-  success: getColorSchema('#4850FF'),
-  gray: {
-    50: '#292A2E',
-    100: '#313236',
-    200: '#39393D',
-    300: '#4A4D55',
-    400: '#5C606A',
-    500: '#757983',
-    600: '#8C919F',
-    700: '#B8BCC8',
-    800: '#D1D4DD',
-    900: '#DFE1E7',
-  },
-  black: '#E5E7EC',
-  white: '#232325',
-  background: {
-    primary: '#FFFFFF',
-    secondary: '#FAFAFA',
-    tertiary: '#F0F0F0',
-  },
-  modal: '#FFFFFF',
+  // primary: getColorSchema('#485BFF'),
+  // secondary: getColorSchema('#755AFF'),
+  // warning: getColorSchema('#FF6060'),
+  // success: getColorSchema('#4850FF'),
+  // gray: {
+  //   50: '#292A2E',
+  //   100: '#313236',
+  //   200: '#39393D',
+  //   300: '#4A4D55',
+  //   400: '#5C606A',
+  //   500: '#757983',
+  //   600: '#8C919F',
+  //   700: '#B8BCC8',
+  //   800: '#D1D4DD',
+  //   900: '#DFE1E7',
+  // },
+  // black: '#E5E7EC',
+  // white: '#232325',
+  // background: {
+  //   primary: '#FFFFFF',
+  //   secondary: '#FAFAFA',
+  //   tertiary: '#F0F0F0',
+  // },
+  // modal: '#FFFFFF',
 };
 
 const Brand = {
@@ -93,13 +130,14 @@ const mode = {
 };
 
 const colors = {
-  ...Light,
-  ...Brand,
+  // ...Light,
+  // ...Brand,
+  ...AllColor,
   dim: {
     ...Dim,
   },
 };
 
-export { mode, Brand, Light, Dark, Dim };
+export { mode, Brand, Light, Dark, Dim, AllColor };
 
 export default colors;
