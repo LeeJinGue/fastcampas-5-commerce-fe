@@ -13,7 +13,69 @@ const textStyles = {
   },
   xl: {
     fontSize: ['26px', '26px', '35px'],
-    lineHeight: ['38px', '38px', '52px'],
+    lineHeight: ['29px', '38px', '52px'],
+  },
+  extraLarge: {
+    fontSize: '26px',
+    lineHeight: '38px',
+    fontWeight: 400
+  },
+  extraLargeBold: {
+    fontSize: '26px',
+    lineHeight: '38px',
+    fontWeight: 700
+  },
+  titleLarge: {
+    fontSize: '20px',
+    lineHeight: '29px',
+    fontWeight: 700,
+  },
+  title: {
+    fontSize: '16px',
+    lineHeight: '28px',
+    fontWeight: 700,
+  },
+  titleSmall: {
+    fontSize:'12px',
+    lineHeight: '18px',
+    fontWeight: 700,
+  },
+  textLarge: {
+    fontSize:'20px',
+    lineHeight: '29px',
+    fontWeight: 400,
+  },
+  text: {
+    fontSize: '16px',
+    lineHeight: '28px',
+    fontWeight: 400,
+  },
+  textSmall: {
+    fontSize: '12px',
+    lineHeight: '18px',
+    fontWeight: 400,
+  },
+  button: {
+    fontSize: '16px',
+    lineHeight: '28px',
+    fontWeight: 700,
+  },
+  buttonSmall: {
+    fontSize: '12px',
+    lineHeight: '18px',
+    fontWeight: 700,
+  },
+  textActive: {
+    textDecorationLine: 'underline',
+    fontWeight:400, 
+    fontSize:'16px',
+    lineHeight:'28px',
+  },
+  textSmallActive: {
+    textDecorationLine: 'underline',
+    fontWeight: 400,
+    fontSize: '12px',
+    lineHeight: '18px',
   },
 };
 

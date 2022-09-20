@@ -11,6 +11,14 @@ import {
   Flex,
   Text,
 } from '@chakra-ui/react';
+import WebChatIcon from '@components/common/@Icons/Social/Default/WebChat';
+import DefaultKakaoTextIcon from '@components/common/@Icons/Social/Default/KakaoText';
+import DefaultInstgramIcon from '@components/common/@Icons/Social/Default/Instagram';
+import DefaultLineIcon from '@components/common/@Icons/Social/Default/Line';
+import MainHeader from './MainHeader/MainHeader';
+import { LAYOUT } from '@constants/layout';
+import MainFooter from './MainHeader/MainFooter';
+
 
 interface MainLayoutProps {
   title: string | JSX.Element;
@@ -23,8 +31,8 @@ interface MainLayoutProps {
 const MainLayout = ({
   //
   title,
-  header,
-  footer,
+  header = <MainHeader />,
+  footer = <MainFooter />,
   containerProps,
   content,
 }: MainLayoutProps) => {
@@ -33,19 +41,25 @@ const MainLayout = ({
       <Container
         minH="782px"
         width="375px"
-        pr="16px"
-        pl="16px"
-        background="white"
+        background="grey"
         display="flex"
         alignItems="center"
         flexDirection="column"
+        fontSize='8pt'
+        boxSizing='border-box'
         {...containerProps}
         >
-        {title}
-        {header}
-        {content}
-        {footer}
+            {header}
+          <Container py={LAYOUT.HEADER.HEIGHT} display="flex" flexDirection="column" // body부분
+          >
+            {title}
+            아이콘테스트
+            <WebChatIcon w='48px' h='48px' />
+            <DefaultLineIcon />
+            {content}
+          </Container>
       </Container>
+      <Center>{footer}</Center>
     </>
   );
 };
