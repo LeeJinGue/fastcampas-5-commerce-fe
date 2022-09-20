@@ -17,6 +17,7 @@ import DefaultInstgramIcon from '@components/common/@Icons/Social/Default/Instag
 import DefaultLineIcon from '@components/common/@Icons/Social/Default/Line';
 import MainHeader from './MainHeader/MainHeader';
 import { LAYOUT } from '@constants/layout';
+import MainFooter from './MainHeader/MainFooter';
 
 
 interface MainLayoutProps {
@@ -31,7 +32,7 @@ const MainLayout = ({
   //
   title,
   header = <MainHeader />,
-  footer,
+  footer = <MainFooter />,
   containerProps,
   content,
 }: MainLayoutProps) => {
@@ -40,7 +41,6 @@ const MainLayout = ({
       <Container
         minH="782px"
         width="375px"
-        px="16px"
         background="grey"
         display="flex"
         alignItems="center"
@@ -50,15 +50,16 @@ const MainLayout = ({
         {...containerProps}
         >
             {header}
-          <Container py={LAYOUT.HEADER.HEIGHT} display="flex" flexDirection="column">
+          <Container py={LAYOUT.HEADER.HEIGHT} display="flex" flexDirection="column" // body부분
+          >
             {title}
             아이콘테스트
             <WebChatIcon w='48px' h='48px' />
             <DefaultLineIcon />
             {content}
-            {footer}
           </Container>
       </Container>
+      <Center>{footer}</Center>
     </>
   );
 };
