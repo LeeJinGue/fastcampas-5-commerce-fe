@@ -30,7 +30,7 @@ interface MainLayoutProps {
 const MainLayout = ({
   //
   title,
-  header,
+  header = <MainHeader />,
   footer,
   containerProps,
   content,
