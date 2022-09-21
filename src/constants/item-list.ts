@@ -1,1 +1,0 @@
-export const DRAWER_MENU_ITEM_LIST = ["홈", "상품보기", "마이페이지"]
