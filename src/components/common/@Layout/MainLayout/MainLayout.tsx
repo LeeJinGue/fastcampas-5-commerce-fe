@@ -17,7 +17,7 @@ import DefaultInstgramIcon from '@components/common/@Icons/Social/Default/Instag
 import DefaultLineIcon from '@components/common/@Icons/Social/Default/Line';
 import MainHeader from './MainHeader/MainHeader';
 import { LAYOUT } from '@constants/layout';
-import MainFooter from './MainHeader/MainFooter';
+import MainFooter from './MainFooter/MainFooter';
 
 
 interface MainLayoutProps {
