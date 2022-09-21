@@ -10,7 +10,8 @@
       "@theme/*": ["./styles/theme/*"],
       "@icons/*": ["./components/common/@Icons/*"],
       "@image": ["./generated/path/images.ts"],
-      "@config": ["../config.ts"]
+      "@config": ["../config.ts"],
+      "@styles": ["./styles/*"]
     },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
