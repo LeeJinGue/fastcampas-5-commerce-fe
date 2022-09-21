@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, ChakraProps, Button, Flex, Image, Text } from '@chakra-ui/react';
-import LogoWhiteIcon from '@components/common/@Icons/New/LogoWhite';
+import LogoWhiteIcon from '@components/common/New/@Icons/LogoWhite';
 import { CONFIG } from '@config';
 import { SOCIAL } from '@constants/social';
 import KakaoButton, { SocialType } from '@components/common/KakaoButton';

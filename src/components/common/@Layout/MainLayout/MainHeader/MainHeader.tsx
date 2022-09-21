@@ -1,8 +1,8 @@
 import { Flex, IconButton, Image } from '@chakra-ui/react';
 import { useDisclosure } from '@chakra-ui/react';
 
-import MenuIcon from '@components/common/@Icons/New/System/Menu';
-import CartIcon from '@components/common/@Icons/New/System/Cart';
+import MenuIcon from '@components/common/New/@Icons/System/Menu';
+import CartIcon from '@components/common/New/@Icons/System/Cart';
 
 import { LAYOUT } from '@constants/layout';
 
