@@ -6,10 +6,8 @@ const MenuIcon = ({ ...props }: IconProps) => {
   return (
     <Icon
       width={w} height={h} viewBox="0 0 24px 24px" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <g clip-path="url(#clip0_5113_11450)">
       <path d="M21 5H3V7.5H21V5Z" fill="#1A1A1A"/>
       <path d="M21 16H3V18.5H21V16Z" fill="#1A1A1A"/>
-      </g>
     </Icon>
   );
 };

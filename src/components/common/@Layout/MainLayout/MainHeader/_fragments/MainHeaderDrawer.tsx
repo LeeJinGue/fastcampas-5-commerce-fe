@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react';
 import ExitIcon from '@components/common/@Icons/System/Exit';
 import DrawerMenuList from '@components/common/DrawerMenuList';
-import { DRAWER_MENU_ITEM_LIST } from '@constants/item-list';
+import { DRAWER_MENU_ITEM_LIST } from '@constants/string';
 import { LAYOUT } from '@constants/layout';
 
 interface MainHeaderDrawerProps extends Omit<DrawerProps, 'children'> {
