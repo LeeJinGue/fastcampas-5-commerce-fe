@@ -24,18 +24,11 @@ import FormHelper from '@components/common/FormHelper';
 import { FormDataType } from './_hooks/useExampleForm';
 import CheckLineIcon from '@components/common/New/@Icons/System/CheckLine';
 import CheckCircleIcon from '@components/common/New/@Icons/System/CheckCircle';
+import PrimaryButton from '@components/common/New/PrimaryButton';
+import { FormLabelProp, FormPageProps } from './SignupPage.type';
+import ProfileForm from './_fragments/ProfileForm';
 
-interface FormPageProps extends BoxProps {
-  formData: UseFormReturn<FormDataType>;
-}
-const FormLabelProp: FormLabelProps = {
-  marginBottom: "10px",
-  color: "primary.500",
-  fontSize: "12px",
-  lineHeight: "18px",
-  fontWeight: 700,
-  fontStyle: "normal",
-}
+
 
 const FormPageView = ({
   formData: {
@@ -52,8 +45,13 @@ const FormPageView = ({
   const isIndeterminate = checkedItems.some(Boolean) && !allChecked
   console.log("errors:", errors)
   return (
-    <Box as="form" onSubmit={onSubmit} {...basisProps}>
-      <FormHelper mb="50px" label="이름" labelProps={FormLabelProp} errorText={errors.username?.message}>
+    <Box as="form" onSubmit={onSubmit} px="16px" {...basisProps}>
+      <Text textStyle="extraLargeBold" mt="10px">회원가입</Text>
+      <ProfileForm mt="60px" errors={errors} register={register}  onSubmit={onSubmit} />
+      {/* <AdditionalInfoForm />
+      <TermsOfServiceForm /> */}
+
+      {/* <FormHelper mb="50px" label="이름" labelProps={FormLabelProp} errorText={errors.username?.message}>
         <Input
           boxSizing='border-box' p="0px 0px 0px 20px" textStyle="text" h="40px" w="343px" border={"1px solid #1A1A1A"} borderRadius="100px"
           {...register('username')} autoComplete="off" />
@@ -77,7 +75,7 @@ const FormPageView = ({
         <Input {...register('email')} autoComplete="off"
           boxSizing='border-box' p="0px 0px 0px 20px" textStyle="text" h="40px" w="343px" border={"1px solid #1A1A1A"} borderRadius="100px"
         />
-      </FormHelper>
+      </FormHelper> */}
 
       <Controller
         control={control}
@@ -131,7 +129,7 @@ const FormPageView = ({
       />
       <FormHelper mb="50px" label="서비스 필수약관" textStyle="titleSmall"
         labelProps={FormLabelProp}
-        errorText={errors.tosService?.message}>
+        errorText={errors.tosService?.message || errors.tosPrivacy?.message}>
           <Box w="343px" h="40px" display="flex" alignItems="center" justifyContent="space-between" borderBottom="2px solid" borderColor="primary.500">
             <Text textStyle="title" color="primary.500">{"아래 약관에 모두 동의합니다."}</Text>
             <Checkbox 
@@ -143,35 +141,41 @@ const FormPageView = ({
           <Box w="343px" h="40px" display="flex" alignItems="center" justifyContent="space-between" >
             <Text textStyle="textSmallActive" color="gray.600">{"서비스 이용을 위한 필수약관 동의"}</Text>
             <Checkbox 
-            onChange={(e) => setCheckedItems([e.target.checked, checkedItems[1], checkedItems[2]])}
+            {...register('tosService')}
+            onChange={(e) => {
+              setCheckedItems([e.target.checked, checkedItems[1], checkedItems[2]])
+              setValue('tosService', e.target.checked)
+            }}
             isChecked={checkedItems[0]}
             icon={<CheckLineIcon />} 
-            // {...register('tosService')}
             ></Checkbox>
           </Box>
           <Box w="343px" h="40px" display="flex" alignItems="center" justifyContent="space-between" >
             <Text textStyle="textSmallActive" color="gray.600">{"개인정보수집 및 이용, 제3자 제공 동의"}</Text>
             <Checkbox 
-            onChange={(e) => setCheckedItems([ checkedItems[0],e.target.checked, checkedItems[2]])}
+            {...register('tosPrivacy')}
+            onChange={(e) => {
+              setCheckedItems([ checkedItems[0],e.target.checked, checkedItems[2]])
+              setValue('tosPrivacy', e.target.checked)
+            }}
             isChecked={checkedItems[1]}
             icon={<CheckLineIcon />}
-            // {...register('tosPrivacy')}
             ></Checkbox>
           </Box>
           <Box w="343px" h="40px" display="flex" alignItems="center" justifyContent="space-between" >
             <Text textStyle="textSmallActive" color="gray.600">{"마케팅 정보 수신 및 맞춤형 광고 동의(선택)"}</Text>
             <Checkbox 
-            onChange={(e) => setCheckedItems([ checkedItems[0], checkedItems[1],e.target.checked])}
+            {...register('tosMarketing')}
+            onChange={(e) => {
+              setCheckedItems([checkedItems[0], checkedItems[1],e.target.checked])
+              setValue('tosMarketing', e.target.checked)
+            }}
             isChecked={checkedItems[2]}
             icon={<CheckLineIcon />}
-            // {...register('tosMarketing')}
             ></Checkbox>
           </Box>
       </FormHelper>
-
-      <Button border="1px solid black" type="submit" >
-        확인
-      </Button>
+      <PrimaryButton mb="50px" type='submit'>회원가입 완료</PrimaryButton>
     </Box>
   );
 };
