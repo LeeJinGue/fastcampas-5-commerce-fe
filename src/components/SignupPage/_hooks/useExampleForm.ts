@@ -13,7 +13,13 @@ export type FormDataType = {
     label: string;
     value: string;
   };
-  fruit: string;
+  age: {
+    label: string;
+    value: string;
+  }
+  tosService: boolean,
+  tosPrivacy: boolean,
+  tosMarketing: boolean,
 };
 
 /**
@@ -47,7 +53,8 @@ export const exampleFormSchema = yup.object().shape({
   gender: yup.object().shape({
     value: yup.string().required('해당 항목은 필수값 입니다.'),
   }),
-  fruit: yup.string().required('해당 항목은 필수값 입니다.'),
+  age: yup.object().shape({
+    value: yup.string().required('해당 항목은 필수값 입니다.')}),
 });
 
 const useExampleForm = (options?: UseFormProps<FormDataType>) => {
