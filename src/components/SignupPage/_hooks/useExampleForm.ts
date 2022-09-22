@@ -54,7 +54,11 @@ export const exampleFormSchema = yup.object().shape({
     value: yup.string().required('해당 항목은 필수값 입니다.'),
   }),
   age: yup.object().shape({
-    value: yup.string().required('해당 항목은 필수값 입니다.')}),
+    value: yup.string().required('해당 항목은 필수값 입니다.')
+  }),
+  tosService: yup.boolean().isFalse('필수항목에 동의해주세요.'),
+  tosPrivacy: yup.boolean().isFalse('필수항목에 동의해주세요2.'),
+
 });
 
 const useExampleForm = (options?: UseFormProps<FormDataType>) => {
