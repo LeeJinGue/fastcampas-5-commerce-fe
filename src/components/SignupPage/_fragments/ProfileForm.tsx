@@ -2,21 +2,12 @@ import { Box, BoxProps, Center, FormLabelProps, IconButton, Input, Text } from "
 import FormHelper from "@components/common/FormHelper";
 import ProfileIcon from "@components/common/New/@Icons/System/Profile";
 import { FieldErrors, FormState, UseFormRegister, UseFormReturn } from "react-hook-form";
-import { FormPageProps } from "../SignupPage.type";
+import { FormLabelProp, FormPageProps } from "../SignupPage.type";
 import { FormDataType } from "../_hooks/useExampleForm";
 interface ProfileFormProps extends BoxProps {
   register: UseFormRegister<FormDataType>;
   errors: FieldErrors<FormDataType>;
 }
-const FormLabelProp: FormLabelProps = {
-  marginBottom: "10px",
-  color: "primary.500",
-  fontSize: "12px",
-  lineHeight: "18px",
-  fontWeight: 700,
-  fontStyle: "normal",
-}
-
 
 const ProfileForm = ({
   register,
