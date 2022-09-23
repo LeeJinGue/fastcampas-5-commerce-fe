@@ -7,7 +7,7 @@ function Signup() {
     <>
       <Head>
         {/* ex) Your App Name | Page Name */}
-        <title>인코스런 커머스트랙 | signup</title>
+        <title>커머스 | 회원가입</title>
       </Head>
       <SignupLayout content={<SignupPage />} />
     </>

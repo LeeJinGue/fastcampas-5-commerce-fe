@@ -44,7 +44,7 @@ const MainHeader = ({ variant = 'light' }: MainHeaderProps) => {
         />
         <IconButton //
           color='black'
-          icon={<CartIcon w="24px" h="24px" />}
+          icon={<CartIcon />}
           onClick={onOpen}
           cursor="pointer"
           bg="transparent"
