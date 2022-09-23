@@ -13,6 +13,7 @@ const AllColor = {
   pointSub: '#FFFCEF',
   warning: '#FF6060',
   warningSub: '#FFE3E6',
+  alertWarning: '#FF001A',
   success: '#FF710B',
   successSub: '#CFE8FF',
   white: '#FFFFFF',

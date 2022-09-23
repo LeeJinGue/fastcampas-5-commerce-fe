@@ -10,6 +10,7 @@ import {
   FormLabelProps,
   HelpTextProps,
 } from '@chakra-ui/form-control';
+import { formLabelProp, errorTextProp } from './FormHelper.props';
 
 interface FormHelperProps extends FormControlProps {
   helperText?: string | JSX.Element;
@@ -41,10 +42,10 @@ const FormHelper = ({
   children,
   label,
 
-  labelProps,
+  labelProps = formLabelProp,
   successTextProps,
   helperTextProps,
-  errorTextProps,
+  errorTextProps = errorTextProp,
 
   ...basisProps
 }: FormHelperProps) => {
@@ -55,7 +56,7 @@ const FormHelper = ({
   return (
     <FormControl isInvalid={!!errorText} {...basisProps}>
       {!!label && (
-        <FormLabel fontWeight="bold" mb="20px" {...labelProps}>
+        <FormLabel mb="20px" {...labelProps}>
           {label}
         </FormLabel>
       )}
