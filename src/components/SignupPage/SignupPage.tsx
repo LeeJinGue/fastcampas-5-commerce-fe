@@ -1,4 +1,4 @@
-import ExampleFormContentView from './SignupPage.view';
+import SignupPageContentView from './SignupPage.view';
 import useExampleForm from './_hooks/useExampleForm';
 
 const SignupPage = () => {
@@ -9,7 +9,7 @@ const SignupPage = () => {
       `submitted: ${username}, ${nickname} , ${email}, ${phone}, ${gender.value}, ${age}, ${tosService}, ${tosPrivacy}, ${tosMarketing}`,
     );
   });
-  return <ExampleFormContentView formData={formData} onSubmit={onSubmit} />;
+  return <SignupPageContentView formData={formData} onSubmit={onSubmit} />;
 };
 
 export default SignupPage;

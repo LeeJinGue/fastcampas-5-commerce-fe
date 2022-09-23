@@ -1,10 +1,7 @@
 import { Box, BoxProps, Text } from "@chakra-ui/react";
-import FormHelper from "@components/common/FormHelper";
-import ProfileIcon from "@components/common/New/@Icons/System/Profile";
+import FormHelper from "@components/common/FormHelper/FormHelper";
 import InputSelect from "@components/common/New/TextList/InputSelect";
-import { ChakraStylesConfig } from "chakra-react-select";
 import { Control, Controller, FieldErrors } from "react-hook-form";
-import { FormLabelProp } from "../SignupPage.type";
 import { FormDataType } from "../_hooks/useExampleForm";
 
 const GENDER_OPTION = [
@@ -43,7 +40,6 @@ const AdditionalInfoForm = ({
           <FormHelper
             mb="50px"
             label="성별"
-            labelProps={FormLabelProp}
             errorText={errors.gender?.value?.message}
           >
             <InputSelect 
@@ -61,7 +57,6 @@ const AdditionalInfoForm = ({
           <FormHelper
             mb="50px"
             label="연령대"
-            labelProps={FormLabelProp}
             errorText={errors.age?.value?.message}
           >
             <InputSelect 
