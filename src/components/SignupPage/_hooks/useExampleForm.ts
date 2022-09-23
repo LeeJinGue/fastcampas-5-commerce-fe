@@ -13,7 +13,15 @@ export type FormDataType = {
     label: string;
     value: string;
   };
-  fruit: string;
+  age: {
+    label: string;
+    value: string;
+  }
+  tos: {
+    service: boolean,
+    privacy: boolean,
+    marketing: boolean,
+  }
 };
 
 /**
@@ -27,7 +35,7 @@ export type FormDataType = {
  * @see https://github.com/jquense/yup#getting-started
  * @see https://yarnpkg.com/package/@hookform/resolvers#readme
  * */
-export const exampleFormSchema = yup.object().shape({
+export const SignupFormSchema = yup.object().shape({
   username: yup.string().required('해당 항목은 필수값 입니다.'),
   nickname: yup.string().required('해당 항목은 필수값 입니다.'),
   email: yup
@@ -47,15 +55,21 @@ export const exampleFormSchema = yup.object().shape({
   gender: yup.object().shape({
     value: yup.string().required('해당 항목은 필수값 입니다.'),
   }),
-  fruit: yup.string().required('해당 항목은 필수값 입니다.'),
+  age: yup.object().shape({
+    value: yup.string().required('해당 항목은 필수값 입니다.')
+  }),
+  tos: yup.object().shape({
+    service: yup.boolean().required("tosService는 필수항목").oneOf([true], 'tosService는 동의해야함'),
+    privacy: yup.boolean().required("tosPrivacy는 필수항목").oneOf([true], 'tosPrivacy는 동의해야함'),
+  })
 });
 
-const useExampleForm = (options?: UseFormProps<FormDataType>) => {
+const useSignupForm = (options?: UseFormProps<FormDataType>) => {
   return useForm<FormDataType>({
-    resolver: yupResolver(exampleFormSchema),
+    resolver: yupResolver(SignupFormSchema),
     mode: 'onChange',
     ...options,
   });
 };
 
-export default useExampleForm;
+export default useSignupForm;

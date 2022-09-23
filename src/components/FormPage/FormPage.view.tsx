@@ -13,7 +13,7 @@ import {
   Stack,
 } from '@chakra-ui/react';
 
-import FormHelper from '@components/common/FormHelper';
+import FormHelper from '@components/common/FormHelper/FormHelper';
 
 import { FormDataType } from './_hooks/useExampleForm';
 

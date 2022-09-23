@@ -1,36 +1,16 @@
-import React from 'react';
-import { Box, ChakraProps, Button, Flex, Image, Text, IconButton, Center } from '@chakra-ui/react';
-import ProfileIcon from '@components/common/New/@Icons/System/Profile';
+import SignupPageContentView from './SignupPage.view';
+import useExampleForm from './_hooks/useExampleForm';
 
-interface SignupPageProps extends ChakraProps {}
+const SignupPage = () => {
+  const formData = useExampleForm();
+  const { handleSubmit } = formData;
+  const onSubmit = handleSubmit(({ username,nickname, email, phone, gender, age,tos }) => {
+    console.log(
+      `submitted: ${username}, ${nickname} , ${email}, ${phone}, ${gender.value}, ${age.value}, ${tos.service}, ${tos.privacy}, ${tos.marketing}`,
+    );
+  });
 
-function SignupPage({ ...basisProps }: SignupPageProps) {
-  return (
-    <Box w="100%" bg="white" {...basisProps}>
-      <Text textStyle="extraLargeBold" mt="10px">회원가입</Text>
-      <Box flexDir="column" mt="60px" // 프로필 입력 리스트
-      >
-        <Text textStyle="title">회원정보입력</Text>
-        <Center flexDir="column">
-          <IconButton mt="80px" aria-label='Change Profile' icon={<ProfileIcon shape='Fill' />} />
-        </Center>
-      </Box>
-      <Box mt="80px" // 추가 정보 입력
-      >
-        <Text textStyle="title">추가정보입력(선택)</Text>
-
-      </Box>
-      <Box mt="80px" // 약관 동의
-      >
-        <Text textStyle="title">이용약관동의</Text>
-
-      </Box>
-      <Button mt="80px" // 회원가입 완료
-      >
-        회원가입 완료
-      </Button>
-    </Box>
-  );
-}
+  return <SignupPageContentView formData={formData} onSubmit={onSubmit} />;
+};
 
 export default SignupPage;
