@@ -8,7 +8,7 @@ function Login() {
     <>
       <Head>
         {/* ex) Your App Name | Page Name */}
-        <title>인코스런 커머스트랙 | login</title>
+        <title>커머스 | 로그인</title>
       </Head>
       <LoginLayout content={<LoginPage />} />
     </>
