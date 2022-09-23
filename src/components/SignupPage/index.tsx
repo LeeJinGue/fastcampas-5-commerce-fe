@@ -1,4 +1,4 @@
 //@delete:folder
-import SignupPage from './FormPage';
+import SignupPage from './SignupPage';
 
 export default SignupPage;

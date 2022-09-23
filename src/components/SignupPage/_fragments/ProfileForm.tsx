@@ -1,8 +1,8 @@
-import { Box, BoxProps, Center, FormLabelProps, IconButton, Input, Text } from "@chakra-ui/react";
+import { Box, BoxProps, Center, IconButton, Input, Text } from "@chakra-ui/react";
 import FormHelper from "@components/common/FormHelper";
 import ProfileIcon from "@components/common/New/@Icons/System/Profile";
-import { FieldErrors, FormState, UseFormRegister, UseFormReturn } from "react-hook-form";
-import { FormLabelProp, FormPageProps } from "../SignupPage.type";
+import { FieldErrors,UseFormRegister } from "react-hook-form";
+import { FormLabelProp } from "../SignupPage.type";
 import { FormDataType } from "../_hooks/useExampleForm";
 interface ProfileFormProps extends BoxProps {
   register: UseFormRegister<FormDataType>;

@@ -2,7 +2,7 @@ import { BoxProps, FormLabelProps } from "@chakra-ui/react";
 import { UseFormReturn } from "react-hook-form";
 import { FormDataType } from "./_hooks/useExampleForm";
 
-export interface FormPageProps extends BoxProps {
+export interface SignupPageProps extends BoxProps {
   formData: UseFormReturn<FormDataType>;
 }
 export const FormLabelProp: FormLabelProps = {

@@ -1,10 +1,10 @@
-import { Box, BoxProps, Center, FormLabelProps, IconButton, Input,  Text, Select as ChSelect } from "@chakra-ui/react";
+import { Box, BoxProps, Text } from "@chakra-ui/react";
 import FormHelper from "@components/common/FormHelper";
 import ProfileIcon from "@components/common/New/@Icons/System/Profile";
 import InputSelect from "@components/common/New/TextList/InputSelect";
-import { ChakraStylesConfig, Select, StylesConfig } from "chakra-react-select";
-import { Control, Controller, FieldErrors, FormState, UseFormRegister, UseFormReturn } from "react-hook-form";
-import { FormLabelProp, FormPageProps } from "../SignupPage.type";
+import { ChakraStylesConfig } from "chakra-react-select";
+import { Control, Controller, FieldErrors } from "react-hook-form";
+import { FormLabelProp } from "../SignupPage.type";
 import { FormDataType } from "../_hooks/useExampleForm";
 
 const GENDER_OPTION = [
@@ -25,41 +25,6 @@ const AGE_OPTION = [
 interface AdditionalInfoFormProps extends BoxProps {
   errors: FieldErrors<FormDataType>;
   control: Control<FormDataType, any>;
-}
-const customStyles: ChakraStylesConfig = {
-  option: (provided, state) => {
-    return {
-    ...provided,
-    background: state.isSelected ? 'grey' : "white",
-  }},
-  dropdownIndicator: (provided, state) => ({
-    ...provided,
-    background: "white",
-    border: "0px solid white",
-    p: 0,
-    w: "40px",
-  }),
-  // indicatorSeparator: (provided, state) => ({
-  //   ...provided,
-  //   background: "black",
-  //   border: "0px solid white",
-  //   p: 0,
-  // }),
-  valueContainer:(provided, state) => ({
-    ...provided,
-    p: 0,
-  }),
-  container: (provided, state) => ({
-    ...provided,
-    background: "white",
-    border: "0px solid white",
-    borderBottom: "2px solid #CBCED6",
-    p: 0,
-  }),
-  indicatorsContainer: (provided, state) => ({
-    ...provided,
-    background: "black",
-  }),
 }
 const AdditionalInfoForm = ({
   errors,

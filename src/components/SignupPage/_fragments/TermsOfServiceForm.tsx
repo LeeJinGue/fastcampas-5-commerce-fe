@@ -1,13 +1,9 @@
-import { Box, BoxProps, Center, FormLabelProps, IconButton, Input,  Text, Select as ChSelect, Checkbox } from "@chakra-ui/react";
+import { Box, BoxProps,  Text, Checkbox } from "@chakra-ui/react";
 import CheckLineIcon from "@components/common/New/@Icons/System/CheckLine";
 import FormHelper from "@components/common/FormHelper";
 import CheckCircleIcon from "@components/common/New/@Icons/System/CheckCircle";
-import ProfileIcon from "@components/common/New/@Icons/System/Profile";
-import InputSelect from "@components/common/New/TextList/InputSelect";
-import { ChakraStylesConfig, Select, StylesConfig } from "chakra-react-select";
 import React from "react";
-import { Control, Controller, FieldErrors, FormState, UseFormRegister, UseFormReturn, UseFormSetValue } from "react-hook-form";
-import { FormLabelProp, FormPageProps } from "../SignupPage.type";
+import { Control, FieldErrors, UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { FormDataType } from "../_hooks/useExampleForm";
 
 interface AdditionalInfoFormProps extends BoxProps {
