@@ -27,6 +27,7 @@ import CheckCircleIcon from '@components/common/New/@Icons/System/CheckCircle';
 import PrimaryButton from '@components/common/New/PrimaryButton';
 import { FormLabelProp, FormPageProps } from './SignupPage.type';
 import ProfileForm from './_fragments/ProfileForm';
+import AdditionalInfoForm from './_fragments/AdditionalInfoForm';
 
 
 
@@ -48,85 +49,9 @@ const FormPageView = ({
     <Box as="form" onSubmit={onSubmit} px="16px" {...basisProps}>
       <Text textStyle="extraLargeBold" mt="10px">회원가입</Text>
       <ProfileForm mt="60px" errors={errors} register={register}  onSubmit={onSubmit} />
-      {/* <AdditionalInfoForm />
-      <TermsOfServiceForm /> */}
+      <AdditionalInfoForm control={control} errors={errors} />
+      {/* <TermsOfServiceForm /> */}
 
-      {/* <FormHelper mb="50px" label="이름" labelProps={FormLabelProp} errorText={errors.username?.message}>
-        <Input
-          boxSizing='border-box' p="0px 0px 0px 20px" textStyle="text" h="40px" w="343px" border={"1px solid #1A1A1A"} borderRadius="100px"
-          {...register('username')} autoComplete="off" />
-      </FormHelper>
-
-      <FormHelper mb="50px" label="닉네임" labelProps={FormLabelProp} errorText={errors.nickname?.message}>
-        <Input {...register('nickname')} autoComplete="off"
-          boxSizing='border-box' p="0px 0px 0px 20px" textStyle="text" h="40px" w="343px" border={"1px solid #1A1A1A"} borderRadius="100px"
-        />
-      </FormHelper>
-
-      <FormHelper mb="50px" label="핸드폰 번호" labelProps={FormLabelProp} errorText={errors.phone?.message}>
-        <Input flexGrow={1} {...register('phone')} autoComplete="off"
-          boxSizing='border-box' p="0px 0px 0px 20px" textStyle="text" h="40px" w="343px" border={"1px solid #1A1A1A"} borderRadius="100px"
-        />
-      </FormHelper>
-
-      <FormHelper mb="50px" label="이메일 주소" textStyle="titleSmall"
-        labelProps={FormLabelProp}
-        errorText={errors.email?.message}>
-        <Input {...register('email')} autoComplete="off"
-          boxSizing='border-box' p="0px 0px 0px 20px" textStyle="text" h="40px" w="343px" border={"1px solid #1A1A1A"} borderRadius="100px"
-        />
-      </FormHelper> */}
-
-      <Controller
-        control={control}
-        name="gender"
-        render={({ field: { onChange } }) => (
-          <FormHelper
-            mb="50px"
-            label="성별"
-            labelProps={FormLabelProp}
-            errorText={errors.gender?.value?.message}
-          >
-            <Select
-              isSearchable={false}
-              onChange={onChange}
-              options={[
-                { value: 'men', label: '남자' },
-                { value: 'women', label: '여자' },
-              ]}
-              placeholder="성별을 선택하세요"
-            />
-          </FormHelper>
-        )}
-      />
-      <Controller
-        control={control}
-        name="age"
-        render={({ field: { onChange } }) => (
-          <FormHelper
-            mb="50px"
-            label="연령대"
-            labelProps={FormLabelProp}
-            errorText={errors.age?.value?.message}
-          >
-            <Select
-              isSearchable={false}
-              onChange={onChange}
-              options={[
-                { value: '10대', label: '10대' },
-                { value: '20대', label: '20대' },
-                { value: '30대', label: '30대' },
-                { value: '40대', label: '40대' },
-                { value: '50대', label: '50대' },
-                { value: '60대', label: '60대' },
-                { value: '70대', label: '70대' },
-                { value: '80대 이상', label: '80대 이상' },
-              ]}
-              placeholder="연령대를 선택하세요"
-            />
-          </FormHelper>
-        )}
-      />
       <FormHelper mb="50px" label="서비스 필수약관" textStyle="titleSmall"
         labelProps={FormLabelProp}
         errorText={errors.tosService?.message || errors.tosPrivacy?.message}>
