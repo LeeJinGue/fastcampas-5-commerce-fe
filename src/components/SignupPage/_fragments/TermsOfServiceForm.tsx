@@ -4,15 +4,15 @@ import FormHelper from "@components/common/FormHelper/FormHelper";
 import CheckCircleIcon from "@components/common/New/@Icons/System/CheckCircle";
 import React from "react";
 import { Control, FieldErrors, UseFormGetValues, UseFormRegister, UseFormSetValue, UseFormWatch, useWatch } from "react-hook-form";
-import { FormDataType } from "../_hooks/useExampleForm";
+import { SignupFormDataType } from "../_hooks/useSignupForm";
 import Link from "next/link";
 
 interface TermsOfServiceFormProps extends BoxProps {
-  errors: FieldErrors<FormDataType>;
-  control: Control<FormDataType, any>;
-  register: UseFormRegister<FormDataType>,
-  setValue: UseFormSetValue<FormDataType>,
-  watch: UseFormWatch<FormDataType>,
+  errors: FieldErrors<SignupFormDataType>;
+  control: Control<SignupFormDataType, any>;
+  register: UseFormRegister<SignupFormDataType>,
+  setValue: UseFormSetValue<SignupFormDataType>,
+  watch: UseFormWatch<SignupFormDataType>,
 }
 const TermsOfServiceForm = ({
   errors,

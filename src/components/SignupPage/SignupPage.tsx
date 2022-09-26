@@ -1,5 +1,5 @@
 import SignupPageContentView from './SignupPage.view';
-import useExampleForm from './_hooks/useExampleForm';
+import useExampleForm from './_hooks/useSignupForm';
 
 const SignupPage = () => {
   const formData = useExampleForm();
