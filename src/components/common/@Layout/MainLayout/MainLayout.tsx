@@ -41,20 +41,16 @@ const MainLayout = ({
       {header}
       <Container
         minH="782px"
-        width="375px"
         display="flex"
         alignItems="center"
         flexDirection="column"
-        fontSize='8pt'
+        w={"375px"}
+
+        mb="0"
         boxSizing='border-box'
-        backgroundImage="/images/main1.png"
         {...containerProps}
         >
-            
-          <Container py={LAYOUT.HEADER.HEIGHT} display="flex" flexDirection="column" // body부분
-          >
-            {content}
-          </Container>
+      {content}
       </Container>
       {footer}
     </>
