@@ -38,24 +38,24 @@ const ProfileIcon = ({ shape, ...props }: ProfileIconProps) => {
     case 50:
       return <Icon
         width={`${w}px`} height={`${h}px`} viewBox={`0 0 ${w} ${h}`} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-        <circle cx="25" cy="25" r="24.6429" fill="white" stroke="#8C919F" stroke-width="0.714286" />
-        <circle cx="25" cy="17.5" r="6.25" stroke="#1A1A1A" stroke-width="2.5" />
-        <path d="M36.25 37.5C36.25 30.3203 31.2132 27.5 25 27.5C18.7868 27.5 13.75 30.3203 13.75 37.5" stroke="#1A1A1A" stroke-width="2.5" stroke-linecap="round" />
+        <circle cx="25" cy="25" r="24.6429" fill="white" stroke="#8C919F" strokeWidth="0.714286" />
+        <circle cx="25" cy="17.5" r="6.25" stroke="#1A1A1A" strokeWidth="2.5" />
+        <path d="M36.25 37.5C36.25 30.3203 31.2132 27.5 25 27.5C18.7868 27.5 13.75 30.3203 13.75 37.5" stroke="#1A1A1A" strokeWidth="2.5" strokeLinecap="round" />
       </Icon>
     case 70:
       return <Icon
         width={`${w}px`} height={`${h}px`} viewBox={`0 0 ${w} ${h}`} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-        <circle cx="20" cy="20" r="19.7143" fill="white" stroke="#8C919F" stroke-width="0.571429" />
-        <circle cx="20" cy="14" r="5" stroke="#1A1A1A" stroke-width="2" />
-        <path d="M29 30C29 24.2562 24.9706 22 20 22C15.0294 22 11 24.2562 11 30" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" />
+        <circle cx="20" cy="20" r="19.7143" fill="white" stroke="#8C919F" strokeWidth="0.571429" />
+        <circle cx="20" cy="14" r="5" stroke="#1A1A1A" strokeWidth="2" />
+        <path d="M29 30C29 24.2562 24.9706 22 20 22C15.0294 22 11 24.2562 11 30" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" />
       </Icon>
 
     default:
       return <Icon
         width={`${w}px`} height={`${h}px`} viewBox={`0 0 ${w} ${h}`} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
         <circle cx="35" cy="35" r="34.5" fill="white" stroke="#8C919F" />
-        <circle cx="35" cy="24.5" r="8.75" stroke="#1A1A1A" stroke-width="3.5" />
-        <path d="M50.75 52.5C50.75 42.4484 43.6985 38.5 35 38.5C26.3015 38.5 19.25 42.4484 19.25 52.5" stroke="#1A1A1A" stroke-width="3.5" stroke-linecap="round" />
+        <circle cx="35" cy="24.5" r="8.75" stroke="#1A1A1A" strokeWidth="3.5" />
+        <path d="M50.75 52.5C50.75 42.4484 43.6985 38.5 35 38.5C26.3015 38.5 19.25 42.4484 19.25 52.5" stroke="#1A1A1A" strokeWidth="3.5" strokeLinecap="round" />
       </Icon>
   }
 

@@ -65,7 +65,7 @@ const TermsOfServiceForm = ({
               })
             }}
             isChecked={allCheck}
-            icon={<CheckCircleIcon isChecked={allCheck} />
+            icon={<CheckCircleIcon isindeterminate={isIndeterminate} ischecked={allCheck} />
             }></Checkbox>
         </Box>
         <Box mb="10px" w="343px" h="50px" display="flex" alignItems="center" justifyContent="space-between" >
@@ -75,7 +75,7 @@ const TermsOfServiceForm = ({
           <Checkbox
             {...register('tos.service')}
             isChecked={tosService}
-            icon={<CheckLineIcon isChecked={tosService} />}
+            icon={<CheckLineIcon ischecked={tosService} />}
           ></Checkbox>
         </Box>
         <Box mb="10px" w="343px" h="50px" display="flex" alignItems="center" justifyContent="space-between" >
@@ -87,7 +87,7 @@ const TermsOfServiceForm = ({
             isChecked={tosPrivacy}
             backdropBlur="white"
             backgroundColor="white"
-            icon={<CheckLineIcon isChecked={tosPrivacy} />}
+            icon={<CheckLineIcon ischecked={tosPrivacy} />}
           ></Checkbox>
         </Box>
         <Box w="343px" h="50px" display="flex" alignItems="center" justifyContent="space-between" >
