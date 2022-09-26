@@ -1,15 +1,16 @@
 import Head from 'next/head';
 import SignupPage from '@components/SignupPage';
 import SignupLayout from '@components/common/@Layout/SignupLayout';
+import SignupHeader from '@components/common/@Layout/SignupLayout/SignupHeader';
 
 function Signup() {
   return (
     <>
       <Head>
         {/* ex) Your App Name | Page Name */}
-        <title>인코스런 커머스트랙 | signup</title>
+        <title>커머스 | 회원가입</title>
       </Head>
-      <SignupLayout content={<SignupPage />} />
+      <SignupLayout header={<SignupHeader />} content={<SignupPage />} />
     </>
   );
 }

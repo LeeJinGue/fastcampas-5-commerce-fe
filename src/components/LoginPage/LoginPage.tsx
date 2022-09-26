@@ -15,10 +15,10 @@ const SOCIAL_DATA: { social: SocialType; link: string } =
     link: `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${SOCIAL.KAKAO_CLIENT_ID}&redirect_uri=${SOCIAL_REDIRECT_URL}&state=kakao`,
   }
 
-function LoginPage({ ...basisProps }: LoginPageProps) {
+const LoginPage = ({ ...basisProps }: LoginPageProps) => {
   return (
     <>
-      <LogoWhiteIcon w="262px" h="36px" mt="340px"/>
+      <LogoWhiteIcon w="262" h="36" mt="340px"/>
       <KakaoButton mt="340px" data={SOCIAL_DATA}></KakaoButton>
       </>
   );

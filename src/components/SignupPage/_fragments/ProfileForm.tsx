@@ -2,10 +2,10 @@ import { Box, BoxProps, Center, IconButton, Input, Text } from "@chakra-ui/react
 import FormHelper from "@components/common/FormHelper/FormHelper";
 import ProfileIcon from "@components/common/New/@Icons/System/Profile";
 import { FieldErrors,UseFormRegister } from "react-hook-form";
-import { FormDataType } from "../_hooks/useExampleForm";
+import { SignupFormDataType } from "../_hooks/useSignupForm";
 interface ProfileFormProps extends BoxProps {
-  register: UseFormRegister<FormDataType>;
-  errors: FieldErrors<FormDataType>;
+  register: UseFormRegister<SignupFormDataType>;
+  errors: FieldErrors<SignupFormDataType>;
 }
 
 const ProfileForm = ({
