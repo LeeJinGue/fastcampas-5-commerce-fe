@@ -1,4 +1,4 @@
-import { Flex, IconButton, Image } from '@chakra-ui/react';
+import { Center, ChakraProps, Flex, IconButton, Image } from '@chakra-ui/react';
 import { useDisclosure } from '@chakra-ui/react';
 
 import MenuIcon from '@components/common/New/@Icons/System/Menu';
@@ -8,12 +8,13 @@ import { LAYOUT } from '@constants/layout';
 
 import { Main_HEADER_VARIANTS, MainHeaderVariantType } from './MainHeader.data';
 import MainHeaderDrawer from './_fragments/MainHeaderDrawer';
+import LogoComponent from '@components/common/New/LogoComponent';
 
-interface MainHeaderProps {
+interface MainHeaderProps extends ChakraProps{
   variant?: MainHeaderVariantType;
 }
 
-const MainHeader = ({ variant = 'light' }: MainHeaderProps) => {
+const MainHeader = ({ variant = 'light', ...basisProps}: MainHeaderProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const cssByVariant = Main_HEADER_VARIANTS[variant];
@@ -22,15 +23,16 @@ const MainHeader = ({ variant = 'light' }: MainHeaderProps) => {
     <>
       <Flex //
         as="header"
-        px={{ base: '16px', md: '80px' }}
+        px={'16px'}
         alignItems="center"
         justifyContent="space-between"
-        position="fixed"
+        position="absolute"
         zIndex="sticky"
         transition="all 0.3s"
         w="375px"
         h={LAYOUT.HEADER.HEIGHT}
         background="white"
+        {...basisProps}
         // {...cssByVariant.header}
       >
 
@@ -42,6 +44,7 @@ const MainHeader = ({ variant = 'light' }: MainHeaderProps) => {
           bg="transparent"
           aria-label="btn-toggle-drawer"
         />
+        <LogoComponent align='center' />
         <IconButton //
           color='black'
           icon={<CartIcon />}

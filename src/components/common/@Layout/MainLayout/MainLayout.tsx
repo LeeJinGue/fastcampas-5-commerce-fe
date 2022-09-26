@@ -8,6 +8,7 @@ import {
   Center,
   Container,
   ContainerProps,
+  Image,
   Flex,
   Text,
 } from '@chakra-ui/react';
@@ -30,36 +31,28 @@ interface MainLayoutProps {
 
 const MainLayout = ({
   //
-  title,
-  header = <MainHeader />,
-  footer = <MainFooter />,
+  header = <MainHeader bg="transparent" left="50%" transform="translate(-50%, 0)" />,
+  footer = <MainFooter left="50%" transform={"translate(-50%, 0)"}/>,
   containerProps,
   content,
 }: MainLayoutProps) => {
   return (
     <>
+      {header}
       <Container
         minH="782px"
-        width="375px"
-        background="grey"
         display="flex"
         alignItems="center"
         flexDirection="column"
-        fontSize='8pt'
+        w={"375px"}
+
+        mb="0"
         boxSizing='border-box'
         {...containerProps}
         >
-            {header}
-          <Container py={LAYOUT.HEADER.HEIGHT} display="flex" flexDirection="column" // body부분
-          >
-            {title}
-            아이콘테스트
-            <WebChatIcon w='48px' h='48px' />
-            <DefaultLineIcon />
-            {content}
-          </Container>
+      {content}
       </Container>
-      <Center>{footer}</Center>
+      {footer}
     </>
   );
 };
