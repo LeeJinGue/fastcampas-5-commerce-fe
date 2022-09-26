@@ -8,6 +8,7 @@ import { LAYOUT } from '@constants/layout';
 
 import { Main_HEADER_VARIANTS, MainHeaderVariantType } from './MainHeader.data';
 import MainHeaderDrawer from './_fragments/MainHeaderDrawer';
+import LogoComponent from '@components/common/New/LogoComponent';
 
 interface MainHeaderProps extends ChakraProps{
   variant?: MainHeaderVariantType;
@@ -43,6 +44,7 @@ const MainHeader = ({ variant = 'light', ...basisProps}: MainHeaderProps) => {
           bg="transparent"
           aria-label="btn-toggle-drawer"
         />
+        <LogoComponent align='center' />
         <IconButton //
           color='black'
           icon={<CartIcon />}
