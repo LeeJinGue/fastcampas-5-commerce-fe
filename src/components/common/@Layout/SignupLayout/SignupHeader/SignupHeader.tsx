@@ -19,7 +19,7 @@ const SignupHeader = () => {
         h={LAYOUT.HEADER.HEIGHT}
         background="white"
       >
-        <LogoComponent align='left' />
+        <LogoComponent align='start' />
       </Flex>
     </>
   );
