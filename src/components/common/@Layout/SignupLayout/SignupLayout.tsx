@@ -8,7 +8,7 @@ import {
 import SignupHeader from './SignupHeader';
 
 interface SignupLayoutProps {
-  header?: JSX.Element;
+  header?: JSX.Element | undefined;
   content?: JSX.Element;
   containerProps?: ContainerProps;
   centerProps?: CenterProps
@@ -16,7 +16,7 @@ interface SignupLayoutProps {
 
 const SignupLayout = ({
   //
-  header = <SignupHeader />,
+  header,
   containerProps,
   content,
 }: SignupLayoutProps) => {
