@@ -1,11 +1,11 @@
 import { Icon, IconProps } from '@chakra-ui/react';
 
 const DefaultGoogleIcon = ({ ...props }: IconProps) => {
-  const w = props.w? props.w : "24px"
-  const h = props.h? props.h : "24px"
+  const w = props.w? props.w : "24"
+  const h = props.h? props.h : "24"
   return (
     <Icon
-      width={w} height={h} viewBox="0 0 24px 24px" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      width={w+"px"} height={h+"px"} viewBox={`0 0 ${w} ${h}`} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <path fill-rule="evenodd" clip-rule="evenodd" d="M20.64 12.2C20.6407 11.5827 20.5859 10.9665 20.476 10.359H12V13.84H16.844C16.7432 14.3909 16.5317 14.9157 16.2224 15.3825C15.913 15.8493 15.5121 16.2485 15.044 16.556V18.82H17.952C18.8391 17.9667 19.5368 16.9363 19.9999 15.7958C20.463 14.6554 20.6811 13.4302 20.64 12.2V12.2Z" fill="#4285F4"/>
       <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C14.1907 21.0593 16.3213 20.2794 17.956 18.82L15.048 16.561C14.3522 17.0076 13.5636 17.2894 12.7422 17.385C11.9209 17.4805 11.0887 17.3872 10.3089 17.1122C9.52912 16.8372 8.82245 16.3877 8.24277 15.7981C7.6631 15.2085 7.22573 14.4943 6.96403 13.71H3.95703V16.042C4.70635 17.5327 5.85531 18.7858 7.27559 19.6613C8.69588 20.5368 10.3316 21.0003 12 21Z" fill="#34A853"/>
       <path fill-rule="evenodd" clip-rule="evenodd" d="M6.96405 13.71C6.58808 12.601 6.58808 11.399 6.96405 10.29V7.95801H3.95705C3.32772 9.21246 3 10.5965 3 12C3 13.4035 3.32772 14.7876 3.95705 16.042L6.96405 13.71V13.71Z" fill="#FBBC05"/>
