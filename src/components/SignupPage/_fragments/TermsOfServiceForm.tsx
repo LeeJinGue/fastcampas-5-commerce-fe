@@ -4,15 +4,15 @@ import FormHelper from "@components/common/FormHelper/FormHelper";
 import CheckCircleIcon from "@components/common/New/@Icons/System/CheckCircle";
 import React from "react";
 import { Control, FieldErrors, UseFormGetValues, UseFormRegister, UseFormSetValue, UseFormWatch, useWatch } from "react-hook-form";
-import { FormDataType } from "../_hooks/useExampleForm";
+import { SignupFormDataType } from "../_hooks/useSignupForm";
 import Link from "next/link";
 
 interface TermsOfServiceFormProps extends BoxProps {
-  errors: FieldErrors<FormDataType>;
-  control: Control<FormDataType, any>;
-  register: UseFormRegister<FormDataType>,
-  setValue: UseFormSetValue<FormDataType>,
-  watch: UseFormWatch<FormDataType>,
+  errors: FieldErrors<SignupFormDataType>;
+  control: Control<SignupFormDataType, any>;
+  register: UseFormRegister<SignupFormDataType>,
+  setValue: UseFormSetValue<SignupFormDataType>,
+  watch: UseFormWatch<SignupFormDataType>,
 }
 const TermsOfServiceForm = ({
   errors,
@@ -65,7 +65,7 @@ const TermsOfServiceForm = ({
               })
             }}
             isChecked={allCheck}
-            icon={<CheckCircleIcon isChecked={allCheck} />
+            icon={<CheckCircleIcon isindeterminate={isIndeterminate} ischecked={allCheck} />
             }></Checkbox>
         </Box>
         <Box mb="10px" w="343px" h="50px" display="flex" alignItems="center" justifyContent="space-between" >
@@ -75,7 +75,7 @@ const TermsOfServiceForm = ({
           <Checkbox
             {...register('tos.service')}
             isChecked={tosService}
-            icon={<CheckLineIcon isChecked={tosService} />}
+            icon={<CheckLineIcon ischecked={tosService} />}
           ></Checkbox>
         </Box>
         <Box mb="10px" w="343px" h="50px" display="flex" alignItems="center" justifyContent="space-between" >
@@ -87,7 +87,7 @@ const TermsOfServiceForm = ({
             isChecked={tosPrivacy}
             backdropBlur="white"
             backgroundColor="white"
-            icon={<CheckLineIcon isChecked={tosPrivacy} />}
+            icon={<CheckLineIcon ischecked={tosPrivacy} />}
           ></Checkbox>
         </Box>
         <Box w="343px" h="50px" display="flex" alignItems="center" justifyContent="space-between" >

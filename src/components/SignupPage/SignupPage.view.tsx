@@ -9,9 +9,9 @@ import ProfileForm from './_fragments/ProfileForm';
 import AdditionalInfoForm from './_fragments/AdditionalInfoForm';
 import TermsOfServiceForm from './_fragments/TermsOfServiceForm';
 import { UseFormReturn } from 'react-hook-form';
-import { FormDataType } from './_hooks/useExampleForm';
+import { SignupFormDataType } from './_hooks/useSignupForm';
 interface SignupPageProps extends BoxProps {
-  formData: UseFormReturn<FormDataType>;
+  formData: UseFormReturn<SignupFormDataType>;
 }
 const SignupPageView = ({
   formData: {

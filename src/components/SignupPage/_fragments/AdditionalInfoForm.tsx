@@ -2,7 +2,7 @@ import { Box, BoxProps, Text } from "@chakra-ui/react";
 import FormHelper from "@components/common/FormHelper/FormHelper";
 import InputSelect from "@components/common/New/TextList/InputSelect";
 import { Control, Controller, FieldErrors } from "react-hook-form";
-import { FormDataType } from "../_hooks/useExampleForm";
+import { SignupFormDataType } from "../_hooks/useSignupForm";
 
 const GENDER_OPTION = [
   { value: 'men', label: '남자' },
@@ -20,8 +20,8 @@ const AGE_OPTION = [
 ];
 
 interface AdditionalInfoFormProps extends BoxProps {
-  errors: FieldErrors<FormDataType>;
-  control: Control<FormDataType, any>;
+  errors: FieldErrors<SignupFormDataType>;
+  control: Control<SignupFormDataType, any>;
 }
 const AdditionalInfoForm = ({
   errors,
