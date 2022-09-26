@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, BoxProps } from '@chakra-ui/react';
+import { Box, BoxProps, Image } from '@chakra-ui/react';
 
 interface HomePageContentProps extends BoxProps {}
 
