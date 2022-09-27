@@ -22,8 +22,8 @@ import DefaultInstgramIcon from '@components/common/@Icons/Social/Default/Instag
 import FloatingDefaultButton from '@components/common/New/FloatingActionButtons/Default';
 
 interface HomePageContentProps extends BoxProps { }
-
-function HomePageContent({ ...basisProps }: HomePageContentProps) {
+const moveToTop = () => (document.documentElement.scrollTop = 0);
+const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
   return (
     <>
       <Box pt={LAYOUT.HEADER.HEIGHT} display="flex" flexDirection="column"
@@ -238,6 +238,7 @@ function HomePageContent({ ...basisProps }: HomePageContentProps) {
       position="relative"
       >
         <FloatingDefaultButton // 맨 위로 Floating 버튼
+        onClick={moveToTop}
         position="absolute" right="16px" bottom="20px" aria-label={'up'} />
         <Text mt="83px" textStyle="titleLarge" textAlign="center" textColor="white" >
           {"인코스런에 대해 더 궁금하신가요?"}
