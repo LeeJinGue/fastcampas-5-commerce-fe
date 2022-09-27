@@ -65,7 +65,7 @@ const TermsOfServiceForm = ({
               })
             }}
             isChecked={allCheck}
-            icon={<CheckCircleIcon isindeterminate={isIndeterminate} ischecked={allCheck} />
+            icon={<CheckCircleIcon isIndeterminate={isIndeterminate} isChecked={allCheck} />
             }></Checkbox>
         </Box>
         <Box mb="10px" w="343px" h="50px" display="flex" alignItems="center" justifyContent="space-between" >

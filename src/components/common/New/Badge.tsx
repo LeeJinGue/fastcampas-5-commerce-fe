@@ -8,7 +8,7 @@ const Badge = ({ ...props }: BadgeProps) => {
   return (
     <Button
     pl="15px"
-    
+    h="30px"
     backgroundColor={bgColor ? bgColor : 
       (mode==="on" ? "primary.500" : "gray.200")}
     borderRadius="15px"

@@ -15,6 +15,7 @@ const styles = {
       display: 'flex',
       flexDirection: 'column',
       minHeight: '100vh',
+      backgroundColor: "gray",
     },
     '@font-face': {
       fontFamily: 'Pretendard, sans-serif',
