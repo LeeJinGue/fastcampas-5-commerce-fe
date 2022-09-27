@@ -25,7 +25,7 @@ interface HomePageContentProps extends BoxProps { }
 const moveToTop = () => (document.documentElement.scrollTop = 0);
 const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
   return (
-    <>
+    <Flex flexDir="column" bgColor="white">
       <Box pt={LAYOUT.HEADER.HEIGHT} display="flex" flexDirection="column"
         h="782px"
         mb="0"
@@ -35,7 +35,7 @@ const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
         <Text mt="80px" textStyle="extraLargeBold">{"지속 가능한 클린"}<br />{"클린&비건뷰티, 인코스런"}</Text>
         <Text mt="20px" textStyle="textLarge">{"자연과 사람에게"}<br />{"책임질 수 있는 지속 가능한"}<br />{"제품을 만듭니다."}</Text>
       </Box>
-      <Box h="782px" w="375px" bg="pointSub">
+      <Box h="782px" w="375px" bgColor="pointSub">
         <Box position="absolute" mt="20px" ml="31px" w="244px" h="140px" bgImage={"/images/main_box1.png"} />
         <Box position="absolute" mt="160px" ml="139px" w="236px" h="180px" bgImage={"/images/main_box2.png"} />
         <Box position="absolute" mt="307px" w="175px" h="204px" bgImage={"/images/main_box3.png"} />
@@ -43,14 +43,14 @@ const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
           <Button p="0" alignSelf="flex-end" bg="transparent"><UploadIcon /></Button>
           <Text color="black" textStyle="extraLargeBold">{"불합리한 유통구조"}<br />{"과도한 패키징"}<br />{"과장된 광고"}</Text>
         </Box>
-        <Text color="black" textStyle="textLarge" position="absolute" mt="635px" ml="75px">
+        <Text  color="black" textStyle="textLarge" position="absolute" mt="635px" ml="75px">
           {"부풀려지는 가격은 이제 그만!"}<br /><Text color={"primary.500"} as="span">{"인코스런"}</Text>{"은 가격거품을 제거한"}<br />{"착한소비를 위해 태어났습니다."}
         </Text>
       </Box>
       <Box h="430px" w="375px" bgImage="/images/main3.png">
         <Text textStyle="extraLargeBold" ml="106px" mt="180px">{"이제 합리적으로"}<br />{"지갑을 지키세요!"}</Text>
       </Box>
-      <Text mt="80px" color="primary.500" textStyle="extraLargeBold">{"부풀려지는 가격 이제 그만!"}</Text>
+      <Text mt="80px" color="primary.500" textStyle="extraLargeBold" textAlign="center">{"부풀려지는 가격 이제 그만!"}</Text>
       <Text textAlign="center" mt="20px" color="black" textStyle="textLarge">
         {"불합리한 "}<Text fontWeight="700" as="span">{"중간 유통 거품을 제거"}</Text>{"한"}<br />
         {"인코스런만의 투명한 유통혁신"}
@@ -249,7 +249,7 @@ const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
         </Text>
         <Button p="0" iconSpacing="5px" backgroundColor={"transparent"} mt="12px" leftIcon={<DefaultInstgramIcon iconColor='White' />} textColor="white" textStyle="button">{"INCOURSE.RUN"}</Button>
       </Flex>
-    </>)
+    </Flex>)
 }
 const VerticalLine = ({ ...basisProps }) => {
   return <Box ml="152px" as="span" w={0} h="40px" border="2px solid" borderColor="gray.400" />

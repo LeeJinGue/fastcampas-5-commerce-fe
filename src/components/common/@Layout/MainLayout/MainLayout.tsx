@@ -22,7 +22,7 @@ import MainFooter from './MainFooter/MainFooter';
 
 
 interface MainLayoutProps {
-  title: string | JSX.Element;
+  title?: string | JSX.Element;
   header?: JSX.Element;
   footer?: JSX.Element;
   content?: JSX.Element;
@@ -31,7 +31,7 @@ interface MainLayoutProps {
 
 const MainLayout = ({
   //
-  header = <MainHeader bg="transparent" left="50%" transform="translate(-50%, 0)" />,
+  header = <MainHeader left="50%" transform="translate(-50%, 0)" />,
   footer = <MainFooter left="50%" transform={"translate(-50%, 0)"}/>,
   containerProps,
   content,
@@ -45,7 +45,6 @@ const MainLayout = ({
         alignItems="center"
         flexDirection="column"
         w={"375px"}
-
         mb="0"
         boxSizing='border-box'
         {...containerProps}

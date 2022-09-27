@@ -7,6 +7,7 @@ import HomeLayout from '@components/common/@Layout/HomeLayout';
 
 import { ROUTES } from '@constants/routes';
 import MainLayout from '@components/common/@Layout/MainLayout';
+import MainHeader from '@components/common/@Layout/MainLayout/MainHeader/MainHeader';
 
 function Home() {
   const router = useRouter();
@@ -21,7 +22,7 @@ function Home() {
       <Head>
         <title>커머스 | 메인</title>
       </Head>
-      <MainLayout title="테스트페이지" content={<HomePage />} />
+      <MainLayout header={<MainHeader bg="transparent" left="50%" transform="translate(-50%, 0)" />} content={<HomePage/>} />
     </>
   );
 }
