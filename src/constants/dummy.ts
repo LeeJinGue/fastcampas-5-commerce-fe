@@ -21,7 +21,19 @@ export type productDetialType = {
   "avgRate": string,
   "reviewCount": string
 }
-
+export const product_detail_data: productDetialType[] = [
+  {
+    "id": 0,
+    "name": "인코스런 로션",
+    "description": "",
+    "price": 27000,           
+    "capacity": 120,        // 용량(ml단위?)
+    "detail": "순하고 마일드한 안심 처방으로 피부가 민감하고 연약한 우리 아이를 위한 고보습 로션",
+    "reviewList": "",
+    "avgRate": "4.3",
+    "reviewCount": "125",
+  }
+]
 export const product_data: productSimpleType[] = [
   {
     id: 0,
