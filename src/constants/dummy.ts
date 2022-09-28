@@ -24,15 +24,60 @@ export type productDetialType = {
 export const product_detail_data: productDetialType[] = [
   {
     "id": 0,
+    "name": "인코스런 바스 & 샴푸",
+    "description": "",
+    "price": 27000,           
+    "capacity": 300,        // 용량(ml단위?)
+    "detail": "순하고 마일드한 안심 처방으로 피부가 민감하고 연약한 우리 아이를 위한 고보습 바스 & 샴푸",
+    "reviewList": "",
+    "avgRate": "4.3",
+    "reviewCount": "125",
+  },
+  {
+    "id": 1,
+    "name": "인코스런 오일",
+    "description": "",
+    "price": 27000,           
+    "capacity": 150,        // 용량(ml단위?)
+    "detail": "순하고 마일드한 안심 처방으로 피부가 민감하고 연약한 우리 아이를 위한 고보습 오일",
+    "reviewList": "",
+    "avgRate": "4.3",
+    "reviewCount": "125",
+  },
+  {
+    "id": 2,
     "name": "인코스런 로션",
     "description": "",
     "price": 27000,           
-    "capacity": 120,        // 용량(ml단위?)
+    "capacity": 250,        // 용량(ml단위?)
     "detail": "순하고 마일드한 안심 처방으로 피부가 민감하고 연약한 우리 아이를 위한 고보습 로션",
     "reviewList": "",
     "avgRate": "4.3",
     "reviewCount": "125",
-  }
+  },
+  {
+    "id": 3,
+    "name": "인코스런 크림",
+    "description": "",
+    "price": 27000,           
+    "capacity": 125,        // 용량(ml단위?)
+    "detail": "순하고 마일드한 안심 처방으로 피부가 민감하고 연약한 우리 아이를 위한 고보습 크림",
+    "reviewList": "",
+    "avgRate": "4.3",
+    "reviewCount": "125",
+  },
+  {
+    "id": 4,
+    "name": "인코스런 파우더로션",
+    "description": "",
+    "price": 27000,           
+    "capacity": 100,        // 용량(ml단위?)
+    "detail": "순하고 마일드한 안심 처방으로 피부가 민감하고 연약한 우리 아이를 위한 고보습 파우더 로션",
+    "reviewList": "",
+    "avgRate": "4.3",
+    "reviewCount": "125",
+  },
+  
 ]
 export const product_data: productSimpleType[] = [
   {
