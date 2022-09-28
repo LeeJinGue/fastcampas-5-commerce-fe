@@ -21,6 +21,92 @@ export type productDetialType = {
   "avgRate": string,
   "reviewCount": string
 }
+export type reviewDataType = {
+    "id": number,
+    "user": number,
+    "product": number,
+    "rate": number,
+    "content": string,
+    "reviewimageSet": [
+      {
+        "reviewId": number,
+        "url": string,
+      }
+    ],
+    "created": Date,
+}
+export const review_list: reviewDataType[] = [
+  {
+    "id": 0,
+    "user": 0,
+    "product": 1,
+    "rate": 5,
+    "content": "순해서 아이피부에도 자극없이 사용할 수 있어요!",
+    "reviewimageSet": [
+      {
+        "reviewId": 0,
+        "url": "",
+      }
+    ],
+    "created": new Date("2022-09-28"),
+  },
+  {
+    "id": 1,
+    "user": 0,
+    "product": 1,
+    "rate": 4.3,
+    "content": "순해서 아이피부에도 자극없이 사용할 수 있어요!",
+    "reviewimageSet": [
+      {
+        "reviewId": 0,
+        "url": "",
+      }
+    ],
+    "created": new Date("2022-09-28"),
+  },
+  {
+    "id": 2,
+    "user": 0,
+    "product": 1,
+    "rate": 3.9,
+    "content": "순해서 아이피부에도 자극없이 사용할 수 있어요!",
+    "reviewimageSet": [
+      {
+        "reviewId": 0,
+        "url": "",
+      }
+    ],
+    "created": new Date("2022-09-28"),
+  },
+  {
+    "id": 3,
+    "user": 0,
+    "product": 1,
+    "rate": 2,
+    "content": "순해서 아이피부에도 자극없이 사용할 수 있어요!",
+    "reviewimageSet": [
+      {
+        "reviewId": 0,
+        "url": "",
+      }
+    ],
+    "created": new Date("2022-09-28"),
+  },
+  {
+    "id": 4,
+    "user": 0,
+    "product": 1,
+    "rate": 0,
+    "content": "순해서 아이피부에도 자극없이 사용할 수 있어요!",
+    "reviewimageSet": [
+      {
+        "reviewId": 0,
+        "url": "",
+      }
+    ],
+    "created": new Date("2022-09-28"),
+  },
+]
 export const product_detail_data: productDetialType[] = [
   {
     "id": 0,
