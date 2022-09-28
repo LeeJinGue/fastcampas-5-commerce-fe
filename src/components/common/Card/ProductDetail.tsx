@@ -21,9 +21,12 @@ function ProductDetail({ productData, ...props }: ProductDetailProps) {
         mt="30px">
         <Text textStyle="titleLarge" textColor="black">{name}</Text><Text ml="5px" textStyle="titleLarge" textColor="gray.600" as="span">{capacity + "ml"}</Text>
       </Flex>
-      <Text mt="10px" textColor="primary.500" textStyle="titleLarge">{price}<Text textColor="black" textStyle="textLarge" as="span">{"원"}</Text></Text>
-      <Text textStyle="titleSmall" textColor="gray.800">{"3만원 이상 구매시 "}<Text textColor="primary.500" as="span">{"무료배송"}</Text></Text>
-      <Text mt="10px" textStyle="text" textColor="black">{detail}</Text>
+      <Text // 가격
+      mt="10px" textColor="primary.500" textStyle="titleLarge">{price}<Text textColor="black" textStyle="textLarge" as="span">{"원"}</Text></Text>
+      <Text // 이벤트?
+      textStyle="titleSmall" textColor="gray.800">{"3만원 이상 구매시 "}<Text textColor="primary.500" as="span">{"무료배송"}</Text></Text>
+      <Text // 부가설명
+      mt="10px" textStyle="text" textColor="black">{detail}</Text>
       <Flex // 별점 및 리뷰개수
         mt="10px" alignItems="center" >
         <RatioStarIcon size="16" ratio='full' />
