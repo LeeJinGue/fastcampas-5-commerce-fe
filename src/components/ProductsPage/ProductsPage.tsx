@@ -16,9 +16,9 @@ function ProductsPage({ ...basisProps }: ProductsPageProps) {
     px="16px"
     w="375px" alignItems="center"
     backgroundColor="white">
-      {product_data.map((value)=>{
+      {product_data.map((data)=>{
         return (
-          <Product mt="30px" productData={value}/>
+          <Product mt="30px" productData={data} key={data.name}/>
         )
       })}
     </Flex>

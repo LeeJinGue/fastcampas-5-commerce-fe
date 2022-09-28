@@ -21,17 +21,24 @@ function ProductDetail({ productData, ...props }: ProductDetailProps) {
         mt="30px">
         <Text textStyle="titleLarge" textColor="black">{name}</Text><Text ml="5px" textStyle="titleLarge" textColor="gray.600" as="span">{capacity + "ml"}</Text>
       </Flex>
-      <Text mt="10px" textColor="primary.500" textStyle="titleLarge">{price}<Text textColor="black" textStyle="textLarge" as="span">{"원"}</Text></Text>
-      <Text textStyle="titleSmall" textColor="gray.800">{"3만원 이상 구매시 "}<Text textColor="primary.500" as="span">{"무료배송"}</Text></Text>
-      <Text mt="10px" textStyle="text" textColor="black">{detail}</Text>
+      <Text // 가격
+      mt="10px" textColor="primary.500" textStyle="titleLarge">{price}<Text textColor="black" textStyle="textLarge" as="span">{"원"}</Text></Text>
+      <Text // 이벤트?
+      textStyle="titleSmall" textColor="gray.800">{"3만원 이상 구매시 "}<Text textColor="primary.500" as="span">{"무료배송"}</Text></Text>
+      <Text // 부가설명
+      mt="10px" textStyle="text" textColor="black">{detail}</Text>
       <Flex // 별점 및 리뷰개수
         mt="10px" alignItems="center" >
         <RatioStarIcon size="16" ratio='full' />
         <Text ml="5px" textStyle="title" textColor="black">{avgRate}</Text>
         <Text ml="5px" textStyle="text" textColor="gray.600">{`(${reviewCount}개 리뷰)`}</Text>
       </Flex>
-      <PrimaryButton mt="21px" w="343px" h="50px" variant="outline">{"장바구니"}</PrimaryButton>
-      <PrimaryButton mt="10px" w="343px" h="50px">{"바로구매"}</PrimaryButton>
+      <Flex // 버튼들
+      flexDir="column" justifyContent="center" pb="4px"
+      >
+        <PrimaryButton btntype='Line' btnstate='Primary' btnshape='Round' mt="21px" w="343px" h="50px" variant="outline">{"장바구니"}</PrimaryButton>
+        <PrimaryButton btntype='Solid' btnstate='Primary' btnshape='Round' mt="10px" w="343px" h="50px">{"바로구매"}</PrimaryButton>
+      </Flex>
     </Flex>
   )
 }

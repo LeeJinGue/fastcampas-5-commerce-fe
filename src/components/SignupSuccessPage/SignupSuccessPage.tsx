@@ -15,7 +15,7 @@ const SignupSuccessPage = ({ ...basisProps }: SignupSuccessPageProps) => {
       <Text textAlign="start" w="100%" color="black" textStyle="extraLargeBold">{"완료되었습니다."}</Text>
       <Text textAlign="start" w="100%" mb="100px" color="gray.600" textStyle="textSmall">{"관심사별로 자유롭게 소통해보세요!."}</Text>
       <HandsClappingIcon mb="237px" />
-      <PrimaryButton onClick={handleStart} w="100%" h="50px">시작하기</PrimaryButton>
+      <PrimaryButton btntype='Solid' btnstate='Primary' btnshape='Round' onClick={handleStart} w="100%" h="50px">시작하기</PrimaryButton>
     </Flex>
   );
 }
