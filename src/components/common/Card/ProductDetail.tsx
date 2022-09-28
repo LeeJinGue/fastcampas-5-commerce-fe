@@ -30,8 +30,12 @@ function ProductDetail({ productData, ...props }: ProductDetailProps) {
         <Text ml="5px" textStyle="title" textColor="black">{avgRate}</Text>
         <Text ml="5px" textStyle="text" textColor="gray.600">{`(${reviewCount}개 리뷰)`}</Text>
       </Flex>
-      <PrimaryButton btntype='Line' btnstate='Primary' btnshape='Round' mt="21px" w="343px" h="50px" variant="outline">{"장바구니"}</PrimaryButton>
-      <PrimaryButton btntype='Solid' btnstate='Primary' btnshape='Round' mt="10px" w="343px" h="50px">{"바로구매"}</PrimaryButton>
+      <Flex // 버튼들
+      flexDir="column" justifyContent="center" pb="4px"
+      >
+        <PrimaryButton btntype='Line' btnstate='Primary' btnshape='Round' mt="21px" w="343px" h="50px" variant="outline">{"장바구니"}</PrimaryButton>
+        <PrimaryButton btntype='Solid' btnstate='Primary' btnshape='Round' mt="10px" w="343px" h="50px">{"바로구매"}</PrimaryButton>
+      </Flex>
     </Flex>
   )
 }
