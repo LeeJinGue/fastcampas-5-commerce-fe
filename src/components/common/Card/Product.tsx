@@ -58,8 +58,8 @@ function Product({ productData, ...props }: productProps) {
       </Flex>
       <Flex // 버튼들
         mt="20px" justifyContent="space-around">
-        <PrimaryButton w="150px" h="50px" children="바로구매" onClick={() => moveDetailPage()} />
-        <PrimaryButton variant="outline" w="150px" h="50px" children="장바구니" />
+        <PrimaryButton btntype='Solid' btnstate='Primary' btnshape='Round' w="150px" h="50px" children="바로구매" onClick={() => moveDetailPage()} />
+        <PrimaryButton btntype='Line' btnstate='Primary' btnshape='Round' w="150px" h="50px" children="장바구니" />
       </Flex>
     </Flex>
   )

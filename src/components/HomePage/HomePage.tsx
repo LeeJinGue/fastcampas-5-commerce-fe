@@ -144,7 +144,7 @@ const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
             {"계면활성제 99.9% 타가는 EWG 그린등급"}<br />
             {"성분 100% 만을 사용한 건강한 화장품입니다"}
           </Text>
-          <PrimaryButton mt="30px" children="상품전체보기"/>
+          <PrimaryButton btntype='Solid' btnshape='Round' btnstate='Primary' mt="30px" children="상품전체보기"/>
           <Image mt="80px" src="/images/cosmetics_img_with_mask.png" w="151px" h="189px" />
           <Text mt="10px" textStyle="title" textColor="black">{"바스 & 샴푸"}</Text>
           <Image mt="80px" src="/images/cosmetics_img_with_mask.png" w="151px" h="189px" />
