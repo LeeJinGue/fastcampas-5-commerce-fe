@@ -26,6 +26,7 @@ interface MainLayoutProps {
   header?: JSX.Element;
   footer?: JSX.Element;
   content?: JSX.Element;
+  minH?: string;
   containerProps?: ContainerProps;
 }
 
@@ -35,12 +36,13 @@ const MainLayout = ({
   footer = <MainFooter left="50%" transform={"translate(-50%, 0)"}/>,
   containerProps,
   content,
+  minH = "782px",
 }: MainLayoutProps) => {
   return (
     <>
       {header}
       <Container
-        minH="782px"
+        minH={minH}
         display="flex"
         alignItems="center"
         flexDirection="column"
@@ -49,7 +51,7 @@ const MainLayout = ({
         boxSizing='border-box'
         {...containerProps}
         >
-      {content}
+        {content}
       </Container>
       {footer}
     </>
