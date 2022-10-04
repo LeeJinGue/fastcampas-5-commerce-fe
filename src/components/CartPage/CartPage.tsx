@@ -35,7 +35,7 @@ function CartPage({ ...basisProps }: CartPageProps) {
       <Flex // 선택 탭
         w="375px" h="50px" bgColor="white" px="16px" justifyContent="space-between" alignItems="center">
         <Flex justifyContent="center" alignItems="center">
-          <CheckboxIcon state="Default" />
+          <CheckboxIcon state="Default" shape={'Rectangle'} />
           <Text ml="10px" textStyle="text" textColor="gray.600">{"모두선택"}</Text>
         </Flex>
         <Text textStyle="text" textColor="gray.400">{"선택삭제"}</Text>
