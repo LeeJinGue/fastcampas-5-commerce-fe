@@ -24,26 +24,26 @@ const ProfileForm = ({
       </Center>
       <FormHelper mb="50px" label="이름" errorText={errors.username?.message}>
         <Input
-          boxSizing='border-box' p="0px 0px 0px 20px" textStyle="text" h="40px" w="343px" border={"1px solid #1A1A1A"} borderRadius="100px"
+          boxSizing='border-box' pl="20px" textStyle="text" h="40px" w="343px" border={"1px solid"} borderColor="black" borderRadius="100px"
           {...register('username')} autoComplete="off" />
       </FormHelper>
 
       <FormHelper mb="50px" label="닉네임" errorText={errors.nickname?.message}>
         <Input {...register('nickname')} autoComplete="off"
-          boxSizing='border-box' p="0px 0px 0px 20px" textStyle="text" h="40px" w="343px" border={"1px solid #1A1A1A"} borderRadius="100px"
+          boxSizing='border-box' pl="20px" textStyle="text" h="40px" w="343px" border={"1px solid"} borderColor="black" borderRadius="100px"
         />
       </FormHelper>
 
       <FormHelper mb="50px" label="핸드폰 번호"  errorText={errors.phone?.message}>
         <Input flexGrow={1} {...register('phone')} autoComplete="off"
-          boxSizing='border-box' p="0px 0px 0px 20px" textStyle="text" h="40px" w="343px" border={"1px solid #1A1A1A"} borderRadius="100px"
+          boxSizing='border-box' pl="20px" textStyle="text" h="40px" w="343px" border={"1px solid"} borderColor="black" borderRadius="100px"
         />
       </FormHelper>
 
       <FormHelper mb="50px" label="이메일 주소"
         errorText={errors.email?.message}>
         <Input {...register('email')} autoComplete="off"
-          boxSizing='border-box' p="0px 0px 0px 20px" textStyle="text" h="40px" w="343px" border={"1px solid #1A1A1A"} borderRadius="100px"
+          boxSizing='border-box' pl="20px" textStyle="text" h="40px" w="343px" border={"1px solid"} borderColor="black" borderRadius="100px"
         />
       </FormHelper>
     </Box>
