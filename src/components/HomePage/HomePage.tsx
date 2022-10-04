@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Box, BoxProps, Button, Circle, Container, Divider, Flex, IconButton, Image, Square, Text } from '@chakra-ui/react';
 import { LAYOUT } from '@constants/layout';
-import UploadIcon from '@components/common/New/@Icons/System/Upload';
 import DuotoneBoxIcon from '@components/common/New/@Icons/Duotone/Box';
 import CheckLineIcon from '@components/common/New/@Icons/System/CheckLine';
 import DuotoneDeliveryIcon from '@components/common/New/@Icons/Duotone/Delivery';
@@ -20,6 +19,7 @@ import FloatingCallButton, { CallButton } from '@components/common/New/FloatingA
 import CallIcon from '@components/common/@Icons/System/Call';
 import DefaultInstgramIcon from '@components/common/@Icons/Social/Default/Instagram';
 import FloatingDefaultButton from '@components/common/New/FloatingActionButtons/Default';
+import UploadIcon from '@components/common/New/@Icons/System/Button/Upload';
 
 interface HomePageContentProps extends BoxProps { }
 const moveToTop = () => (document.documentElement.scrollTop = 0);
@@ -40,7 +40,7 @@ const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
         <Box position="absolute" mt="160px" ml="139px" w="236px" h="180px" bgImage={"/images/main_box2.png"} />
         <Box position="absolute" mt="307px" w="175px" h="204px" bgImage={"/images/main_box3.png"} />
         <Box position="absolute" mt="481px" ml="75px" display="flex" flexDir="row">
-          <Button p="0" alignSelf="flex-end" bg="transparent"><UploadIcon /></Button>
+          <Button p="0" alignSelf="flex-end" bg="transparent"><UploadIcon iconcolor={'Primary'} /></Button>
           <Text color="black" textStyle="extraLargeBold">{"불합리한 유통구조"}<br />{"과도한 패키징"}<br />{"과장된 광고"}</Text>
         </Box>
         <Text  color="black" textStyle="textLarge" position="absolute" mt="635px" ml="75px">

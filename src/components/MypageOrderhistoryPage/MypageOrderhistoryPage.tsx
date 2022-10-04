@@ -4,6 +4,7 @@ import { LAYOUT } from '@constants/layout';
 import PriceCard from '@components/common/Card/PriceCard';
 import PrimaryButton from '@components/common/New/PrimaryButton';
 import Pagination from '@components/common/New/Pagination';
+import DateText from '@components/common/New/DateText';
 
 interface MypageOrderhistoryPageProps extends ChakraProps {}
 
@@ -37,16 +38,7 @@ function MypageOrderhistoryPage({
     </Flex>
   );
 }
-interface DateTextProps extends FlexProps{
-  date: string,
-}
-const DateText = ({date, ...props}:DateTextProps) => {
-  return (
-    <Flex h="55px" alignItems="center" borderTop="1px solid" borderColor="gray.100" {...props}>
-      <Text textStyle="titleSmall">{`[${date}]`}</Text>
-    </Flex>
-  )
-}
+
 const Divider = ({...props}:BoxProps) => {
   return <Box border="1px solid" borderColor="gray.100" {...props}/>
 }

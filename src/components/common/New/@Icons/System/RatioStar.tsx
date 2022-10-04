@@ -1,7 +1,7 @@
 import { Icon, IconProps } from '@chakra-ui/react';
 
-type ratioType = "full" | "half" | "empty"
-type sizetype = "12" | "16" | "20" | "36"
+export type ratioType = "full" | "half" | "empty"
+export type sizetype = "12" | "16" | "20" | "36"
 interface RatioStarIconProps extends IconProps {
   ratio: ratioType,
   size: sizetype,
