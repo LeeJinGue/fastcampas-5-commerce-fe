@@ -6,12 +6,12 @@ import XIcon from '../New/@Icons/System/XIcon';
 interface CommerceProps extends FlexProps{
   
 }
- function Commerce({...props}: CommerceProps) {
+function Commerce({...props}: CommerceProps) {
   return (
     <Flex   // Card/Commerce
     px="16px" py="20px" bgColor="white" {...props}
   >
-    <CheckboxIcon state="Select" />
+    <CheckboxIcon state="Select" shape={'Rectangle'} />
     <Flex   // 상품 정보 전체
     ml="10px" flexDir="column" w="full"
     >
@@ -32,8 +32,7 @@ interface CommerceProps extends FlexProps{
             <Text textStyle="title" textColor="primary.500">{"27000원"}</Text>
           </Flex>
         </Flex>
-        <XIcon // 취소버튼
-        />
+        <XIcon xsize={'20'} xcolor={'Black'}        />
       </Flex>
       <Flex   // 상품 개수 선택(Card/Commerce)
       mt="15px"

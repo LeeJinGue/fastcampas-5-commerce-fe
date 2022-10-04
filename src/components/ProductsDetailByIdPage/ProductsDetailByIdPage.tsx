@@ -11,6 +11,7 @@ import Dropdown from '@components/common/New/Dropdown';
 import Review from '@components/common/Card/Review';
 import ListNumberArrowIcon from '@components/common/New/@Icons/System/ListNumberArrow';
 import { isInteger } from 'lodash';
+import Pagination from '@components/common/New/Pagination';
 
 interface ProductsDetailByIdPageProps extends ChakraProps {
   id?: string | string[];
@@ -164,15 +165,7 @@ function ProductsDetailByIdPage({
           </>
         })}
       </Flex>
-      <Flex // Pagination
-      mt="50px" textStyle="title" alignSelf="center">
-        <Text _hover={{cursor: "pointer"}} mr="30px" textColor="black">{"1"}</Text>
-        <Text _hover={{cursor: "pointer"}} mr="30px" textColor="gray.200">{"2"}</Text>
-        <Text _hover={{cursor: "pointer"}} mr="30px" textColor="gray.200">{"3"}</Text>
-        <Text _hover={{cursor: "pointer"}} mr="30px" textColor="gray.200">{"4"}</Text>
-        <Text _hover={{cursor: "pointer"}} mr="30px" textColor="gray.200">{"5"}</Text>
-        <ListNumberArrowIcon _hover={{cursor: "pointer"}} colortype={'Default'} />
-      </Flex>
+      <Pagination />
     </Flex>
   );
 }
