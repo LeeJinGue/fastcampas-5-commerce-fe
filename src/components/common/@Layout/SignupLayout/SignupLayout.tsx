@@ -23,7 +23,7 @@ const SignupLayout = ({
   return (
     <>
       <Container 
-      w="375px" h="812px" 
+      w="375px" minH="812px"
       display="flex" flexDir="column" 
       alignItems="start" bg="white" {...containerProps}>
         {header}
