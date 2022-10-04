@@ -11,7 +11,7 @@ function Commerce({...props}: CommerceProps) {
     <Flex   // Card/Commerce
     px="16px" py="20px" bgColor="white" {...props}
   >
-    <CheckboxIcon state="Select" />
+    <CheckboxIcon state="Select" shape={'Rectangle'} />
     <Flex   // 상품 정보 전체
     ml="10px" flexDir="column" w="full"
     >

@@ -67,7 +67,7 @@ function PaymentPageView({
       <Flex mt="50px" justifyContent="space-between" alignItems="center">
         <Text textStyle="title" textColor="black">{"배송지 정보"}</Text>
         <Flex alignItems="center">
-          <CheckboxIcon state={'Default'} />
+          <CheckboxIcon state={'Select'} shape={'Rectangle'} />
           <Text ml="10px" textStyle="text" textColor="gray.600">{"주문자 정보와 동일"}</Text>
         </Flex>
       </Flex>
@@ -117,7 +117,7 @@ function PaymentPageView({
       <Box w="343px" h="0" mt="50px" border="1px solid" borderColor="gray.200"/>
       <Text textStyle="title" textColor="black">{"결제수단"}</Text>
       <Flex alignItems="center" h="90px">
-        <CheckboxIcon state={'Default'} />
+        <CheckboxIcon state={'Select'} shape={'Circle'} />
         <TotalPaymentIcon ml="10px" fillcolor='Default'/>
         <Text ml="10px" textStyle="text" textColor="black">{"신용카드 결제"}</Text>
       </Flex>
@@ -139,7 +139,7 @@ function PaymentPageView({
       </Flex>
       <Box w="343px" h="0" my="20px" border="1px solid" borderColor="gray.200"/>
       <Flex alignItems="center">
-        <CheckboxIcon state={'Default'}  />
+        <CheckboxIcon state={'Default'} shape={'Rectangle'}  />
         <Text ml="10px" textColor="gray.600" textStyle="text">{"개인정보 수집 이용 동의(필수)"}</Text>
       </Flex>
       <PrimaryButton w="343px" h="50px" mt="40px" btntype={'Solid'} btnstate={'Primary'} btnshape={'Round'} type='submit'>{"결제하기"}</PrimaryButton>
