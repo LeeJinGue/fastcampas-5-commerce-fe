@@ -1,15 +1,12 @@
 import { Flex, FlexProps, Text, Image } from '@chakra-ui/react';
 import React from 'react'
-import CartQuantityIcon from '../New/@Icons/System/CartQuantity';
-import CheckboxIcon from '../New/@Icons/System/CheckboxIcon';
-import XIcon from '../New/@Icons/System/XIcon';
 interface PriceCardProps extends FlexProps{
   isPaymentComplete: boolean,
 }
 function PriceCard({isPaymentComplete ,...props}: PriceCardProps) {
   return (
     <Flex // Card/price card
-      borderY="1px solid" borderColor="gray.200"
+      borderTop="1px solid" borderColor="gray.200"
       alignItems="center" justifyContent="space-between" {...props}
       >
         <Flex alignItems="center">
@@ -21,7 +18,12 @@ function PriceCard({isPaymentComplete ,...props}: PriceCardProps) {
             <Text textStyle="titleSmall" textColor="primary.500">{`27000원 / 1개`}</Text>
           </Flex>
         </Flex>
-        <Text visibility={isPaymentComplete ? "visible" : "hidden"} textStyle="titleSmall" textColor="primary.500">{"결제완료"}</Text>
+        <Flex 
+        flexDir="column" alignItems="end" visibility={isPaymentComplete ? "visible" : "hidden"} 
+        >
+          <Text textStyle="titleSmall" textColor="primary.500">{"결제완료"}</Text>
+          <Text textStyle="textSmall" textColor="black">{`배송비 ${2500}원`}</Text>
+        </Flex>
       </Flex>
   )
 }
