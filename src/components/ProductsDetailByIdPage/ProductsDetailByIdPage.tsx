@@ -12,6 +12,7 @@ import Review from '@components/common/Card/Review';
 import ListNumberArrowIcon from '@components/common/New/@Icons/System/ListNumberArrow';
 import { isInteger } from 'lodash';
 import Pagination from '@components/common/New/Pagination';
+import RatioStars from '@components/common/RatioStars';
 
 interface ProductsDetailByIdPageProps extends ChakraProps {
   id?: string | string[];
@@ -119,12 +120,8 @@ function ProductsDetailByIdPage({
               h="30px" bgColor="primary.500" borderRadius="15px" px="7px">
               <Text textColor="white" textStyle="title">{rate}</Text>
             </Box>
-            { // 평균 평점(별)
-            Array.from({length:5}, (_,index) => index).map((value)=>{
-                return <RatioStarIcon 
-                ratio={rate-value <=0 ? 'empty' : 
-                (rate-value>=1 ? 'full' : 'half')} size={'16'} />
-              })}
+            <RatioStars // 평균 평점(별)
+            rate={rate} size="16"/>
           </Flex>
           <Box // Divier
           h="70px" border="1px solid" borderColor="gray.200" />

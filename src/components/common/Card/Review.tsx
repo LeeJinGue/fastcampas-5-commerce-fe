@@ -3,6 +3,7 @@ import { reviewDataType } from '@constants/dummy';
 import React from 'react'
 import ChatIcon from '../New/@Icons/System/Chat';
 import RatioStarIcon from '../New/@Icons/System/RatioStar';
+import RatioStars from '../RatioStars';
 
 interface ReviewProps extends FlexProps{
   iscomment: boolean,
@@ -25,14 +26,8 @@ function Review({iscomment, reviewData,...props}: ReviewProps) {
               <Text textStyle="titleSmall" textColor="black">{"incourse.run"}</Text> 
               <Text textStyle="textSmall" textColor="gray.600">{formatReviewTime(created)}</Text>
             </Flex>
-            <Flex // 별점. rate에 따라 꽉 찬 별 몇 개를 할 지 결정한다.
-            >
-              {Array.from({length:5}, (_,index) => index).map((value)=>{
-                return <RatioStarIcon 
-                ratio={rate-value <=0 ? 'empty' : 
-                (rate-value>=1 ? 'full' : 'half')} size={'16'} />
-              })}
-            </Flex>
+            <RatioStars // rate에 따른 별점
+            size="16" rate={rate}/>
           </Flex>
           <Text // 리뷰내용
           mt="17px" textStyle="text" textColor="black">{content}</Text>
