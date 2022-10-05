@@ -12,7 +12,7 @@ const SOCIAL_REDIRECT_URL = `${CONFIG.DOMAIN}`;
 const SOCIAL_DATA: { social: SocialType; link: string } = 
   {
     social: 'kakao',
-    link: `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${SOCIAL.KAKAO_CLIENT_ID_ME}&redirect_uri=${SOCIAL.REDIRECT_URL_ME}&state=kakao`,
+    link: `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${SOCIAL.KAKAO_CLIENT_ID}&redirect_uri=${SOCIAL.REDIRECT_URL}&state=kakao`,
   }
 
 const LoginPage = ({ ...basisProps }: LoginPageProps) => {
