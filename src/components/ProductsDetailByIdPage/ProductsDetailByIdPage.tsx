@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, ChakraProps, Button, Flex, Image, Text, IconButton, Container, Divider } from '@chakra-ui/react';
 import { LAYOUT } from '@constants/layout';
-import { productDetialType, product_detail_data, review_list } from '@constants/dummy';
+import { productDetialType, product_detail_data, reviewDataType, review_list } from '@constants/dummy';
 import RatioStarIcon from '@components/common/New/@Icons/System/RatioStar';
 import PrimaryButton from '@components/common/New/PrimaryButton';
 import ProductDetail from '@components/common/Card/ProductDetail';
@@ -12,33 +12,48 @@ import Review from '@components/common/Card/Review';
 import ListNumberArrowIcon from '@components/common/New/@Icons/System/ListNumberArrow';
 import { isInteger } from 'lodash';
 import Pagination from '@components/common/New/Pagination';
-
+import RatioStars from '@components/common/RatioStars';
+import { useQuery } from '@tanstack/react-query';
+import { ProductApi } from '@apis/product/ProductApi';
+import {useGetProductByIdQuery} from '@apis/product/ProductApi.query'
+import { useRouter } from 'next/router';
+import { ProductDTOType } from '@apis/product/ProductApi.type';
+import { ReviewDTOType } from '@apis/review/ReviewApi.type';
 interface ProductsDetailByIdPageProps extends ChakraProps {
-  id?: string | string[];
+  id?: string
 }
-let productData: productDetialType = {
+let productData: ProductDTOType = {
   id: -1,
   name: '',
   description: '',
   price: 0,
   capacity: 0,
   detail: '',
-  reviewList: '',
+  reviewList: [],
   avgRate: '',
-  reviewCount: ''
+  reviewCount: '',
+  photo: '',
 };
 function ProductsDetailByIdPage({
   id,
   ...basisProps
 }: ProductsDetailByIdPageProps) {
-  product_detail_data.forEach((value) => {
-    if (value.id.toString() === id) productData = value
-  })
+
+  // product_detail_data.forEach((value) => {
+  //   if (value.id.toString() === id) productData = value
+  // })
+  if(id){
+    const data = useGetProductByIdQuery({variables:id})
+    console.log("#data test:",data)
+    if(data.data){
+      productData = data.data
+    }
+  }
   const rate = Number.parseFloat(productData.avgRate)
   return (
     <Flex {...basisProps} bgColor="white" w="375px" pt={LAYOUT.HEADER.HEIGHT} flexDir="column"
     pb="80px">
-      <Image mt="36px" mx="16px" w="343px" h="300px" src="/images/product_detail_img.png" />
+      <Image mt="36px" mx="16px" w="343px" h="300px" src={productData.photo} />
       <ProductDetail productData={productData} />
       <Flex // 상세정보, 구매정보, 리뷰 박스
         w="auto" h="80px"
@@ -85,7 +100,6 @@ function ProductsDetailByIdPage({
           w="343px" h="60px" justifyContent="space-between" alignItems="center">
           <Text textStyle="title" textColor="black">{"주문 및 배송 안내"}</Text>
           <ListVerticalArrowIcon _hover={{cursor: "pointer"}} state={true} colortype={'Black'} />
-          {/* <IconButton icon={<ListVerticalArrowIcon state={true} colortype={'Black'} />} aria-label={'foldOrder'} /> */}
         </Flex>
         <Flex     // 열리면 나타나는 sub menu list
           w="full" h="242px" mt="14px"
@@ -119,12 +133,8 @@ function ProductsDetailByIdPage({
               h="30px" bgColor="primary.500" borderRadius="15px" px="7px">
               <Text textColor="white" textStyle="title">{rate}</Text>
             </Box>
-            { // 평균 평점(별)
-            Array.from({length:5}, (_,index) => index).map((value)=>{
-                return <RatioStarIcon 
-                ratio={rate-value <=0 ? 'empty' : 
-                (rate-value>=1 ? 'full' : 'half')} size={'16'} />
-              })}
+            <RatioStars // 평균 평점(별)
+            rate={rate} size="16"/>
           </Flex>
           <Box // Divier
           h="70px" border="1px solid" borderColor="gray.200" />
@@ -158,7 +168,7 @@ function ProductsDetailByIdPage({
           </Flex>
         </Flex>
         { // 실제 리뷰 리스트
-        review_list.map((reviewData) => {
+        productData.reviewList.map((reviewData: ReviewDTOType) => {
           return <>
           <Review reviewData={reviewData} iscomment={false} />
           <Box alignSelf="center" w="343px" h="0" border="1px solid" borderColor="gray.200"/>

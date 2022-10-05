@@ -2,11 +2,18 @@ import { useRouter } from 'next/dist/client/router';
 import Head from 'next/head';
 import ProductsDetailByIdPage from '@components/ProductsDetailByIdPage';
 import MainLayout from '@components/common/@Layout/MainLayout';
+import { useEffect } from 'react';
+import { useGetProductByIdQuery } from '@apis/product/ProductApi.query';
 
 function ProductsDetailById() {
   const router = useRouter();
   const { id } = router.query;
-
+  // useEffect(()=>{
+  //   if(!id || typeof id === "object") return
+  //   const data = useGetProductByIdQuery({variables:id})
+  //     console.log("#data test:",data)
+  // },[id])
+  if(!id || typeof id === "object") return
   return (
     <>
       <Head>
