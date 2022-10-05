@@ -1,18 +1,20 @@
+import { ReviewDTOType } from '@apis/review/ReviewApi.type';
 import { Flex, FlexProps, Text, Image, Icon } from '@chakra-ui/react';
 import { reviewDataType } from '@constants/dummy';
 import React from 'react'
 import ChatIcon from '../New/@Icons/System/Chat';
 import RatioStarIcon from '../New/@Icons/System/RatioStar';
+import RatioStars from '../RatioStars';
 
 interface ReviewProps extends FlexProps{
   iscomment: boolean,
-  reviewData: reviewDataType,
+  reviewData: ReviewDTOType,
 }
 const formatReviewTime = (time: Date):string => {
     return time.getFullYear()+"."+time.getMonth()+"."+time.getDate()
 }
 function Review({iscomment, reviewData,...props}: ReviewProps) {
-  const {id, user, product, rate, content, reviewimageSet, created} = reviewData
+  const {rate, content,userId, reviewimageSet, created, nickname, id} = reviewData
   return (
     <Flex pl="16px" mt="23px" mb="25px" w="375px" {...props}>
       {iscomment && <ChatIcon mr="8px" iconTypes='line' />}
@@ -22,25 +24,22 @@ function Review({iscomment, reviewData,...props}: ReviewProps) {
           justifyContent="space-between" pr="16px">
             <Flex // 리뷰어 아이디 및 리뷰날짜
             flexDir="column">
-              <Text textStyle="titleSmall" textColor="black">{"incourse.run"}</Text> 
-              <Text textStyle="textSmall" textColor="gray.600">{formatReviewTime(created)}</Text>
+              <Text textStyle="titleSmall" textColor="black">{nickname}</Text> 
+              <Text textStyle="textSmall" textColor="gray.600">{formatReviewTime(new Date(created))}</Text>
             </Flex>
-            <Flex // 별점. rate에 따라 꽉 찬 별 몇 개를 할 지 결정한다.
-            >
-              {Array.from({length:5}, (_,index) => index).map((value)=>{
-                return <RatioStarIcon 
-                ratio={rate-value <=0 ? 'empty' : 
-                (rate-value>=1 ? 'full' : 'half')} size={'16'} />
-              })}
-            </Flex>
+            <RatioStars // rate에 따른 별점
+            size="16" rate={rate}/>
           </Flex>
           <Text // 리뷰내용
           mt="17px" textStyle="text" textColor="black">{content}</Text>
           <Flex // 리뷰사진
           mt="9px">
+            {reviewimageSet.map((reviewImage) => {
+              return <Image src={reviewImage.url} w="80px" h="80px" mr="10px"/>
+            })}
+            {/* <Image src="/images/review_img1.png" w="80px" h="80px" mr="10px"/>
             <Image src="/images/review_img1.png" w="80px" h="80px" mr="10px"/>
-            <Image src="/images/review_img1.png" w="80px" h="80px" mr="10px"/>
-            <Image src="/images/review_img1.png" w="80px" h="80px" mr="10px"/>
+            <Image src="/images/review_img1.png" w="80px" h="80px" mr="10px"/> */}
           </Flex>
       </Flex>
     </Flex>

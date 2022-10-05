@@ -20,6 +20,7 @@ import CallIcon from '@components/common/@Icons/System/Call';
 import DefaultInstgramIcon from '@components/common/@Icons/Social/Default/Instagram';
 import FloatingDefaultButton from '@components/common/New/FloatingActionButtons/Default';
 import UploadIcon from '@components/common/New/@Icons/System/Button/Upload';
+import RatioStars from '@components/common/RatioStars';
 
 interface HomePageContentProps extends BoxProps { }
 const moveToTop = () => (document.documentElement.scrollTop = 0);
@@ -190,7 +191,6 @@ const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
           boxShadow="0px 0px 10px rgba(26, 26, 26, 0.1)"
           >
             <Flex // ID & Stars
-            flexDir="row"
             justifyContent="space-between"
             >
               <Text // 리뷰어 아이디
@@ -199,15 +199,8 @@ const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
               >
                 {"incourse.run"}
               </Text>
-              <Flex // 리뷰어가 준 별점
-              flexDir="row"
-              >
-                <RatioStarIcon size="12" ratio='full' />
-                <RatioStarIcon size="12" ratio='full' />
-                <RatioStarIcon size="12" ratio='full' />
-                <RatioStarIcon size="12" ratio='full' />
-                <RatioStarIcon size="12" ratio='empty' />
-              </Flex>
+              <RatioStars // 리뷰어가 준 별점
+              size="12" rate={4}/>
             </Flex>
             <Text // 날짜
             textStyle="textSmall"

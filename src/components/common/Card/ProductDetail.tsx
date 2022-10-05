@@ -1,13 +1,14 @@
+import { ProductDTOType } from '@apis/product/ProductApi.type';
 import { Box, Flex, FlexProps, Text, Image } from '@chakra-ui/react';
 import { productDetialType } from '@constants/dummy';
 import React from 'react'
 import RatioStarIcon from '../New/@Icons/System/RatioStar';
 import PrimaryButton from '../New/PrimaryButton';
 interface ProductDetailProps extends FlexProps {
-  productData: productDetialType,
+  productData: ProductDTOType,
 }
 function ProductDetail({ productData, ...props }: ProductDetailProps) {
-  const {name, capacity, price, detail, reviewList, reviewCount, avgRate} = productData
+  const {name, capacity, price, description, reviewCount, avgRate} = productData
   return (
     <Flex // Card/product detail
       px="16px" flexDir="column"
@@ -26,7 +27,7 @@ function ProductDetail({ productData, ...props }: ProductDetailProps) {
       <Text // 이벤트?
       textStyle="titleSmall" textColor="gray.800">{"3만원 이상 구매시 "}<Text textColor="primary.500" as="span">{"무료배송"}</Text></Text>
       <Text // 부가설명
-      mt="10px" textStyle="text" textColor="black">{detail}</Text>
+      mt="10px" textStyle="text" textColor="black">{description}</Text>
       <Flex // 별점 및 리뷰개수
         mt="10px" alignItems="center" >
         <RatioStarIcon size="16" ratio='full' />
