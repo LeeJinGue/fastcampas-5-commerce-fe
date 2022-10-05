@@ -5,7 +5,7 @@ export const SOCIAL = {
   FACEBOOK_CLIENT_ID: '',
   GOOGLE_CLIENT_ID: '',
   APPLE_CLIENT_ID: '',
-  REDIRECT_URL_ME: 'http://localhost:3000/social_login/callback',
+  REDIRECT_URL_ME: 'http://127.0.0.1:3000/social_login/callback',
   REDIRECT_URL: 'http://127.0.0.1:3000/social_login/callback',
   
 };
