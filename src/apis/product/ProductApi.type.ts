@@ -36,6 +36,6 @@ export type ProductListDTOTType = {
   results: ProductSimpleDTOType[],
 }
 export type ProductParamGetType = {
-  cursor: string,
-  page_size: string,
+  cursor?: string,
+  page_size?: string,
 };
