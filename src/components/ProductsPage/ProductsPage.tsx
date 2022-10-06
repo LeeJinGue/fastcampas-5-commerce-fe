@@ -6,6 +6,7 @@ import PrimaryButton from '@components/common/New/PrimaryButton';
 import Product from '@components/common/Card/Product';
 import { product_data } from '@constants/dummy';
 import { useGetProductInfiniteQuery, useGetProductListQuery } from '@apis/product/ProductApi.query';
+import { useIntersect } from 'hooks/useIntersect';
 
 interface ProductsPageProps extends ChakraProps { }
 
@@ -17,7 +18,12 @@ function ProductsPage({ ...basisProps }: ProductsPageProps) {
     isFetching,
     isFetchingNextPage,
     status} = useGetProductInfiniteQuery({})
-
+  const ref = useIntersect(async (entry, observer) => {
+    observer.unobserve(entry.target)
+    if(hasNextPage && !isFetching){
+      fetchNextPage()
+    }
+  })
   return (
     <Flex // 전체 페이지
       pt={LAYOUT.HEADER.HEIGHT} pb="80px" flexDir="column"
@@ -39,6 +45,7 @@ function ProductsPage({ ...basisProps }: ProductsPageProps) {
         : hasNextPage
         ? 'Load More'
         : 'Nothing more to load'}</Button>
+        <Box height="1px" ref={ref}></Box>
     </Flex>
   );
 }
