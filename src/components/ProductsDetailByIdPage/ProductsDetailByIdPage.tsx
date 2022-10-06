@@ -1,28 +1,20 @@
-import React, { useEffect } from 'react';
-import { Box, ChakraProps, Button, Flex, Image, Text, IconButton, Container, Divider } from '@chakra-ui/react';
+import React from 'react';
+import { Box, ChakraProps, Flex, Image, Text, Container } from '@chakra-ui/react';
 import { LAYOUT } from '@constants/layout';
-import { productDetialType, product_detail_data, reviewDataType, review_list } from '@constants/dummy';
-import RatioStarIcon from '@components/common/New/@Icons/System/RatioStar';
-import PrimaryButton from '@components/common/New/PrimaryButton';
 import ProductDetail from '@components/common/Card/ProductDetail';
 import DetailUnfoldButton from '@components/common/New/DetailUnfoldButton';
 import ListVerticalArrowIcon from '@components/common/New/@Icons/System/ListVerticalArrow';
 import Dropdown from '@components/common/New/Dropdown';
 import Review from '@components/common/Card/Review';
-import ListNumberArrowIcon from '@components/common/New/@Icons/System/ListNumberArrow';
-import { isInteger } from 'lodash';
 import Pagination from '@components/common/New/Pagination';
 import RatioStars from '@components/common/RatioStars';
-import { useQuery } from '@tanstack/react-query';
-import { ProductApi } from '@apis/product/ProductApi';
 import {useGetProductByIdQuery} from '@apis/product/ProductApi.query'
-import { useRouter } from 'next/router';
-import { ProductDTOType } from '@apis/product/ProductApi.type';
+import { ProductDetailDTOTType } from '@apis/product/ProductApi.type';
 import { ReviewDTOType } from '@apis/review/ReviewApi.type';
 interface ProductsDetailByIdPageProps extends ChakraProps {
   id?: string
 }
-let productData: ProductDTOType = {
+let productData: ProductDetailDTOTType = {
   id: -1,
   name: '',
   description: '',
@@ -39,9 +31,6 @@ function ProductsDetailByIdPage({
   ...basisProps
 }: ProductsDetailByIdPageProps) {
 
-  // product_detail_data.forEach((value) => {
-  //   if (value.id.toString() === id) productData = value
-  // })
   if(id){
     const data = useGetProductByIdQuery({variables:id})
     console.log("#data test:",data)
