@@ -4,8 +4,6 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import { SOCIAL } from '@constants/social';
 interface SocialloginCallbackPageProps extends ChakraProps {}
-//KAKAO_CLIENT_ID = 55ad0e25826e8e1528cbf532932d9a87
-//REDIRECT_URL = http://127.0.0.1:3000/social_login/callback
 const grant_type= "authorization_code"
 const client_id=SOCIAL.KAKAO_CLIENT_ID
 const redirect_url=SOCIAL.REDIRECT_URL
@@ -17,7 +15,9 @@ function SocialloginCallbackPage({
   React.useEffect(()=>{
     if(code !== undefined){
       console.log("#code:",code)
-      axios.post(`https://api.commerce.incourse.run/v1/user/social_login?code=${code}&state=${state}`,{},{headers: {
+      axios.post(`https://api.commerce.incourse.run/v1/user/social_login`,
+      {code:code, state:state},
+      {headers: {
         "Content-type": 'application/json'
       }}
       ).then((res) => {

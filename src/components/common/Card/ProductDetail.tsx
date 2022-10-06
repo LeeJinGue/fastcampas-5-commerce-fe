@@ -1,11 +1,11 @@
-import { ProductDTOType } from '@apis/product/ProductApi.type';
+import { ProductDetailDTOTType } from '@apis/product/ProductApi.type';
 import { Box, Flex, FlexProps, Text, Image } from '@chakra-ui/react';
 import { productDetialType } from '@constants/dummy';
 import React from 'react'
 import RatioStarIcon from '../New/@Icons/System/RatioStar';
 import PrimaryButton from '../New/PrimaryButton';
 interface ProductDetailProps extends FlexProps {
-  productData: ProductDTOType,
+  productData: ProductDetailDTOTType,
 }
 function ProductDetail({ productData, ...props }: ProductDetailProps) {
   const {name, capacity, price, description, reviewCount, avgRate} = productData
@@ -13,6 +13,7 @@ function ProductDetail({ productData, ...props }: ProductDetailProps) {
     <Flex // Card/product detail
       px="16px" flexDir="column"
       bgColor="white" boxShadow="0px 0px 10px rgba(26, 26, 26, 0.1)" borderRadius="20px 20px 0px 0px"
+      {...props}
     >
       <Box // 회색박스
         mt="10px" w="50px" h="5px"
