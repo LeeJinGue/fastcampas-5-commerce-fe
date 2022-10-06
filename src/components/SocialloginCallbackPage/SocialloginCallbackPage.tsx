@@ -15,7 +15,9 @@ function SocialloginCallbackPage({
   React.useEffect(()=>{
     if(code !== undefined){
       console.log("#code:",code)
-      axios.post(`https://api.commerce.incourse.run/v1/user/social_login?code=${code}&state=${state}`,{},{headers: {
+      axios.post(`https://api.commerce.incourse.run/v1/user/social_login`,
+      {code:code, state:state},
+      {headers: {
         "Content-type": 'application/json'
       }}
       ).then((res) => {
