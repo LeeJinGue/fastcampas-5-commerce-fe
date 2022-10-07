@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import { SOCIAL } from '@constants/social';
 import { useGetUserDataQuery } from '@apis/user/UserApi.query';
+import { setToken } from '@utils/localStorage/token';
 interface SocialloginCallbackPageProps extends ChakraProps { }
 const grant_type = "authorization_code"
 const client_id = SOCIAL.KAKAO_CLIENT_ID
@@ -25,29 +26,31 @@ function SocialloginCallbackPage({
         }
       ).then((res) => {
         console.log("#get res:", res)
-        const {isRegister} = res.data
-        if (!isRegister) {
-          // 등록이 안되어있다면 
-          // socialToken을 저장하고 
-          // 회원가입 페이지로 이동합니다.
-          const {socialToken} = res.data
-          route.push({
-            pathname: "/signup",
-            query: {
-              socialToken,
-            }
-          })
+        if (res.data) {
+          const { isRegister } = res.data
+          if (!isRegister) {
+            // 등록이 안되어있다면 
+            // socialToken을 Query로 넘기면서 
+            // 회원가입 페이지로 이동합니다.
+            const { socialToken } = res.data
+            route.push({
+              pathname: "/signup",
+              query: {
+                socialToken,
+              }
+            })
+          }
+          if (isRegister) {
+            // 등록이 되어있다면
+            // accessToken, refreshToken을 저장하고
+            // 메인 페이지로 이동합니다.
+            const { access, refresh } = res.data
+            setToken({ isRegister, access, refresh })
+            route.replace({
+              pathname: "/",
+            })
+          }
         }
-        if(isRegister){
-          // 등록이 되어있다면
-          // accessToken, refreshToken을 저장하고
-          // 메인 페이지로 이동합니다.
-          const { accessToken, refreshToken} = res.data
-          route.push({
-            pathname: "", query: {
-              accessToken, refreshToken
-          }})
-      }
       }).catch((err) => {
         console.log("#get err:", err)
       })
