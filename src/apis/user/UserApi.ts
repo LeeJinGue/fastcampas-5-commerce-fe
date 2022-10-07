@@ -7,6 +7,7 @@ import {
   UserParamGetType,
   UserParamPatchType,
   UserParamPutType,
+  UserParamRegisterType,
 } from './UserApi.type';
 
 export class UserApi {
@@ -23,7 +24,24 @@ export class UserApi {
     });
     return data;
   };
-
+  postRegister = async (body: UserParamRegisterType): Promise<UserParamRegisterType> => {
+    const { data } = await this.axios({
+      method: 'POST',
+      url: `/v1/user/register/`,
+      data: body,
+    });
+    return data;
+  };
+  getUserData = async (accessToken: string): Promise<UserDTOType> => {
+    const { data } = await this.axios({
+      method: 'GET',
+      url: `/v1/user/me/`,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      }
+    });
+    return data;
+  };
   getUserById = async (id: string): Promise<UserDTOType> => {
     const { data } = await this.axios({
       method: 'GET',
