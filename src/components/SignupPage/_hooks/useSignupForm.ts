@@ -15,7 +15,7 @@ export type SignupFormDataType = {
   };
   age: {
     label: string;
-    value: string;
+    value: number;
   }
   tos: {
     service: boolean,
@@ -34,7 +34,7 @@ const initialFormData:SignupFormDataType = {
   },
   age: {
     label: '',
-    value: ''
+    value: 0,
   },
   tos: {
     service: false,

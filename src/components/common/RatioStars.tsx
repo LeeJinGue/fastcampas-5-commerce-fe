@@ -12,7 +12,7 @@ function RatioStars({rate, size, ...props}:RatioStarsProps) {
       {Array.from({length:5}, (_,index) => index).map((value)=>{
         return <RatioStarIcon 
         ratio={rate-value <=0 ? 'empty' : 
-        (rate-value>=1 ? 'full' : 'half')} size={'16'} />
+        (rate-value>=1 ? 'full' : 'half')} size={'16'} key={value} />
       })}
     </Flex>
   )

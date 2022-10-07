@@ -5,18 +5,16 @@ import { Control, Controller, FieldErrors } from "react-hook-form";
 import { SignupFormDataType } from "../_hooks/useSignupForm";
 
 const GENDER_OPTION = [
-  { value: 'men', label: '남자' },
-  { value: 'women', label: '여자' },
+  { value: 'male', label: '남자' },
+  { value: 'female', label: '여자' },
 ]
 const AGE_OPTION = [
-  { value: '10대', label: '10대' },
-  { value: '20대', label: '20대' },
-  { value: '30대', label: '30대' },
-  { value: '40대', label: '40대' },
-  { value: '50대', label: '50대' },
-  { value: '60대', label: '60대' },
-  { value: '70대', label: '70대' },
-  { value: '80대 이상', label: '80대 이상' },
+  { value: '10', label: '10대' },
+  { value: '20', label: '20대' },
+  { value: '30', label: '30대' },
+  { value: '40', label: '40대' },
+  { value: '50', label: '50대' },
+  { value: '60', label: '60대' },
 ];
 
 interface AdditionalInfoFormProps extends BoxProps {

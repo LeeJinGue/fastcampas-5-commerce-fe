@@ -23,7 +23,13 @@ export const usePostUserMutation = (
     ...params?.options,
   });
 };
-
+export const usePostRegisterMutation = (
+  params?: MutationHookParams<typeof userApi.postRegister>,
+) => {
+  return useMutation(userApi.postRegister, {
+    ...params?.options,
+  },);
+};
 export const usePutUserMutation = (
   params?: MutationHookParams<typeof userApi.putUser>,
 ) => {

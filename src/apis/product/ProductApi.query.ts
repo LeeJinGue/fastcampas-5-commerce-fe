@@ -1,6 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 
-import { QueryHookParams } from '../type';
+import { InfiniteQueryHookParams, QueryHookParams } from '../type';
 
 import productApi from './ProductApi';
 import { ProductParamGetType } from './ProductApi.type';
@@ -32,5 +32,26 @@ export function useGetProductByIdQuery(
     params?.options,
   );
 
+  return { ...query, queryKey };
+}
+
+export function useGetProductInfiniteQuery(
+  params: InfiniteQueryHookParams<typeof productApi.getProductList>,
+) {
+  const queryKey = PRODUCT_API_QUERY_KEY.GET(params?.variables);
+  const query = useInfiniteQuery(
+    queryKey,
+    async ({pageParam}) => {
+      return productApi.getProductList({...pageParam}) 
+    },
+    {
+      getNextPageParam: (last) => {
+        if (last.cursor !== null) {
+          return last
+        }
+      },
+      ...params?.options,
+    },
+  );
   return { ...query, queryKey };
 }
