@@ -1,30 +1,25 @@
 import React from 'react';
 
-import { Box, BoxProps, Button, Circle, Container, Divider, Flex, IconButton, Image, Square, Text } from '@chakra-ui/react';
+import { Box, BoxProps, Button, Divider, Flex, Image, Text } from '@chakra-ui/react';
 import { LAYOUT } from '@constants/layout';
-import DuotoneBoxIcon from '@components/common/New/@Icons/Duotone/Box';
-import CheckLineIcon from '@components/common/New/@Icons/System/CheckLine';
-import DuotoneDeliveryIcon from '@components/common/New/@Icons/Duotone/Delivery';
-import DuotonePaymentIcon from '@components/common/New/@Icons/Duotone/Payment';
-import DuotoneAssignIcon from '@components/common/New/@Icons/Duotone/Assign';
 import DistributionProcess from './_fragment/DistributionProcess';
 import ElipseIcon from '@components/common/New/@Icons/Elipse';
 import Badge from '@components/common/New/Badge';
-import LogoWhiteIcon from '@components/common/New/@Icons/LogoWhite';
 import LogoPrimaryIcon from '@components/common/New/@Icons/LogoPrimary';
 import ListNumberArrowIcon from '@components/common/New/@Icons/System/ListNumberArrow';
 import PrimaryButton from '@components/common/New/PrimaryButton';
-import RatioStarIcon from '@components/common/New/@Icons/System/RatioStar';
-import FloatingCallButton, { CallButton } from '@components/common/New/FloatingActionButtons/Call';
-import CallIcon from '@components/common/@Icons/System/Call';
+import FloatingCallButton from '@components/common/New/FloatingActionButtons/Call';
 import DefaultInstgramIcon from '@components/common/@Icons/Social/Default/Instagram';
 import FloatingDefaultButton from '@components/common/New/FloatingActionButtons/Default';
 import UploadIcon from '@components/common/New/@Icons/System/Button/Upload';
 import RatioStars from '@components/common/RatioStars';
+import { BADGE_NAME_LIST } from '@constants/string';
 
 interface HomePageContentProps extends BoxProps { }
 const moveToTop = () => (document.documentElement.scrollTop = 0);
+
 const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
+
   return (
     <Flex flexDir="column" bgColor="white">
       <Box pt={LAYOUT.HEADER.HEIGHT} display="flex" flexDirection="column"
@@ -173,12 +168,9 @@ const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
         flexDir="row"
         >
           <Badge mode={'on'} children="전체" />
-          <Badge ml="10px" mode={'off'} children="바스&샴푸" />
-          <Badge ml="10px" mode={'off'} children="오일" />
-          <Badge ml="10px" mode={'off'} children="로션" />
-          <Badge ml="10px" mode={'off'} children="크림" />
-          <Badge ml="10px" mode={'off'} children="파우더 로션" />
+          {BADGE_NAME_LIST.map((name) => <Badge ml="10px" mode={'off'}>{name}</Badge>)}
         </Flex>
+        
         <Flex // Cards Component
         h="464px"
         flexDir="row"
