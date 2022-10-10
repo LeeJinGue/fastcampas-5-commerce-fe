@@ -1,4 +1,5 @@
-// 상품 상세보기에서 사용할 타입
+import { ReviewImageSetType } from "@apis/review/ReviewApi.type";
+
 // /v1/product/{id}/ API의 리턴타입
 export type ProductDetailDTOTType = {
   id: number,
@@ -8,7 +9,7 @@ export type ProductDetailDTOTType = {
   capacity: number,
   detail: string,
   photo: string,
-  reviewList: Array<any>,
+  reviewList: Array<ProductReviewType>,
   avgRate: string,
   reviewCount: string,
 };
@@ -25,8 +26,8 @@ export type ProductSimpleDTOType = {
   price: number,
   capacity: number,
   thumbnail: string,
-  tags: ProductTagType[],
-  reviewList?: Array<any>,
+  tags: Array<ProductTagType>,
+  reviewList?: Array<ProductReviewType>,
   avgRate: string,
   reviewCount: string,
 };
@@ -35,7 +36,19 @@ export type ProductListDTOTType = {
   cursor: string,
   results: ProductSimpleDTOType[],
 }
+// GET /v1/product/의 파라메터 타입
 export type ProductParamGetType = {
-  cursor: string,
-  page_size: string,
+  cursor?: string,
+  page_size?: string,
 };
+
+// 상품 정보와 함께 오는 리뷰 데이터 타입
+export type ProductReviewType = {
+  id: number,
+  userId: number,
+  nickname: string,
+  rate: number,
+  content: string,
+  reviewimageSet: Array<ReviewImageSetType>,
+  created: string,
+}

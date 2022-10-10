@@ -1,17 +1,49 @@
+import userApi from '@apis/user/UserApi';
+import { usePostRegisterMutation } from '@apis/user/UserApi.mutation';
+import { ROUTES } from '@constants/routes';
 import { useRouter } from 'next/router';
 import SignupPageContentView from './SignupPage.view';
 import useExampleForm from './_hooks/useSignupForm';
-
+const PROFILE_EXAMPLE = "https://www.naver.com"
 const SignupPage = () => {
   const formData = useExampleForm();
   const route = useRouter()
+  const socialToken = route.query.socialToken
   const { handleSubmit } = formData;
-  const onSubmit = handleSubmit(({ username,nickname, email, phone, gender, age,tos }) => {
+  const {
+    data: registerData,
+    mutateAsync: registerMutate, //
+    isLoading: isLoadingRegisterMutate,
+  } = usePostRegisterMutation();
+  const onSubmit = handleSubmit(({ username, nickname, email, phone, gender, age, tos }) => {
     // 회원가입 성공!
-    console.log(
-      `submitted: ${username}, ${nickname} , ${email}, ${phone}, ${gender.value}, ${age.value}, ${tos.service}, ${tos.privacy}, ${tos.marketing}`,
-    );
-    route.replace('/signup/success')
+    if (typeof socialToken === "string") {
+      const phoneServerForm = phone.replaceAll("-", "")
+      const res = registerMutate({
+        socialToken,
+        email,
+        phone: phoneServerForm,
+        name: username,
+        nickname,
+        profile: PROFILE_EXAMPLE,
+        gender: gender.value,
+        age: age.value,
+        marketingAdAgree: tos.marketing
+      }, {
+        onSuccess: (data, variables) => {
+          console.log("# data:", data, ", #variables:", variables)
+          route.replace({pathname: ROUTES.SIGNUP.SUCCESS})
+          // 받은 Token을 저장합니다. access, refresh
+        },
+        onError: (error, variables) => {
+          console.log("# error:", error, ", #variables:", variables)
+        }
+      })
+      res.catch((err) => {
+        console.log("# catch error:", err)
+      })
+
+    }
   });
 
   return <SignupPageContentView formData={formData} onSubmit={onSubmit} />;

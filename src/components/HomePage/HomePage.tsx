@@ -1,30 +1,26 @@
 import React from 'react';
 
-import { Box, BoxProps, Button, Circle, Container, Divider, Flex, IconButton, Image, Square, Text } from '@chakra-ui/react';
+import { Box, BoxProps, Button, Divider, Flex, Image, Text } from '@chakra-ui/react';
 import { LAYOUT } from '@constants/layout';
-import DuotoneBoxIcon from '@components/common/New/@Icons/Duotone/Box';
-import CheckLineIcon from '@components/common/New/@Icons/System/CheckLine';
-import DuotoneDeliveryIcon from '@components/common/New/@Icons/Duotone/Delivery';
-import DuotonePaymentIcon from '@components/common/New/@Icons/Duotone/Payment';
-import DuotoneAssignIcon from '@components/common/New/@Icons/Duotone/Assign';
 import DistributionProcess from './_fragment/DistributionProcess';
 import ElipseIcon from '@components/common/New/@Icons/Elipse';
 import Badge from '@components/common/New/Badge';
-import LogoWhiteIcon from '@components/common/New/@Icons/LogoWhite';
 import LogoPrimaryIcon from '@components/common/New/@Icons/LogoPrimary';
 import ListNumberArrowIcon from '@components/common/New/@Icons/System/ListNumberArrow';
 import PrimaryButton from '@components/common/New/PrimaryButton';
-import RatioStarIcon from '@components/common/New/@Icons/System/RatioStar';
-import FloatingCallButton, { CallButton } from '@components/common/New/FloatingActionButtons/Call';
-import CallIcon from '@components/common/@Icons/System/Call';
+import FloatingCallButton from '@components/common/New/FloatingActionButtons/Call';
 import DefaultInstgramIcon from '@components/common/@Icons/Social/Default/Instagram';
 import FloatingDefaultButton from '@components/common/New/FloatingActionButtons/Default';
 import UploadIcon from '@components/common/New/@Icons/System/Button/Upload';
 import RatioStars from '@components/common/RatioStars';
+import { BADGE_NAME_LIST } from '@constants/string';
+import SlideCard from '@components/common/Card/Slide';
 
 interface HomePageContentProps extends BoxProps { }
 const moveToTop = () => (document.documentElement.scrollTop = 0);
+
 const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
+
   return (
     <Flex flexDir="column" bgColor="white">
       <Box pt={LAYOUT.HEADER.HEIGHT} display="flex" flexDirection="column"
@@ -173,56 +169,11 @@ const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
         flexDir="row"
         >
           <Badge mode={'on'} children="전체" />
-          <Badge ml="10px" mode={'off'} children="바스&샴푸" />
-          <Badge ml="10px" mode={'off'} children="오일" />
-          <Badge ml="10px" mode={'off'} children="로션" />
-          <Badge ml="10px" mode={'off'} children="크림" />
-          <Badge ml="10px" mode={'off'} children="파우더 로션" />
+          {BADGE_NAME_LIST.map((name) => <Badge ml="10px" mode={'off'}>{name}</Badge>)}
         </Flex>
-        <Flex // Cards Component
-        h="464px"
-        flexDir="row"
-        mt="76px"
-        >
-          <Flex // Card 1
-          w="325px" h="100%"
-          px="20px" pt="23px" flexDir="column"
-          borderRadius="20px" bgColor="white"
-          boxShadow="0px 0px 10px rgba(26, 26, 26, 0.1)"
-          >
-            <Flex // ID & Stars
-            justifyContent="space-between"
-            >
-              <Text // 리뷰어 아이디
-              textStyle="titleSmall"
-              textColor="black"
-              >
-                {"incourse.run"}
-              </Text>
-              <RatioStars // 리뷰어가 준 별점
-              size="12" rate={4}/>
-            </Flex>
-            <Text // 날짜
-            textStyle="textSmall"
-            textColor="gray.700"
-            >{"2021.03.29"}</Text>
-            <Text // 리뷰 내용
-            textStyle="text"
-            textColor="black"
-            w="285px" h="225px"
-            mt="30px"
-            >
-              {"순해서 아이피부에도 자극없이 사용할 수 있어요! 아이 뿐 만아니라 온 가족이 사용할 수 있는 화장품이라고 추천받았어요. 처음엔 반신반의하는 마음으로 사용하기 시작했는데 지금은 모든 단계에서 인코스런 제품을 사용하고있어요! 아토피로 고생했던 우리 아이 피부도 지금은 거의 완치단계입니다 . 아이 엄마들에게 추천드려요!"}
-            </Text>
-            <Divider my="20px" borderColor="gray.300" />
-            <Flex // 이미지 박스
-            >
-              <Image borderRadius="5px" src="/images/review_img1.png" w="80px" h="80px" />
-              <Image ml="10px" borderRadius="5px" src="/images/review_img2.png" w="80px" h="80px" />
-              <Image ml="10px" borderRadius="5px" src="/images/review_img3.png" w="80px" h="80px" />
-            </Flex>
-          </Flex>
-        </Flex>
+        
+        <SlideCard // 리뷰 슬라이드 Component
+        mt="76px" />
       </Flex>
       <Flex // 인코스런에 대해 더 궁금하신가요?
       flexDir="column" alignItems="center"

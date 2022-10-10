@@ -1,3 +1,4 @@
+import { ProductReviewType } from '@apis/product/ProductApi.type';
 import { ReviewDTOType } from '@apis/review/ReviewApi.type';
 import { Flex, FlexProps, Text, Image, Icon } from '@chakra-ui/react';
 import { reviewDataType } from '@constants/dummy';
@@ -8,13 +9,13 @@ import RatioStars from '../RatioStars';
 
 interface ReviewProps extends FlexProps{
   iscomment: boolean,
-  reviewData: ReviewDTOType,
+  reviewData: ProductReviewType,
 }
 const formatReviewTime = (time: Date):string => {
     return time.getFullYear()+"."+time.getMonth()+"."+time.getDate()
 }
 function Review({iscomment, reviewData,...props}: ReviewProps) {
-  const {rate, content,userId, reviewimageSet, created, nickname, id} = reviewData
+  const {rate, content, reviewimageSet, created, nickname} = reviewData
   return (
     <Flex pl="16px" mt="23px" mb="25px" w="375px" {...props}>
       {iscomment && <ChatIcon mr="8px" iconTypes='line' />}
@@ -37,9 +38,6 @@ function Review({iscomment, reviewData,...props}: ReviewProps) {
             {reviewimageSet.map((reviewImage) => {
               return <Image src={reviewImage.url} w="80px" h="80px" mr="10px"/>
             })}
-            {/* <Image src="/images/review_img1.png" w="80px" h="80px" mr="10px"/>
-            <Image src="/images/review_img1.png" w="80px" h="80px" mr="10px"/>
-            <Image src="/images/review_img1.png" w="80px" h="80px" mr="10px"/> */}
           </Flex>
       </Flex>
     </Flex>

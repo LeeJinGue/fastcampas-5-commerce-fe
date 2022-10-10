@@ -9,7 +9,7 @@ import Review from '@components/common/Card/Review';
 import Pagination from '@components/common/New/Pagination';
 import RatioStars from '@components/common/RatioStars';
 import {useGetProductByIdQuery} from '@apis/product/ProductApi.query'
-import { ProductDetailDTOTType } from '@apis/product/ProductApi.type';
+import { ProductDetailDTOTType, ProductReviewType } from '@apis/product/ProductApi.type';
 import { ReviewDTOType } from '@apis/review/ReviewApi.type';
 interface ProductsDetailByIdPageProps extends ChakraProps {
   id?: string
@@ -157,7 +157,7 @@ function ProductsDetailByIdPage({
           </Flex>
         </Flex>
         { // 실제 리뷰 리스트
-        productData.reviewList.map((reviewData: ReviewDTOType) => {
+        productData.reviewList.map((reviewData: ProductReviewType) => {
           return <>
           <Review reviewData={reviewData} iscomment={false} />
           <Box alignSelf="center" w="343px" h="0" border="1px solid" borderColor="gray.200"/>
