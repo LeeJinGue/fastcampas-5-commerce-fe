@@ -13,33 +13,36 @@ import { LAYOUT } from '@constants/layout';
 import { useRouter } from 'next/router';
 import { deleteToken } from '@utils/localStorage/token';
 import { ROUTES } from '@constants/routes';
+import { useCallback } from 'react';
 
 interface MainHeaderDrawerProps extends Omit<DrawerProps, 'children'> {
   bodyProps?: ChakraProps;
 }
-
 const MainHeaderDrawer = ({
   bodyProps,
   ...basisProps
 }: MainHeaderDrawerProps) => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
   const route = useRouter()
+  const replaceOrPush = useCallback((nowPath: string, goalPath: string) => nowPath === goalPath ? route.replace({pathname:goalPath}) : route.push({pathname:goalPath}), []) 
   const handleLogout = () => {
     // token을 삭제하고 login화면으로 이동합니다.
     deleteToken()
     route.replace({pathname: ROUTES.LOGIN})
   }
   const goHome = () => {
-    onClose()
-    route.replace({pathname:ROUTES.HOME})
+    // Home으로 이동
+    replaceOrPush(route.asPath, ROUTES.HOME)
+    basisProps.onClose()
   }
   const goProduct = () => {
-    onClose()
-    route.push({pathname:ROUTES.PRODUCTS})
+    // 상품보기 페이지로 이동
+    replaceOrPush(route.asPath, ROUTES.PRODUCTS)
+    basisProps.onClose()
   }
   const goMypage = () => {
-    onClose()
-    route.push({pathname:ROUTES.MYPAGE.MAIN})
+    // 마이페이지로 이동
+    replaceOrPush(route.asPath, ROUTES.MYPAGE.MAIN)
+    basisProps.onClose()
   }
   const FUNCTION_LIST = [goHome, goProduct, goMypage]
   const menuItemList:menuItemType[] = [] 
