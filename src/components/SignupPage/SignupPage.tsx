@@ -1,6 +1,6 @@
 import userApi from '@apis/user/UserApi';
 import { usePostRegisterMutation } from '@apis/user/UserApi.mutation';
-import { useGetUserDataQuery } from '@apis/user/UserApi.query';
+import { ROUTES } from '@constants/routes';
 import { useRouter } from 'next/router';
 import SignupPageContentView from './SignupPage.view';
 import useExampleForm from './_hooks/useSignupForm';
@@ -18,11 +18,11 @@ const SignupPage = () => {
   const onSubmit = handleSubmit(({ username, nickname, email, phone, gender, age, tos }) => {
     // 회원가입 성공!
     if (typeof socialToken === "string") {
-      const phoneServerForm = phone.replaceAll("-","")
+      const phoneServerForm = phone.replaceAll("-", "")
       const res = registerMutate({
-        socialToken: socialToken,
+        socialToken,
         email,
-        phone:phoneServerForm,
+        phone: phoneServerForm,
         name: username,
         nickname,
         profile: PROFILE_EXAMPLE,
@@ -32,6 +32,7 @@ const SignupPage = () => {
       }, {
         onSuccess: (data, variables) => {
           console.log("# data:", data, ", #variables:", variables)
+          route.replace({pathname: ROUTES.SIGNUP.SUCCESS})
           // 받은 Token을 저장합니다. access, refresh
         },
         onError: (error, variables) => {
@@ -39,13 +40,13 @@ const SignupPage = () => {
         }
       })
       res.catch((err) => {
-        console.log("# catch error:",err)
+        console.log("# catch error:", err)
       })
-      // route.replace('/signup/success')
+
     }
   });
 
-return <SignupPageContentView formData={formData} onSubmit={onSubmit} />;
+  return <SignupPageContentView formData={formData} onSubmit={onSubmit} />;
 };
 
 export default SignupPage;
