@@ -1,11 +1,11 @@
 export type ReviewDTOType = {
-  content: string
-  created: string
-  id: number
-  nickname: string
-  rate: number
-  reviewimageSet: ReviewImageSetType[]
-  userId: number
+  id: number,
+  userId: number,
+  productId: number,
+  rate: number,
+  content: string,
+  reviewimageSet: Array<ReviewImageSetType>,
+  created: string,
 };
 export type ReviewImageSetType = {
   reviewId: number,
