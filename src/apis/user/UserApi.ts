@@ -3,11 +3,17 @@ import { AxiosInstance } from 'axios';
 import instance from '@apis/_axios/instance';
 
 import {
+  UserDeleteWithdrwalParamType,
   UserDTOType,
-  UserParamGetType,
-  UserParamPatchType,
-  UserParamPutType,
-  UserParamRegisterType,
+  UserGetMeParamType,
+  UserPatchMeParamType,
+  UserPostRefreshParamType,
+  UserPostRefreshReturnType,
+  UserPostRegisterParamType,
+  UserPostRegisterReturnType,
+  UserPostSocialLoginParamType,
+  UserPostSocialLoginReturnType,
+  UserPostWithdrawalReasonParamType,
 } from './UserApi.type';
 
 export class UserApi {
@@ -15,16 +21,15 @@ export class UserApi {
   constructor(axios?: AxiosInstance) {
     if (axios) this.axios = axios;
   }
-
-  getUserList = async (params?: UserParamGetType): Promise<UserDTOType[]> => {
+  postRefresh = async (body: UserPostRefreshParamType): Promise<UserPostRefreshReturnType> => {
     const { data } = await this.axios({
-      method: 'GET',
-      url: `/v1/user`,
-      params,
+      method: 'POST',
+      url: `/v1/user/refresh/`,
+      data: body,
     });
     return data;
   };
-  postRegister = async (body: UserParamRegisterType): Promise<UserParamRegisterType> => {
+  postRegister = async (body: UserPostRegisterParamType): Promise<UserPostRegisterReturnType> => {
     const { data } = await this.axios({
       method: 'POST',
       url: `/v1/user/register/`,
@@ -32,54 +37,56 @@ export class UserApi {
     });
     return data;
   };
-  getUserData = async (accessToken: string): Promise<UserDTOType> => {
+  postSocailLogin = async (body: UserPostSocialLoginParamType): Promise<UserPostSocialLoginReturnType> => {
+    const { data } = await this.axios({
+      method: 'POST',
+      url: `/v1/user/social_login/`,
+      data:body,
+    });
+    return data;
+  };
+  getUserMe = async (params: UserGetMeParamType): Promise<UserDTOType> => {
     const { data } = await this.axios({
       method: 'GET',
       url: `/v1/user/me/`,
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${params.accessToken}`,
       }
     });
     return data;
   };
-  getUserById = async (id: string): Promise<UserDTOType> => {
-    const { data } = await this.axios({
-      method: 'GET',
-      url: `/v1/user/${id}`,
-    });
-    return data;
-  };
-
-  postUser = async (body: UserDTOType): Promise<UserDTOType> => {
-    const { data } = await this.axios({
-      method: 'POST',
-      url: `/v1/user`,
-      data: body,
-    });
-    return data;
-  };
-
-  putUser = async (req: UserParamPutType): Promise<UserDTOType> => {
-    const { data } = await this.axios({
-      method: 'PUT',
-      url: `/v1/user/${req.id}`,
-      data: req.data,
-    });
-    return data;
-  };
-  patchUser = async (req: UserParamPatchType): Promise<UserDTOType> => {
+  patchUserMe = async (params: UserPatchMeParamType): Promise<UserDTOType> => {
+    const {accessToken, ...etc} = params
     const { data } = await this.axios({
       method: 'PATCH',
-      url: `/v1/user/${req.id}`,
-      data: req.data,
+      url: `/v1/user/me/`,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      data: etc,
     });
     return data;
   };
-
-  deleteUser = async (id: string): Promise<boolean> => {
+  deleteUserById = async (params: UserDeleteWithdrwalParamType): Promise<void> => {
+    const {id, accessToken} = params
     const { data } = await this.axios({
       method: 'DELETE',
-      url: `/v1/user/${id}`,
+      url: `/v1/user/withdrwal/${id}/`,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return data;
+  };
+  postWithdrawalReason = async (params: UserPostWithdrawalReasonParamType): Promise<UserPostWithdrawalReasonParamType> => {
+    const {accessToken, ...etc} = params
+    const { data } = await this.axios({
+      method: 'POST',
+      url: `/v1/user/withdrwal/reason/`,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      data: etc,
     });
     return data;
   };
