@@ -3,26 +3,8 @@ import { useMutation } from '@tanstack/react-query';
 import { MutationHookParams } from '@apis/type';
 
 import userApi from './UserApi';
-import {
-  UserDTOType,
-  UserParamPatchType,
-  UserParamPutType,
-} from './UserApi.type';
 
-export const USER_API_MUTATION_KEY = {
-  POST: (param?: UserDTOType) => ['user-post', param],
-  PUT: (req?: UserParamPutType) => ['user-put', req],
-  PATCH: (req?: UserParamPatchType) => ['user-patch', req],
-  DELETE: (id?: string) => ['user-delete', id],
-};
-
-export const usePostUserMutation = (
-  params?: MutationHookParams<typeof userApi.postUser>,
-) => {
-  return useMutation(userApi.postUser, {
-    ...params?.options,
-  });
-};
+// 유저 회원가입
 export const usePostRegisterMutation = (
   params?: MutationHookParams<typeof userApi.postRegister>,
 ) => {
@@ -30,24 +12,36 @@ export const usePostRegisterMutation = (
     ...params?.options,
   },);
 };
-export const usePutUserMutation = (
-  params?: MutationHookParams<typeof userApi.putUser>,
+// 유저 소셜 로그인
+export const usePostUserSocialLogin = (
+  params?: MutationHookParams<typeof userApi.postSocailLogin>,
 ) => {
-  return useMutation(userApi.putUser, {
+  return useMutation(userApi.postSocailLogin, {
     ...params?.options,
-  });
+  },);
 };
-export const usePatchUserMutation = (
-  params?: MutationHookParams<typeof userApi.patchUser>,
+// 유저 정보 수정
+export const usePatchUserMe = (
+  params?: MutationHookParams<typeof userApi.patchUserMe>,
 ) => {
-  return useMutation(userApi.patchUser, {
+  return useMutation(userApi.patchUserMe, {
     ...params?.options,
-  });
+  },);
 };
-export const useDeleteUserMutation = (
-  params?: MutationHookParams<typeof userApi.deleteUser>,
+
+// 유저 정보 삭제
+export const useDeleteWithdrawalById = (
+  params?: MutationHookParams<typeof userApi.deleteUserById>,
 ) => {
-  return useMutation(userApi.deleteUser, {
+  return useMutation(userApi.deleteUserById, {
     ...params?.options,
-  });
+  },);
+};
+// 유저 정보 삭제 이유 작성
+export const usePostWithdrawalReason = (
+  params?: MutationHookParams<typeof userApi.postWithdrawalReason>,
+) => {
+  return useMutation(userApi.postWithdrawalReason, {
+    ...params?.options,
+  },);
 };
