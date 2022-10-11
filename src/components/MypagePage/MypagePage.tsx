@@ -8,6 +8,7 @@ import MenuText from '@components/common/New/TextList/MenuText';
 import { useRouter } from 'next/router';
 import { ROUTES } from '@constants/routes';
 import { deleteToken, setToken } from '@utils/localStorage/token';
+import store from '@features/store';
 
 interface MypagePageProps extends ChakraProps { }
 
@@ -21,12 +22,12 @@ function MypagePage({ ...basisProps }: MypagePageProps) {
     deleteToken()
     route.replace({ pathname: ROUTES.LOGIN }) 
   },[],)
-
+  const {name, email} = store.getState().USER.userData
   return (
     <Flex {...basisProps} pt={LAYOUT.HEADER.HEIGHT} flexDir="column" bgColor="white">
       <Flex mt="70px" flexDir="column" px="16px">
-        <Text textStyle="titleLarge" textColor='black'>{"김인코스런"}</Text>
-        <Text textStyle="text" textColor="gray.400">{"incourse.run@gmail.com"}</Text>
+        <Text textStyle="titleLarge" textColor='black'>{name}</Text>
+        <Text textStyle="text" textColor="gray.400">{email}</Text>
       </Flex>
       <Box mt="30px" h="10px" bgColor="gray.100" />
       <Flex   // 페이지 이동 버튼들
