@@ -3,6 +3,9 @@ import { UseFormProps, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useGetUserMeQuery } from '@apis/user/UserApi.query';
+import { getToken } from '@utils/localStorage/token';
+import store from '@features/store';
 
 export type EditInfoFormDataType = {
   username: string;
@@ -18,20 +21,7 @@ export type EditInfoFormDataType = {
     value: string;
   }
 };
-const initialFormData:EditInfoFormDataType = {
-  username: '',
-  nickname: '',
-  email: '',
-  phone: '',
-  gender: {
-    label: '',
-    value: ''
-  },
-  age: {
-    label: '',
-    value: ''
-  },
-}
+
 /**
  * yup 을 이용하여 form의 유효성 검사를 도와줍니다.
  * react-hook-form과 yup을 연결해 줄 yupResolver 을 함께 사용합니다.
@@ -49,17 +39,16 @@ export const EditInfoFormSchema = yup.object().shape({
     'isValidNickname',
     "한글 1~5자, 영문 및 숫자 2~10자 사이로 입력해주세요.",
     (val) => {
-      if(val !==undefined){
+      if (val !== undefined) {
         const regKor = /^[ㄱ-ㅎ가-힣]{1,5}$/
         const regEng = /^[a-zA-Z0-9]{2,10}$/
         const testKor = regKor.test(val)
         const testEng = regEng.test(val)
         return testKor || testEng
       }
-      console.log("# 닉네임 입력 에러")
       return false
     }
-    
+
   ),
   email: yup
     .string()
@@ -72,22 +61,32 @@ export const EditInfoFormSchema = yup.object().shape({
       'isPhone',
       '정확히 핸드폰 번호를 입력해주세요.',
       (val) => {
-        if(val !== undefined){
+        if (val !== undefined) {
           const regPhone = /\d{2,3}\-\d{3,4}\-\d{4}/
           const testPhone = regPhone.test(val)
           return testPhone
         }
-        console.log("# 핸드폰 입력 에러")
         return false
       },
     ),
 });
 
 const useEditInfoForm = (options?: UseFormProps<EditInfoFormDataType>) => {
+  const { userData } = store.getState().USER
+  const { name, nickname, email, phone, gender, profile, id, age } = userData
+  const defaultValues = {
+    username: name,
+    nickname,
+    email,
+    phone,
+    gender: { value: gender, label: (gender === "male" ? "남자" : "여자") },
+    age: { value: age + "", label: age + "대" },
+  }
+
   return useForm<EditInfoFormDataType>({
     resolver: yupResolver(EditInfoFormSchema),
     mode: 'onChange',
-    defaultValues: initialFormData,
+    defaultValues,
     ...options,
   });
 };

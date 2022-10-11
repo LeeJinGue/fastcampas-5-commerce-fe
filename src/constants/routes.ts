@@ -8,7 +8,7 @@ export const ROUTES = {
     //@delete:line
     MAIN: '/signup',
     //@delete:line
-    SUCCESS: '/signup/sucess'
+    SUCCESS: '/signup/success'
   },
   //@delete:line
   PRODUCTS: '/products',

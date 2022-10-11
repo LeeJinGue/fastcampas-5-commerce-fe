@@ -3,7 +3,7 @@ import { Icon, IconProps } from '@chakra-ui/react';
 type colorType= "Disabled" | "Primary" | "Black"
 
 interface ListHorizontalArrowIconProps extends IconProps{
-  state: boolean    // true면 오른쪽 방향 화살, false면 왼쪽 방향 화살
+  state: string    // true면 오른쪽 방향 화살, false면 왼쪽 방향 화살
   colortype: colorType,
 }
 
@@ -20,7 +20,7 @@ const ListHorizontalArrowIcon = ({ ...props }: ListHorizontalArrowIconProps) => 
     default:
       lineColor = "#1A1A1A"
   }
-  if(state === true) d="M8.5 18.8781L15.523 11.9298L8.5 5.50012"
+  if(state === "true") d="M8.5 18.8781L15.523 11.9298L8.5 5.50012"
   else d="M15.523 18.8781L8.5 11.9298L15.523 5.50012"
   return (
     <Icon

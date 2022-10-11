@@ -47,17 +47,20 @@ type selectOptionType = {
 interface InputSelectProps{
   selectOption: selectOptionType[],
   placeholder:string,
+  defaultValue?: selectOptionType,
   onChange:(newValue: unknown, actionMeta: ActionMeta<unknown>) => void,
 }
 
 const InputSelect = ({
   selectOption,
   placeholder,
+  defaultValue,
   onChange,
   ...basisProps
 }:InputSelectProps) => {
   return (
         <Select
+        defaultValue={defaultValue}
         isSearchable={false}
         chakraStyles={inputSelectStyle}
         components={

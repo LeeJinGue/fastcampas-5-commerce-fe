@@ -58,15 +58,13 @@ export type UserPostRegisterReturnType = {
 }
 
 // DELETE /v1/user/withdrawal/{id}
-export type UserDeleteWithdrwalParamType = {
-  id: string,
-  accessToken: string,  // 토큰도 줘야하나? 잘 모르겠음
+export type UserDeleteWithdrawalParamType = {
+  id: number,
 }
 // POST /v1/user/withdrawal/reason/
 export type UserPostWithdrawalReasonParamType = {
   reason: string,
   additionalReason?: string,
-  accessToken: string,  // 토큰도 줘야하나? 잘 모르겠음
 }
 
 // POST /v1/user/refresh/
