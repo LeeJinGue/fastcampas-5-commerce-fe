@@ -3,7 +3,7 @@ import { AxiosInstance } from 'axios';
 import instance from '@apis/_axios/instance';
 
 import {
-  UserDeleteWithdrwalParamType,
+  UserDeleteWithdrawalParamType,
   UserDTOType,
   UserGetMeParamType,
   UserPatchMeParamType,
@@ -67,26 +67,19 @@ export class UserApi {
     });
     return data;
   };
-  deleteUserById = async (params: UserDeleteWithdrwalParamType): Promise<void> => {
-    const {id, accessToken} = params
+  deleteUserById = async (params: UserDeleteWithdrawalParamType): Promise<void> => {
+    const { id } = params
     const { data } = await this.axios({
       method: 'DELETE',
-      url: `/v1/user/withdrwal/${id}/`,
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
+      url: `/v1/user/withdrawal/${id}/`,
     });
     return data;
   };
   postWithdrawalReason = async (params: UserPostWithdrawalReasonParamType): Promise<UserPostWithdrawalReasonParamType> => {
-    const {accessToken, ...etc} = params
     const { data } = await this.axios({
       method: 'POST',
-      url: `/v1/user/withdrwal/reason/`,
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      data: etc,
+      url: `/v1/user/withdrawal/reason/`,
+      data: params,
     });
     return data;
   };
