@@ -15,6 +15,7 @@ import {
   UserPostSocialLoginReturnType,
   UserPostWithdrawalReasonParamType,
 } from './UserApi.type';
+import { ADDITIONAL_REASON_TEXT } from '@constants/string';
 
 export class UserApi {
   axios: AxiosInstance = instance;
@@ -76,6 +77,7 @@ export class UserApi {
     return data;
   };
   postWithdrawalReason = async (params: UserPostWithdrawalReasonParamType): Promise<UserPostWithdrawalReasonParamType> => {
+    if(params.reason !== ADDITIONAL_REASON_TEXT) delete params.additionalReason
     const { data } = await this.axios({
       method: 'POST',
       url: `/v1/user/withdrawal/reason/`,
