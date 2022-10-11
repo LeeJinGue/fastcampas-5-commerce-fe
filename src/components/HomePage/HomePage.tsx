@@ -15,12 +15,24 @@ import UploadIcon from '@components/common/New/@Icons/System/Button/Upload';
 import RatioStars from '@components/common/RatioStars';
 import { BADGE_NAME_LIST } from '@constants/string';
 import SlideCard from '@components/common/Card/Slide';
+import { useGetUserMeQuery } from '@apis/user/UserApi.query';
+import { userSliceActions } from '@features/user/userSlice';
+import { getToken } from '@utils/localStorage/token';
+import store from '@features/store';
+import { useDispatch } from 'react-redux';
 
 interface HomePageContentProps extends BoxProps { }
 const moveToTop = () => (document.documentElement.scrollTop = 0);
 
 const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
-
+  const dispatch = useDispatch()
+  const data = useGetUserMeQuery({variables: {accessToken: getToken()?.access!
+  }})
+  if(data.data){
+    // API로 받아온 유저 데이터를 redux에 저장합니다.
+    dispatch(userSliceActions.setIsLogged(true))
+    dispatch(userSliceActions.setUserData(data.data))
+  }
   return (
     <Flex flexDir="column" bgColor="white">
       <Box pt={LAYOUT.HEADER.HEIGHT} display="flex" flexDirection="column"
