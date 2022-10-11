@@ -22,6 +22,7 @@ import store from '@features/store';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { ROUTES } from '@constants/routes';
+import { useEffect } from 'react';
 
 interface HomePageContentProps extends BoxProps { }
 const moveToTop = () => (document.documentElement.scrollTop = 0);
@@ -44,9 +45,12 @@ const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
       dispatch(userSliceActions.setUserData(data.data))
     }
   }
+  useEffect(()=>{
   if(!token){
     route.replace({pathname:ROUTES.LOGIN})
+    // console.log("token이 없어요!")
   }
+  },[])
 
 
   return (
