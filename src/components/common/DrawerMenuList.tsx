@@ -11,7 +11,6 @@ interface MenuListProps{
 }
 
 const DrawerMenuList = ({menuItems, ...props}:MenuListProps) => {
-  console.log("#menu item:", menuItems[0].event)
   return (
     <VStack 
     {...props} alignItems="start">

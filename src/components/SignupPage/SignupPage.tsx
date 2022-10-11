@@ -1,10 +1,11 @@
 import userApi from '@apis/user/UserApi';
 import { usePostRegisterMutation } from '@apis/user/UserApi.mutation';
 import { ROUTES } from '@constants/routes';
+import { PROFILE_EXAMPLE } from '@constants/string';
+import { setToken } from '@utils/localStorage/token';
 import { useRouter } from 'next/router';
 import SignupPageContentView from './SignupPage.view';
 import useExampleForm from './_hooks/useSignupForm';
-const PROFILE_EXAMPLE = "https://www.naver.com"
 const SignupPage = () => {
   const formData = useExampleForm();
   const route = useRouter()
@@ -31,7 +32,9 @@ const SignupPage = () => {
         marketingAdAgree: tos.marketing
       }, {
         onSuccess: (data, variables) => {
-          console.log("# data:", data, ", #variables:", variables)
+          // console.log("# data:", data, ", #variables:", variables)
+          const {access, refresh } = data
+          setToken({access, refresh, isRegister: true})
           route.replace({pathname: ROUTES.SIGNUP.SUCCESS})
           // 받은 Token을 저장합니다. access, refresh
         },

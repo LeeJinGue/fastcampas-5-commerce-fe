@@ -1,31 +1,19 @@
 import { Box, BoxProps, Text } from "@chakra-ui/react";
 import FormHelper from "@components/common/FormHelper/FormHelper";
 import InputSelect from "@components/common/New/TextList/InputSelect";
-import { Control, Controller, FieldErrors } from "react-hook-form";
+import { GENDER_OPTION, AGE_OPTION } from "@constants/form";
+import { Control, Controller, FieldErrors, UseFormGetValues, UseFormRegister } from "react-hook-form";
 import { EditInfoFormDataType } from "../_hooks/useEditInfoForm";
-
-const GENDER_OPTION = [
-  { value: 'men', label: '남자' },
-  { value: 'women', label: '여자' },
-]
-const AGE_OPTION = [
-  { value: '10대', label: '10대' },
-  { value: '20대', label: '20대' },
-  { value: '30대', label: '30대' },
-  { value: '40대', label: '40대' },
-  { value: '50대', label: '50대' },
-  { value: '60대', label: '60대' },
-  { value: '70대', label: '70대' },
-  { value: '80대 이상', label: '80대 이상' },
-];
-
+type selectOptionType = {value: string, label: string}
 interface AdditionalInfoFormProps extends BoxProps {
   errors: FieldErrors<EditInfoFormDataType>;
+  getValues: UseFormGetValues<EditInfoFormDataType>;
   control: Control<EditInfoFormDataType, any>;
 }
 const AdditionalInfoForm = ({
   errors,
   control,
+  getValues,
   ...basisProps
 }: AdditionalInfoFormProps) => {
   return <>
@@ -43,6 +31,7 @@ const AdditionalInfoForm = ({
             errorText={errors.gender?.value?.message}
           >
             <InputSelect 
+              defaultValue={getValues("gender")}
               onChange={onChange}
               selectOption={GENDER_OPTION}
               placeholder="성별을 선택하세요"
@@ -60,6 +49,7 @@ const AdditionalInfoForm = ({
             errorText={errors.age?.value?.message}
           >
             <InputSelect 
+              defaultValue={getValues("age")}
               onChange={onChange}
               selectOption={AGE_OPTION}
               placeholder="연령대를 선택하세요"

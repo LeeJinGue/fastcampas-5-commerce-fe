@@ -15,11 +15,43 @@ import UploadIcon from '@components/common/New/@Icons/System/Button/Upload';
 import RatioStars from '@components/common/RatioStars';
 import { BADGE_NAME_LIST } from '@constants/string';
 import SlideCard from '@components/common/Card/Slide';
+import { useGetUserMeQuery } from '@apis/user/UserApi.query';
+import { userSliceActions } from '@features/user/userSlice';
+import { getToken } from '@utils/localStorage/token';
+import store from '@features/store';
+import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/router';
+import { ROUTES } from '@constants/routes';
+import { useEffect } from 'react';
 
 interface HomePageContentProps extends BoxProps { }
 const moveToTop = () => (document.documentElement.scrollTop = 0);
 
 const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
+  const route = useRouter()
+  const dispatch = useDispatch()
+  const token = getToken()
+  
+  // console.log("#test0 - token:",token)
+  if(token){
+    // console.log("#test1 - token:",token)
+    const accessToken = token.access
+    const data = useGetUserMeQuery({variables: {accessToken
+    }})
+    if(data.data && !data.isError){
+      // API로 받아온 유저 데이터를 redux에 저장합니다.
+      // console.log("#test2 - data:",data)
+      dispatch(userSliceActions.setIsLogged(true))
+      dispatch(userSliceActions.setUserData(data.data))
+    }
+  }
+  useEffect(()=>{
+  if(!token){
+    route.replace({pathname:ROUTES.LOGIN})
+    // console.log("token이 없어요!")
+  }
+  },[])
+
 
   return (
     <Flex flexDir="column" bgColor="white">
