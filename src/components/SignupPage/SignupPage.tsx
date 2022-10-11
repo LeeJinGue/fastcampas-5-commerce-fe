@@ -1,10 +1,10 @@
 import userApi from '@apis/user/UserApi';
 import { usePostRegisterMutation } from '@apis/user/UserApi.mutation';
 import { ROUTES } from '@constants/routes';
+import { PROFILE_EXAMPLE } from '@constants/string';
 import { useRouter } from 'next/router';
 import SignupPageContentView from './SignupPage.view';
 import useExampleForm from './_hooks/useSignupForm';
-const PROFILE_EXAMPLE = "https://www.naver.com"
 const SignupPage = () => {
   const formData = useExampleForm();
   const route = useRouter()
