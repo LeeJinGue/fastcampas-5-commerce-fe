@@ -8,12 +8,12 @@ interface ReasonRadioProps extends RadioProps{
   isAdditional: boolean,
 }
 const ReasonRadio = ({ ...props }: ReasonRadioProps) => {
-  const { reasonText, additionalReason, setAdditionalReason,isAdditional, ...radioProps } = props
+  const { reasonText, additionalReason, setAdditionalReason,isAdditional, key, ...radioProps } = props
   const { state, getInputProps, getCheckboxProps, htmlProps, getLabelProps } =
     useRadio(radioProps)
 
   return (
-    <chakra.label {...htmlProps} cursor='pointer'>
+    <chakra.label {...htmlProps} cursor='pointer' key={key}>
       <Flex alignItems="center" mb="10px">
         <input {...getInputProps({})} hidden />
         <CheckboxIcon {...getCheckboxProps()} state={state.isChecked ? 'Select' : 'Default'} shape={'Circle'} />
