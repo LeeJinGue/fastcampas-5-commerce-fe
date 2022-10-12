@@ -13,7 +13,7 @@ import DefaultInstgramIcon from '@components/common/@Icons/Social/Default/Instag
 import FloatingDefaultButton from '@components/common/New/FloatingActionButtons/Default';
 import UploadIcon from '@components/common/New/@Icons/System/Button/Upload';
 import RatioStars from '@components/common/RatioStars';
-import { BADGE_NAME_LIST } from '@constants/string';
+import { BADGE_NAME_LIST, INSTGRAM_URL } from '@constants/string';
 import SlideCard from '@components/common/Card/Slide';
 import { useGetUserMeQuery } from '@apis/user/UserApi.query';
 import { userSliceActions } from '@features/user/userSlice';
@@ -53,9 +53,9 @@ const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
   },[])
 
   const handleProductAll = () => route.push({pathname: ROUTES.PRODUCTS})
-  const handleEventDetail = () => route.push({pathname: "/event"})
-  const handleInquiry = () => route.push({pathname: "/inquiry"})
-  const handleInstagram = () => window.open("https://www.instagram.com/")
+  const handleEventDetail = () => route.push({pathname: ROUTES.EVENTINFO})
+  const handleInquiry = () => route.push({pathname: ROUTES.INQUIRY})
+  const handleInstagram = () => window.open(INSTGRAM_URL)
   return (
     <Flex flexDir="column" bgColor="white">
       <Box pt={LAYOUT.HEADER.HEIGHT} display="flex" flexDirection="column"

@@ -38,6 +38,8 @@ export const ROUTES = {
     //@delete:line
     WITHDRWAL: '/mypage/withdrwal',
   },
+  EVENTINFO: '/eventIinfo',
+  INQUIRY: '/inquiry',
   STARTER_DOCS: {
     //@delete:line
     MAIN: '/starter-docs',
