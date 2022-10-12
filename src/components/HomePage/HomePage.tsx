@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { Box, BoxProps, Button, Divider, Flex, Image, Text } from '@chakra-ui/react';
+import { Box, BoxProps, Button, Divider, Flex, Image, Stack, Text, useRadioGroup } from '@chakra-ui/react';
 import { LAYOUT } from '@constants/layout';
 import DistributionProcess from './_fragment/DistributionProcess';
 import ElipseIcon from '@components/common/New/@Icons/Elipse';
@@ -23,6 +23,8 @@ import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { ROUTES } from '@constants/routes';
 import { useEffect } from 'react';
+import { useGetReviewListQuery } from '@apis/review/ReviewApi.query';
+import BadgeRadio from './_fragment/BadgeRadio';
 
 interface HomePageContentProps extends BoxProps { }
 const moveToTop = () => (document.documentElement.scrollTop = 0);
@@ -31,31 +33,45 @@ const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
   const route = useRouter()
   const dispatch = useDispatch()
   const token = getToken()
-  
+
   // console.log("#test0 - token:",token)
-  if(token){
+  if (token) {
     // console.log("#test1 - token:",token)
     const accessToken = token.access
-    const data = useGetUserMeQuery({variables: {accessToken
-    }})
-    if(data.data && !data.isError){
+    const data = useGetUserMeQuery({
+      variables: {
+        accessToken
+      }
+    })
+    if (data.data && !data.isError) {
       // API로 받아온 유저 데이터를 redux에 저장합니다.
       // console.log("#test2 - data:",data)
       dispatch(userSliceActions.setIsLogged(true))
       dispatch(userSliceActions.setUserData(data.data))
     }
   }
-  useEffect(()=>{
-  if(!token){
-    route.replace({pathname:ROUTES.LOGIN})
-    // console.log("token이 없어요!")
-  }
-  },[])
+  useEffect(() => {
+    if (!token) {
+      route.replace({ pathname: ROUTES.LOGIN })
+      // console.log("token이 없어요!")
+    }
+  }, [])
+  
+  const allReview = useGetReviewListQuery()
 
-  const handleProductAll = () => route.push({pathname: ROUTES.PRODUCTS})
-  const handleEventDetail = () => route.push({pathname: ROUTES.EVENTINFO})
-  const handleInquiry = () => route.push({pathname: ROUTES.INQUIRY})
+  const handleProductAll = () => route.push({ pathname: ROUTES.PRODUCTS })
+  const handleEventDetail = () => route.push({ pathname: ROUTES.EVENTINFO })
+  const handleInquiry = () => route.push({ pathname: ROUTES.INQUIRY })
   const handleInstagram = () => window.open(INSTGRAM_URL)
+  const [badgeText, setBadgeText] = useState("")
+  const handleBadgeText = (badge: string) => {        // Radio 버튼 onChange 이벤트
+    setBadgeText(badge)
+  }
+  const { value, getRadioProps, getRootProps } = useRadioGroup({
+    defaultValue: "전체",
+    onChange: handleBadgeText,
+    name: "탈퇴 사유"
+  })
   return (
     <Flex flexDir="column" bgColor="white">
       <Box pt={LAYOUT.HEADER.HEIGHT} display="flex" flexDirection="column"
@@ -75,7 +91,7 @@ const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
           <UploadIcon iconcolor={'Primary'} />
           <Text color="black" textStyle="extraLargeBold">{"불합리한 유통구조"}<br />{"과도한 패키징"}<br />{"과장된 광고"}</Text>
         </Box>
-        <Text  color="black" textStyle="textLarge" position="absolute" mt="635px" ml="75px">
+        <Text color="black" textStyle="textLarge" position="absolute" mt="635px" ml="75px">
           {"부풀려지는 가격은 이제 그만!"}<br /><Text color={"primary.500"} as="span">{"인코스런"}</Text>{"은 가격거품을 제거한"}<br />{"착한소비를 위해 태어났습니다."}
         </Text>
       </Box>
@@ -126,7 +142,7 @@ const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
           <Box // 시중 주요 브랜드
           >
             <Box w="150px" h="360px" bg="gray.400" // 시중 주요 브랜드 가격
-            display="flex" justifyContent="center"
+              display="flex" justifyContent="center"
             >
               <Badge mode="off" mt="20px" textColor="white" bgColor="gray.700" children="2~30,000원" />
             </Box>
@@ -135,7 +151,7 @@ const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
           <Box alignSelf="end" // 인코스런
           >
             <Box w="150px" h="120px" bg="secondary.100" // 인코스런 가격
-            display="flex" flexDir="column" alignItems="center"
+              display="flex" flexDir="column" alignItems="center"
             >
               <Badge mode="on" mt="20px" children="9,900원" />
               <LogoPrimaryIcon mt="20px" w="104" h="14" />
@@ -145,8 +161,8 @@ const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
         </Box>
       </Box>
       <Box // 가입 이벤트 박스
-      bgImage={"/images/main_event_bg.png"}
-      w="375px" h="450px" pl="16px"
+        bgImage={"/images/main_event_bg.png"}
+        w="375px" h="450px" pl="16px"
       >
         <Text mt="100px" textStyle="extraLarge" textColor="black">
           <Text as="span" textStyle="extraLargeBold" textColor="primary.500">{"인코스런"}</Text>
@@ -156,7 +172,7 @@ const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
         </Text>
         <Flex mt="20px" flexDir="row" alignItems="center" >
           <Text textStyle="text" textColor="black">{"이벤트 상세보기"}</Text>
-          <ListNumberArrowIcon _hover={{cursor:"pointer"}} onClick={handleEventDetail} colortype='Default' />
+          <ListNumberArrowIcon _hover={{ cursor: "pointer" }} onClick={handleEventDetail} colortype='Default' />
         </Flex>
       </Box>
       <Flex // 소중한 우리 아이를 위해... 배경 박스
@@ -176,7 +192,7 @@ const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
             {"계면활성제 99.9% 타가는 EWG 그린등급"}<br />
             {"성분 100% 만을 사용한 건강한 화장품입니다"}
           </Text>
-          <PrimaryButton btntype='Solid' btnshape='Round' btnstate='Primary' mt="30px" w="190px" h="50px" children="상품전체보기" onClick={handleProductAll}/>
+          <PrimaryButton btntype='Solid' btnshape='Round' btnstate='Primary' mt="30px" w="190px" h="50px" children="상품전체보기" onClick={handleProductAll} />
           <Image mt="80px" src="/images/cosmetics_img_with_mask.png" w="151px" h="189px" />
           <Text mt="10px" textStyle="title" textColor="black">{"바스 & 샴푸"}</Text>
           <Image mt="80px" src="/images/cosmetics_img_with_mask.png" w="151px" h="189px" />
@@ -186,44 +202,48 @@ const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
         </Flex>
       </Flex>
       <Flex // 솔직한 리뷰 박스
-      h="876px"
-      w="375px"
-      flexDir="column"
-      bgColor="white"
-      alignItems="center"
-      position="relative"
+        h="876px"
+        w="375px"
+        flexDir="column"
+        bgColor="white"
+        alignItems="center"
+        position="relative"
       >
         <FloatingCallButton // 전화 Floating 버튼
-          position="absolute" right="16px" bottom="20px" aria-label='call' onClick={handleInquiry}/>
+          position="absolute" right="16px" bottom="20px" aria-label='call' onClick={handleInquiry} />
         <Text mt="80px" textStyle="extraLarge" textColor="black" textAlign="center">
           {"인코스런을 "}<Text as="span" textStyle="extraLargeBold">{"직접 사용해본"}</Text> <br />
           {"고객님의 솔직한 리뷰"}
         </Text>
-        <Flex // Tab Component
-        mt="50px"
-        flexDir="row"
-        >
-          <Badge mode={'on'} children="전체" />
-          {BADGE_NAME_LIST.map((name) => <Badge key={name} ml="10px" mode={'off'}>{name}</Badge>)}
+        <Stack {...getRadioProps} w="500px" mb="30px">
+          <Flex // Tab Component
+            mt="50px"
+            flexDir="row"
+          >
+            {BADGE_NAME_LIST.map((name) =>
+              <BadgeRadio key={name} ml="10px" badgeName={name} {...getRadioProps({ value: name })}></BadgeRadio>)}
+          </Flex>
+        </Stack>
+        <Flex // Card/slide
+          h="464px">
+          {!allReview.isLoading && !allReview.isError && allReview.isSuccess &&
+            allReview.data?.results.map((reviewData) => <SlideCard mt="76px" ml="10px" reviewData={reviewData} />)}
         </Flex>
-        
-        <SlideCard // 리뷰 슬라이드 Component
-        mt="76px" />
       </Flex>
       <Flex // 인코스런에 대해 더 궁금하신가요?
-      flexDir="column" alignItems="center"
-      bg={"linear-gradient(90deg, #FF710B 0%, #FFAB2E 100%)"}
-      w="375px" h="300px"
-      position="relative"
+        flexDir="column" alignItems="center"
+        bg={"linear-gradient(90deg, #FF710B 0%, #FFAB2E 100%)"}
+        w="375px" h="300px"
+        position="relative"
       >
         <FloatingDefaultButton // 맨 위로 Floating 버튼
-        onClick={moveToTop}
-        position="absolute" right="16px" bottom="20px" aria-label={'up'} />
+          onClick={moveToTop}
+          position="absolute" right="16px" bottom="20px" aria-label={'up'} />
         <Text mt="83px" textStyle="titleLarge" textAlign="center" textColor="white" >
           {"인코스런에 대해 더 궁금하신가요?"}
         </Text>
         <Text mt="10px" textStyle="text" textAlign="center" textColor="white" >
-          {"인스타그램을 방문하시면 더욱 다양한"}<br/>
+          {"인스타그램을 방문하시면 더욱 다양한"}<br />
           {"인코스런의 이야기를 확인하실 수 있어요"}
         </Text>
         <Button p="0" iconSpacing="5px" backgroundColor={"transparent"} mt="12px" leftIcon={<DefaultInstgramIcon iconColor='White' />} textColor="white" textStyle="button" onClick={handleInstagram}>{"INCOURSE.RUN"}</Button>

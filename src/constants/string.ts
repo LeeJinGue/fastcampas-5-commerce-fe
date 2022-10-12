@@ -1,6 +1,6 @@
 export const DRAWER_MENU_ITEM_LIST = ["홈", "상품보기", "마이페이지"]
 export const KAKAO_BUTTON_STRING = "카카오 계정으로 로그인"
-export const BADGE_NAME_LIST = ["바스&샴푸","오일","로션","크림","파우더 로션"]
+export const BADGE_NAME_LIST = ["전체","바스&샴푸","오일","로션","크림","파우더 로션"]
 export const PROFILE_EXAMPLE = "https://www.naver.com"
 export const WITHDRAWAL_REASONS = ["아이디 변경(재가입)", "낮은 구매 빈도", "서비스 및 고객지원 불만족", "타 브랜드 이용", "기타"]
 export const ADDITIONAL_REASON_TEXT = "기타"
