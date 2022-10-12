@@ -1,5 +1,6 @@
 import { ReviewDTOType } from '@apis/review/ReviewApi.type';
 import { Divider, Flex, FlexProps, Text, Image } from '@chakra-ui/react';
+import { formatReviewTime } from '@utils/format';
 import React from 'react'
 import RatioStars from '../RatioStars';
 interface SlideCardProps extends FlexProps {
@@ -31,7 +32,7 @@ function SlideCard({ reviewData, ...props }: SlideCardProps) {
       <Text // 날짜
         textStyle="textSmall"
         textColor="gray.700"
-      >{created}</Text>
+      >{formatReviewTime(new Date(created))}</Text>
       <Text // 리뷰 내용
         textStyle="text"
         textColor="black"
@@ -50,4 +51,3 @@ function SlideCard({ reviewData, ...props }: SlideCardProps) {
   )
 }
 export default SlideCard;
-
