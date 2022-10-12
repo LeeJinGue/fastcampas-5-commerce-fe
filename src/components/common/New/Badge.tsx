@@ -1,14 +1,14 @@
-import { Button, ButtonProps, Text } from "@chakra-ui/react";
+import { Box, BoxProps, Button, ButtonProps, Flex, FlexProps, Text } from "@chakra-ui/react";
 type modeType = "on" | "off"
-interface BadgeProps extends ButtonProps{
+interface BadgeProps extends FlexProps{
   mode: modeType,
 }
 const Badge = ({ ...props }: BadgeProps) => {
   const {children, mode, bgColor, textColor} = props
   return (
-    <Button
-    pl="15px"
-    h="30px"
+    <Flex
+    px="15px" py="6px"
+    h="30px" w="full"
     backgroundColor={bgColor ? bgColor : 
       (mode==="on" ? "primary.500" : "gray.200")}
     borderRadius="15px"
@@ -18,7 +18,7 @@ const Badge = ({ ...props }: BadgeProps) => {
         color={textColor ? textColor : 
           (mode === "on" ? "white" : "black")}
         textStyle={mode==="on" ? "buttonSmall" : "textSmall"}>{children}</Text> : children}
-    </Button>
+    </Flex>
   );
 };
 

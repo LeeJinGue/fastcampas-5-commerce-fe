@@ -4,16 +4,15 @@ import { MutationHookParams } from '@apis/type';
 
 import reviewApi from './ReviewApi';
 import {
-  ReviewDTOType,
-  ReviewParamPatchType,
-  ReviewParamPutType,
+  ReviewPatchByIdParamType,
+  ReviewPostParamType,
+  ReviewPutByIdParamType,
 } from './ReviewApi.type';
 
 export const REVIEW_API_MUTATION_KEY = {
-  POST: (param?: ReviewDTOType) => ['review-post', param],
-  PUT: (req?: ReviewParamPutType) => ['review-put', req],
-  PATCH: (req?: ReviewParamPatchType) => ['review-patch', req],
-  DELETE: (id?: string) => ['review-delete', id],
+  POST: (param?: ReviewPostParamType) => ['review-post', param],
+  PUT_BY_ID: (param?: ReviewPutByIdParamType) => ['review-put', param],
+  PATCH_BY_ID: (param?: ReviewPatchByIdParamType) => ['review-patch', param],
 };
 
 export const usePostReviewMutation = (
@@ -24,24 +23,17 @@ export const usePostReviewMutation = (
   });
 };
 
-export const usePutReviewMutation = (
-  params?: MutationHookParams<typeof reviewApi.putReview>,
+export const usePutByIdReviewMutation = (
+  params?: MutationHookParams<typeof reviewApi.putReviewById>,
 ) => {
-  return useMutation(reviewApi.putReview, {
+  return useMutation(reviewApi.putReviewById, {
     ...params?.options,
   });
 };
-export const usePatchReviewMutation = (
-  params?: MutationHookParams<typeof reviewApi.patchReview>,
+export const usePatchByIdReviewMutation = (
+  params?: MutationHookParams<typeof reviewApi.patchReviewById>,
 ) => {
-  return useMutation(reviewApi.patchReview, {
-    ...params?.options,
-  });
-};
-export const useDeleteReviewMutation = (
-  params?: MutationHookParams<typeof reviewApi.deleteReview>,
-) => {
-  return useMutation(reviewApi.deleteReview, {
+  return useMutation(reviewApi.patchReviewById, {
     ...params?.options,
   });
 };

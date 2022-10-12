@@ -4,9 +4,16 @@ import instance from '@apis/_axios/instance';
 
 import {
   ReviewDTOType,
-  ReviewParamGetType,
-  ReviewParamPatchType,
-  ReviewParamPutType,
+  ReviewGetAllParamType,
+  ReviewGetAllReturnType,
+  ReviewGetByIdParamType,
+  ReviewGetByIdReturnType,
+  ReviewPatchByIdParamType,
+  ReviewPatchByIdReturnType,
+  ReviewPostParamType,
+  ReviewPostReturnType,
+  ReviewPutByIdParamType,
+  ReviewPutByIdReturnType,
 } from './ReviewApi.type';
 
 export class ReviewApi {
@@ -16,57 +23,52 @@ export class ReviewApi {
   }
 
   getReviewList = async (
-    params?: ReviewParamGetType,
-  ): Promise<ReviewDTOType[]> => {
+    params?: ReviewGetAllParamType,
+  ): Promise<ReviewGetAllReturnType> => {
     const { data } = await this.axios({
       method: 'GET',
-      url: `/v1/review`,
-      params,
+      url: `/v1/review/`,
+      data: params,
     });
     return data;
   };
-
-  getReviewById = async (id: string): Promise<ReviewDTOType> => {
-    const { data } = await this.axios({
-      method: 'GET',
-      url: `/v1/review/${id}`,
-    });
-    return data;
-  };
-
-  postReview = async (body: ReviewDTOType): Promise<ReviewDTOType> => {
+  postReview = async (
+    params?: ReviewPostParamType,
+  ): Promise<ReviewPostReturnType> => {
     const { data } = await this.axios({
       method: 'POST',
-      url: `/v1/review`,
-      data: body,
+      url: `/v1/review/`,
+      data: params,
     });
     return data;
   };
-
-  putReview = async (req: ReviewParamPutType): Promise<ReviewDTOType> => {
+  getReviewById = async (params?: ReviewGetByIdParamType): Promise<ReviewGetByIdReturnType> => {
+    const { id } = params!
+    const { data } = await this.axios({
+      method: 'GET',
+      url: `/v1/review/${id}/`,
+    });
+    return data;
+  };
+  putReviewById = async (params?: ReviewPutByIdParamType): Promise<ReviewPutByIdReturnType> => {
+    const { id, ...etc } = params!
     const { data } = await this.axios({
       method: 'PUT',
-      url: `/v1/review/${req.id}`,
-      data: req.data,
+      url: `/v1/review/${id}/`,
+      data: etc,
     });
     return data;
   };
-  patchReview = async (req: ReviewParamPatchType): Promise<ReviewDTOType> => {
+  patchReviewById = async (params?: ReviewPatchByIdParamType): Promise<ReviewPatchByIdReturnType> => {
+    const { id, ...etc } = params!
     const { data } = await this.axios({
-      method: 'PATCH',
-      url: `/v1/review/${req.id}`,
-      data: req.data,
+      method: 'PUT',
+      url: `/v1/review/${id}/`,
+      data: etc,
     });
     return data;
   };
 
-  deleteReview = async (id: string): Promise<boolean> => {
-    const { data } = await this.axios({
-      method: 'DELETE',
-      url: `/v1/review/${id}`,
-    });
-    return data;
-  };
 }
 
 const reviewApi = new ReviewApi();

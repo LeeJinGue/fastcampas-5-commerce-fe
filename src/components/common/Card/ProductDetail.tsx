@@ -1,6 +1,8 @@
 import { ProductDetailDTOTType } from '@apis/product/ProductApi.type';
 import { Box, Flex, FlexProps, Text, Image } from '@chakra-ui/react';
 import { productDetialType } from '@constants/dummy';
+import { ROUTES } from '@constants/routes';
+import { useRouter } from 'next/router';
 import React from 'react'
 import RatioStarIcon from '../New/@Icons/System/RatioStar';
 import PrimaryButton from '../New/PrimaryButton';
@@ -9,6 +11,13 @@ interface ProductDetailProps extends FlexProps {
 }
 function ProductDetail({ productData, ...props }: ProductDetailProps) {
   const {name, capacity, price, description, reviewCount, avgRate} = productData
+  const route = useRouter()
+  const handleCartOnclick = () => {
+    route.push({pathname:ROUTES.CART})
+  }
+  const handleBuynowOnclick = () => {
+    route.push({pathname:ROUTES.PAYMENT.MAIN})
+  }
   return (
     <Flex // Card/product detail
       px="16px" flexDir="column"
@@ -38,8 +47,8 @@ function ProductDetail({ productData, ...props }: ProductDetailProps) {
       <Flex // 버튼들
       flexDir="column" justifyContent="center" pb="4px"
       >
-        <PrimaryButton btntype='Line' btnstate='Primary' btnshape='Round' mt="21px" w="343px" h="50px" variant="outline">{"장바구니"}</PrimaryButton>
-        <PrimaryButton btntype='Solid' btnstate='Primary' btnshape='Round' mt="10px" w="343px" h="50px">{"바로구매"}</PrimaryButton>
+        <PrimaryButton btntype='Line' btnstate='Primary' btnshape='Round' mt="21px" w="343px" h="50px" onClick={handleCartOnclick} variant="outline">{"장바구니"}</PrimaryButton>
+        <PrimaryButton btntype='Solid' btnstate='Primary' btnshape='Round' mt="10px" w="343px" h="50px" onClick={handleBuynowOnclick}>{"바로구매"}</PrimaryButton>
       </Flex>
     </Flex>
   )
