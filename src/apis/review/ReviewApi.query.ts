@@ -3,11 +3,11 @@ import { useQuery } from '@tanstack/react-query';
 import { QueryHookParams } from '@apis/type';
 
 import reviewApi from './ReviewApi';
-import { ReviewParamGetType } from './ReviewApi.type';
+import { ReviewGetAllParamType, ReviewGetByIdParamType } from './ReviewApi.type';
 
 export const REVIEW_API_QUERY_KEY = {
-  GET: (param?: ReviewParamGetType) => ['review-list', param],
-  GET_BY_ID: (id?: string) => ['review-by-id', id],
+  GET: (param?: ReviewGetAllParamType) => ['review-list', param],
+  GET_BY_ID: (param?: ReviewGetByIdParamType) => ['review-by-id', param],
 };
 
 export function useGetReviewListQuery(
