@@ -38,7 +38,7 @@ export const ROUTES = {
     //@delete:line
     WITHDRWAL: '/mypage/withdrwal',
   },
-  EVENTINFO: '/eventIinfo',
+  EVENTINFO: '/eventinfo',
   INQUIRY: '/inquiry',
   STARTER_DOCS: {
     //@delete:line
