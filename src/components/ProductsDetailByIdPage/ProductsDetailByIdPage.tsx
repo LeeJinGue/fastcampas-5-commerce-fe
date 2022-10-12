@@ -1,5 +1,5 @@
-import React from 'react';
-import { Box, ChakraProps, Flex, Image, Text, Container } from '@chakra-ui/react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Box, ChakraProps, Flex, Image, Text, Container, Spinner, useRadioGroup, Stack } from '@chakra-ui/react';
 import { LAYOUT } from '@constants/layout';
 import ProductDetail from '@components/common/Card/ProductDetail';
 import DetailUnfoldButton from '@components/common/New/DetailUnfoldButton';
@@ -8,54 +8,76 @@ import Dropdown from '@components/common/New/Dropdown';
 import Review from '@components/common/Card/Review';
 import Pagination from '@components/common/New/Pagination';
 import RatioStars from '@components/common/RatioStars';
-import {useGetProductByIdQuery} from '@apis/product/ProductApi.query'
+import { useGetProductByIdQuery } from '@apis/product/ProductApi.query'
 import { ProductDetailDTOTType, ProductReviewType } from '@apis/product/ProductApi.type';
 import { ReviewDTOType } from '@apis/review/ReviewApi.type';
+import LoadingPage from '@components/common/New/LoadingPage';
+import TabRadio from './_fragments/TabRadio';
 interface ProductsDetailByIdPageProps extends ChakraProps {
-  id?: string
+  productData: ProductDetailDTOTType,
 }
-let productData: ProductDetailDTOTType = {
-  id: -1,
-  name: '',
-  description: '',
-  price: 0,
-  capacity: 0,
-  detail: '',
-  reviewList: [],
-  avgRate: '',
-  reviewCount: '',
-  photo: '',
-};
 function ProductsDetailByIdPage({
-  id,
+  productData,
   ...basisProps
 }: ProductsDetailByIdPageProps) {
 
-  if(id){
-    const data = useGetProductByIdQuery({variables:id})
-    console.log("#data test:",data)
-    if(data.data){
-      productData = data.data
-    }
+  const { photo, reviewList, avgRate } = productData
+  const rate = avgRate === null ? 0 : avgRate
+  // 상세정보 펼쳐보기/접기
+  const [isDetailOpen, setIsDetailOpen] = useState(true)
+  const handelOpenDetail = () => {
+    setIsDetailOpen(prev => {
+      if (!prev) setDetailHeight("477px")
+      else setDetailHeight("auto")
+      return !prev
+    })
   }
-  const rate = Number.parseFloat(productData.avgRate)
+  const [detailHeight, setDetailHeight] = useState("477px")
+  // 주문 및 배송 안내 펼치기/접기. 
+  // 주문 및 배송 안내가 닫혀있나요?
+  const [isOrderDeliveryInfoClose, setIsODIClose] = useState(true)
+  const handelCloseOrderDeliveryInfoClose = () => {
+    setIsODIClose(prev => {
+      // 닫혀있다면 열려줍니다.
+      if (prev) setODIHeight("242px")
+      else setODIHeight("0px")
+      return !prev
+    })
+  }
+  const [orderDeleveryInfoheight, setODIHeight] = useState("0px")
+
+  // 상세정보/구매정보/리뷰 탭
+  const [tabText, setTabText] = useState("")
+  const handleTabText = (tab: string) => {        // Radio 버튼 onChange 이벤트
+    setTabText(tab)
+  }
+  const { value, getRadioProps, getRootProps } = useRadioGroup({
+    defaultValue: "상세정보",
+    onChange: handleTabText,
+    name: "탭"
+  })
+  const TAB_NAMES = ["상세정보", "구매정보", `리뷰(${reviewList.length})`]
+
   return (
     <Flex {...basisProps} bgColor="white" w="375px" pt={LAYOUT.HEADER.HEIGHT} flexDir="column"
-    pb="80px">
-      <Image mt="36px" mx="16px" w="343px" h="300px" src={productData.photo} />
+      pb="80px">
+      <Image mt="36px" mx="16px" w="343px" h="300px" src={photo} />
       <ProductDetail productData={productData} />
-      <Flex // 상세정보, 구매정보, 리뷰 박스
+      <Stack // 상세정보, 구매정보, 리뷰 박스
         w="auto" h="80px"
-        alignItems="center"
-        justifyContent="space-around"
+        {...getRadioProps}
       >
-        <Text textColor="primary.500" textStyle="title">{"상세정보"}</Text>
-        <Text textColor="gray.600" textStyle="text">{"구매정보"}</Text>
-        <Text textColor="gray.600" textStyle="text">{`리뷰(${productData.reviewList})`}</Text>
-      </Flex>
+        <Flex
+          alignItems="center"
+          justifyContent="space-around"
+        >
+          {TAB_NAMES.map((tabName, index) => <TabRadio ml={index !==0 ? "20px" : "0" } tabName={tabName} {...getRadioProps({ value: tabName })} />)}
+
+        </Flex>
+      </Stack>
       <Flex   // 상세 정보 박스
         overflow="hidden"
-        w="375px" h="477px"
+        w="375px" h={detailHeight}
         mt="50px" flexDir="column" alignItems="center"
         textAlign="center">
         <Text textColor="primary.500" textStyle="titleSmall">{"KEY POINT"}</Text>
@@ -81,32 +103,42 @@ function ProductsDetailByIdPage({
         </Text>
         <Image alignSelf="center" mt="73px" w="313px" h="938px" src="/images/lotion_detail1.png"></Image>
       </Flex>
-      <DetailUnfoldButton alignSelf="center" isclose={true} />
+      <DetailUnfoldButton alignSelf="center" isclose={isDetailOpen} onClick={handelOpenDetail} />
       <Flex // Text List/Menu text
+        bgColor="gray.100"
         flexDir="column"
         px="16px">
         <Flex     // 주문 및 배송 안내 menu text
-          w="343px" h="60px" justifyContent="space-between" alignItems="center">
+          w="343px" h="60px" justifyContent="space-between" alignItems="center" mt="30px">
           <Text textStyle="title" textColor="black">{"주문 및 배송 안내"}</Text>
-          <ListVerticalArrowIcon _hover={{cursor: "pointer"}} state={true} colortype={'Black'} />
+          <ListVerticalArrowIcon _hover={{ cursor: "pointer" }} state={isOrderDeliveryInfoClose} onClick={handelCloseOrderDeliveryInfoClose} colortype={'Black'} />
         </Flex>
         <Flex     // 열리면 나타나는 sub menu list
-          w="full" h="242px" mt="14px"
-          flexDir="column"
-          textStyle="text" textColor="black"
+          w="full" h={orderDeleveryInfoheight} overflow="hidden"
+          flexDir="column" textColor="black"
         >
           <Text textStyle="title">{"[주문 및 배송 안내]"}</Text>
-          <Text mt="20px">{"배송방법 : 인코스런 택배"}</Text>
-          <Text mt="10px">{"배송지역 : 전국"}</Text>
-          <Text>{"배송비용 : 단품 상품 구매시 3,000배송비 발생"}</Text>
+          <Flex textStyle="text">
+            <Flex flexDir="column" w="80px">
+              <Text mt="10px">{"배송방법 : "}</Text>
+              <Text mt="10px">{"배송지역 : "}</Text>
+              <Text mt="10px">{"배송비용 : "}</Text>
+            </Flex>
+            <Flex flexDir="column">
+              <Text mt="10px">{"인코스런 택배"}</Text>
+              <Text mt="10px">{"전국"}</Text>
+              <Text mt="10px">{"단품 상품 구매시 3,000배송비 발생"}<br/>{"그외 단품 묶음 구매의 경우 30,000원"}<br/>{"이상 구매 시 무료배송"}</Text>
+            </Flex>
+          </Flex>
         </Flex>
       </Flex>
       <Flex     // 리뷰 리스트
-        flexDir="column">
+        flexDir="column"
+        pt="50px">
         <Flex   // 리뷰개수, 정렬순서, 필터링
           alignItems="center" justifyContent="space-between" px="16px"
         >
-          <Text textStyle="title" textColor="black">{"리뷰"}<Text as="span" textColor="primary.500">{"78"}</Text>{"건"}</Text>
+          <Text textStyle="title" textColor="black">{"리뷰"}<Text as="span" textColor="primary.500">{reviewList.length}</Text>{"건"}</Text>
           <Flex>
             <Dropdown defaultmenu={'최신순'} children={['최신순', '평점 높은순', '평점 낮은순']} />
             <Container as="span" w="10px" p="0" />
@@ -117,37 +149,37 @@ function ProductsDetailByIdPage({
           h="70px" w="331px" alignSelf="center" justifyContent="space-between"
           alignItems="center" mt="30px" mb="20px">
           <Flex // 평균 평점 박스
-          alignItems="center">
+            alignItems="center">
             <Box // 평균 평점(숫자)
               h="30px" bgColor="primary.500" borderRadius="15px" px="7px">
               <Text textColor="white" textStyle="title">{rate}</Text>
             </Box>
             <RatioStars // 평균 평점(별)
-            rate={rate} size="16"/>
+              rate={rate} size="16" />
           </Flex>
           <Box // Divier
-          h="70px" border="1px solid" borderColor="gray.200" />
+            h="70px" border="1px solid" borderColor="gray.200" />
           <Flex // 점수 바
-          flexDir="column"
+            flexDir="column"
           >
             <Flex // 점수 바 그래프
-            justifyContent="space-around">
+              justifyContent="space-around">
               {Array.from({ length: 5 }, (_, i) => (i * 10)).map((value) => {
                 return (
                   // padding top, height값으로 점수바 크기 설정
-                  <Box w="10px" h="50px" bgColor="secondary.100" borderRadius="5px" pt={value+"px"}> 
-                    <Box w="10px" h={(50-value)+"px"} bgColor="primary.500" borderRadius="5px" />
+                  <Box w="10px" h="50px" bgColor="secondary.100" borderRadius="5px" pt={value + "px"}>
+                    <Box w="10px" h={(50 - value) + "px"} bgColor="primary.500" borderRadius="5px" />
                   </Box>
                 )
               })}
             </Flex>
             <Box // 모양을 만들어줄 박스
-            w="150px" h="0px" position="relative" top="-5px"
-            border="1px solid" bgColor="gray.200" borderColor="gray.200"/>
-            <Box w="150px" h="4px" position="relative" top="-5px" bgColor="white"/>
+              w="150px" h="0px" position="relative" top="-5px"
+              border="1px solid" bgColor="gray.200" borderColor="gray.200" />
+            <Box w="150px" h="4px" position="relative" top="-5px" bgColor="white" />
             <Flex // 점수 바 점수(5점~1점)
-            textColor="gray.600" textStyle="textSmall"
-            justifyContent="space-around">
+              textColor="gray.600" textStyle="textSmall"
+              justifyContent="space-around">
               <Text as="span">{"5점"}</Text>
               <Text as="span">{"4점"}</Text>
               <Text as="span">{"3점"}</Text>
@@ -157,16 +189,17 @@ function ProductsDetailByIdPage({
           </Flex>
         </Flex>
         { // 실제 리뷰 리스트
-        productData.reviewList.map((reviewData: ProductReviewType) => {
-          return <>
-          <Review reviewData={reviewData} iscomment={false} />
-          <Box alignSelf="center" w="343px" h="0" border="1px solid" borderColor="gray.200"/>
-          </>
-        })}
+          reviewList.map((reviewData: ProductReviewType) => {
+            return <>
+              <Review reviewData={reviewData} iscomment={false} />
+              <Box alignSelf="center" w="343px" h="0" border="1px solid" borderColor="gray.200" />
+            </>
+          })}
       </Flex>
       <Pagination />
     </Flex>
   );
 }
+
 
 export default ProductsDetailByIdPage;
