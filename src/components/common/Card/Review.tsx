@@ -2,6 +2,7 @@ import { ProductReviewType } from '@apis/product/ProductApi.type';
 import { ReviewDTOType } from '@apis/review/ReviewApi.type';
 import { Flex, FlexProps, Text, Image, Icon } from '@chakra-ui/react';
 import { reviewDataType } from '@constants/dummy';
+import { formatReviewTime } from '@utils/format';
 import React from 'react'
 import ChatIcon from '../New/@Icons/System/Chat';
 import RatioStarIcon from '../New/@Icons/System/RatioStar';
@@ -11,9 +12,7 @@ interface ReviewProps extends FlexProps{
   iscomment: boolean,
   reviewData: ProductReviewType,
 }
-const formatReviewTime = (time: Date):string => {
-    return time.getFullYear()+"."+time.getMonth()+"."+time.getDate()
-}
+
 function Review({iscomment, reviewData,...props}: ReviewProps) {
   const {rate, content, reviewimageSet, created, nickname} = reviewData
   return (

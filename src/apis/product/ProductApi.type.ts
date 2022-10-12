@@ -10,7 +10,7 @@ export type ProductDetailDTOTType = {
   detail: string,
   photo: string,
   reviewList: Array<ProductReviewType>,
-  avgRate: string,
+  avgRate: number | null,
   reviewCount: string,
 };
 // 상품의 tag 타입

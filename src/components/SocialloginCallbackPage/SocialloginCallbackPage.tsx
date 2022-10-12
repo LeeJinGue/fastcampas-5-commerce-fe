@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { setToken } from '@utils/localStorage/token';
 import { usePostUserSocialLogin } from '@apis/user/UserApi.mutation';
 import { ROUTES } from '@constants/routes';
+import LoadingPage from '@components/common/New/LoadingPage';
 interface SocialloginCallbackPageProps extends ChakraProps { }
 function SocialloginCallbackPage({
   ...basisProps
@@ -53,14 +54,15 @@ function SocialloginCallbackPage({
   }, [code])
 
   return (
-    <Flex w="375px" h="782px" justifyContent="center" alignItems="center" bgColor="white" {...basisProps} >
-      <Spinner thickness='4px'
-        speed='0.65s'
-        emptyColor='gray.200'
-        color='primary.500' 
-        w="70px" h="70px"
-        size="xl"/>
-    </Flex>
+    <LoadingPage />
+    // <Flex w="375px" h="782px" justifyContent="center" alignItems="center" bgColor="white" {...basisProps} >
+    //   <Spinner thickness='4px'
+    //     speed='0.65s'
+    //     emptyColor='gray.200'
+    //     color='primary.500' 
+    //     w="70px" h="70px"
+    //     size="xl"/>
+    // </Flex>
   );
 }
 

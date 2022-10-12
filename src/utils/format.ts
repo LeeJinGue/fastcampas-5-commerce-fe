@@ -109,3 +109,6 @@ export const formatExamTime = (SECONDS: number) => {
   }
   return `${seconds}초`;
 };
+export const formatReviewTime = (time: Date):string => {
+  return time.getFullYear()+"."+time.getMonth()+"."+time.getDate()
+}
