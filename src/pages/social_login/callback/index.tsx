@@ -8,7 +8,7 @@ function SocialloginCallback() {
     <>
       <Head>
         {/* ex) Your App Name | Page Name */}
-        <title>커머스 | callback</title>
+        <title>커머스 | 로그인중</title>
       </Head>
       <MainLayout content={<SocialloginCallbackPage />} />
     </>
