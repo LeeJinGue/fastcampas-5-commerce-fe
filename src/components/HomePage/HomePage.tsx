@@ -52,7 +52,10 @@ const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
   }
   },[])
 
-
+  const handleProductAll = () => route.push({pathname: ROUTES.PRODUCTS})
+  const handleEventDetail = () => route.push({pathname: "/event"})
+  const handleInquiry = () => route.push({pathname: "/inquiry"})
+  const handleInstagram = () => window.open("https://www.instagram.com/")
   return (
     <Flex flexDir="column" bgColor="white">
       <Box pt={LAYOUT.HEADER.HEIGHT} display="flex" flexDirection="column"
@@ -68,8 +71,8 @@ const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
         <Box position="absolute" mt="20px" ml="31px" w="244px" h="140px" bgImage={"/images/main_box1.png"} />
         <Box position="absolute" mt="160px" ml="139px" w="236px" h="180px" bgImage={"/images/main_box2.png"} />
         <Box position="absolute" mt="307px" w="175px" h="204px" bgImage={"/images/main_box3.png"} />
-        <Box position="absolute" mt="481px" ml="75px" display="flex" flexDir="row">
-          <Button p="0" alignSelf="flex-end" bg="transparent"><UploadIcon iconcolor={'Primary'} /></Button>
+        <Box position="absolute" mt="481px" ml="75px" display="flex" flexDir="row" alignItems="flex-end">
+          <UploadIcon iconcolor={'Primary'} />
           <Text color="black" textStyle="extraLargeBold">{"불합리한 유통구조"}<br />{"과도한 패키징"}<br />{"과장된 광고"}</Text>
         </Box>
         <Text  color="black" textStyle="textLarge" position="absolute" mt="635px" ml="75px">
@@ -153,7 +156,7 @@ const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
         </Text>
         <Flex mt="20px" flexDir="row" alignItems="center" >
           <Text textStyle="text" textColor="black">{"이벤트 상세보기"}</Text>
-          <ListNumberArrowIcon colortype='Default' />
+          <ListNumberArrowIcon _hover={{cursor:"pointer"}} onClick={handleEventDetail} colortype='Default' />
         </Flex>
       </Box>
       <Flex // 소중한 우리 아이를 위해... 배경 박스
@@ -173,7 +176,7 @@ const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
             {"계면활성제 99.9% 타가는 EWG 그린등급"}<br />
             {"성분 100% 만을 사용한 건강한 화장품입니다"}
           </Text>
-          <PrimaryButton btntype='Solid' btnshape='Round' btnstate='Primary' mt="30px" children="상품전체보기"/>
+          <PrimaryButton btntype='Solid' btnshape='Round' btnstate='Primary' mt="30px" w="190px" h="50px" children="상품전체보기" onClick={handleProductAll}/>
           <Image mt="80px" src="/images/cosmetics_img_with_mask.png" w="151px" h="189px" />
           <Text mt="10px" textStyle="title" textColor="black">{"바스 & 샴푸"}</Text>
           <Image mt="80px" src="/images/cosmetics_img_with_mask.png" w="151px" h="189px" />
@@ -191,7 +194,7 @@ const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
       position="relative"
       >
         <FloatingCallButton // 전화 Floating 버튼
-          position="absolute" right="16px" bottom="20px" aria-label={'call'}/>
+          position="absolute" right="16px" bottom="20px" aria-label='call' onClick={handleInquiry}/>
         <Text mt="80px" textStyle="extraLarge" textColor="black" textAlign="center">
           {"인코스런을 "}<Text as="span" textStyle="extraLargeBold">{"직접 사용해본"}</Text> <br />
           {"고객님의 솔직한 리뷰"}
@@ -201,7 +204,7 @@ const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
         flexDir="row"
         >
           <Badge mode={'on'} children="전체" />
-          {BADGE_NAME_LIST.map((name) => <Badge ml="10px" mode={'off'}>{name}</Badge>)}
+          {BADGE_NAME_LIST.map((name) => <Badge key={name} ml="10px" mode={'off'}>{name}</Badge>)}
         </Flex>
         
         <SlideCard // 리뷰 슬라이드 Component
@@ -223,7 +226,7 @@ const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
           {"인스타그램을 방문하시면 더욱 다양한"}<br/>
           {"인코스런의 이야기를 확인하실 수 있어요"}
         </Text>
-        <Button p="0" iconSpacing="5px" backgroundColor={"transparent"} mt="12px" leftIcon={<DefaultInstgramIcon iconColor='White' />} textColor="white" textStyle="button">{"INCOURSE.RUN"}</Button>
+        <Button p="0" iconSpacing="5px" backgroundColor={"transparent"} mt="12px" leftIcon={<DefaultInstgramIcon iconColor='White' />} textColor="white" textStyle="button" onClick={handleInstagram}>{"INCOURSE.RUN"}</Button>
       </Flex>
     </Flex>)
 }
