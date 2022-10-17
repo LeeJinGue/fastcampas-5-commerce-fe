@@ -5,13 +5,13 @@ interface CheckboxIconProps extends IconProps {
   state: iconType,
   shape: shapeType,
 }
-const CheckboxIcon = ({ state, shape, ...props }: CheckboxIconProps) => {
+const CheckboxIcon = ({ state, shape, _hover, onClick, ...props }: CheckboxIconProps) => {
   const w = props.w ? props.w : "20"
   const h = props.h ? props.h : "20"
   let fillcolor = "", strokecolor = ""
   let d1 = ""
   let Path2 = <path></path>
-
+  
   switch (state) {
     case 'Disabled':
       fillcolor="#757983"
@@ -38,7 +38,8 @@ const CheckboxIcon = ({ state, shape, ...props }: CheckboxIconProps) => {
     }
     return (
       <Icon
-        width={w + "px"} height={h + "px"} viewBox={`0 0 ${w} ${h}`} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      _hover={{cursor:"pointer"}}
+        width={w + "px"} height={h + "px"} viewBox={`0 0 ${w} ${h}`} fill="none" xmlns="http://www.w3.org/2000/svg" onClick={onClick} {...props}>
         <path d={d1} fill={fillcolor} />
         {Path2}
       </Icon>
