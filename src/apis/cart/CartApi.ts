@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 
 import instance from '@apis/_axios/instance';
 
-import { CartDeleteByCartItemIdParamType, CartGetByCartItemIdParamType, CartGetByCartItemIdReturnType, CartGetByUserIdParamType, CartGetByUserIdReturnType, CartPatchByCartItemIdParamType, CartPatchByCartItemIdReturnType, CartPostByUserIdParamType, CartPostByUserIdReturnType } from './CartApi.type';
+import { CartDeleteByCartItemIdParamType, CartGetByCartItemIdParamType, CartGetByCartItemIdReturnType, CartGetByUserIdParamType, CartGetByUserIdReturnType, CartPatchByCartItemIdParamType, CartPatchByCartItemIdReturnType, CartPostByUserIdParamType, CartPostByUserIdReturnType, CartPostItemByCartIdParamType, CartPostItemByCartIdReturnType } from './CartApi.type';
 
 export class CartApi {
   axios: AxiosInstance = instance;
@@ -15,8 +15,7 @@ export class CartApi {
   ): Promise<CartGetByUserIdReturnType> => {
     const { data } = await this.axios({
       method: 'GET',
-      url: `/v1/cart/`,
-      data:params,
+      url: `/v1/cart/?user_id=${params?.user_id}`,
     });
     return data;
   };
@@ -29,7 +28,7 @@ export class CartApi {
     return data;
   };
 
-  postCartItem = async (params: CartPostByUserIdParamType): Promise<CartPostByUserIdReturnType> => {
+  postCartItem = async (params: CartPostItemByCartIdParamType): Promise<CartPostItemByCartIdReturnType> => {
     const { data } = await this.axios({
       method: 'POST',
       url: `/v1/cart/item/`,
@@ -41,7 +40,7 @@ export class CartApi {
     const { cartItemId } = params
     const { data } = await this.axios({
       method: 'PUT',
-      url: `/v1/cart/${cartItemId}/`,
+      url: `/v1/cart/item/${cartItemId}/`,
     });
     return data;
   };
@@ -49,16 +48,16 @@ export class CartApi {
     const { cartItemId, ...etc } = params
     const { data } = await this.axios({
       method: 'PATCH',
-      url: `/v1/cart/${cartItemId}/`,
+      url: `/v1/cart/item/${cartItemId}/`,
       data: etc,
     });
     return data;
   };
   deleteCartItemByCartItemId = async (params: CartDeleteByCartItemIdParamType): Promise<undefined> => {
+    const {cartItemId} = params
     const { data } = await this.axios({
-      method: 'GET',
-      url: `/v1/Cart/status`,
-      data: params,
+      method: 'DELETE',
+      url: `/v1/cart/item/${cartItemId}/`,
     });
     return data;
   };
