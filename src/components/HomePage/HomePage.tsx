@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { Box, BoxProps, Button, Divider, Flex, Image, Stack, Text, useRadioGroup } from '@chakra-ui/react';
+import { Box, BoxProps, Button, Flex, Image, Stack, Text, useRadioGroup } from '@chakra-ui/react';
 import { LAYOUT } from '@constants/layout';
 import DistributionProcess from './_fragment/DistributionProcess';
 import ElipseIcon from '@components/common/New/@Icons/Elipse';
@@ -12,25 +11,18 @@ import FloatingCallButton from '@components/common/New/FloatingActionButtons/Cal
 import DefaultInstgramIcon from '@components/common/@Icons/Social/Default/Instagram';
 import FloatingDefaultButton from '@components/common/New/FloatingActionButtons/Default';
 import UploadIcon from '@components/common/New/@Icons/System/Button/Upload';
-import RatioStars from '@components/common/RatioStars';
 import { BADGE_NAME_LIST, INSTGRAM_URL } from '@constants/string';
 import SlideCard from '@components/common/Card/Slide';
 import { useGetUserMeQuery } from '@apis/user/UserApi.query';
 import { userSliceActions } from '@features/user/userSlice';
 import { getToken } from '@utils/localStorage/token';
-import store from '@features/store';
 import { useDispatch } from 'react-redux';
-import { Router, useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { ROUTES } from '@constants/routes';
-import { useEffect } from 'react';
 import { useGetReviewListQuery } from '@apis/review/ReviewApi.query';
 import BadgeRadio from './_fragment/BadgeRadio';
-import { useGetCartQuery } from '@apis/cart/CartApi.query';
-import { cartSliceActions } from '@features/cart/cartSlice';
 import LoadingPage from '@components/common/New/LoadingPage';
 import { ReviewDTOType } from '@apis/review/ReviewApi.type';
-import userApi from '@apis/user/UserApi';
-import cartApi from '@apis/cart/CartApi';
 
 interface HomePageViewProps extends BoxProps { 
   reviewList: ReviewDTOType[],
