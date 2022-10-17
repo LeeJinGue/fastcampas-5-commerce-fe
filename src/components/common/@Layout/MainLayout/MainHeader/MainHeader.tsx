@@ -9,6 +9,8 @@ import { LAYOUT } from '@constants/layout';
 import { Main_HEADER_VARIANTS, MainHeaderVariantType } from './MainHeader.data';
 import MainHeaderDrawer from './_fragments/MainHeaderDrawer';
 import LogoComponent from '@components/common/New/LogoComponent';
+import { useRouter } from 'next/router';
+import { ROUTES } from '@constants/routes';
 
 interface MainHeaderProps extends ChakraProps{
   variant?: MainHeaderVariantType;
@@ -16,7 +18,8 @@ interface MainHeaderProps extends ChakraProps{
 
 const MainHeader = ({ variant = 'light', ...basisProps}: MainHeaderProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const route = useRouter()
+  const handleCartOnclick = () => route.push({pathname:ROUTES.CART})
   const cssByVariant = Main_HEADER_VARIANTS[variant];
 
   return (
@@ -48,7 +51,7 @@ const MainHeader = ({ variant = 'light', ...basisProps}: MainHeaderProps) => {
         <IconButton //
           color='black'
           icon={<CartIcon />}
-          onClick={onOpen}
+          onClick={handleCartOnclick}
           cursor="pointer"
           bg="transparent"
           aria-label="btn-toggle-drawer"
