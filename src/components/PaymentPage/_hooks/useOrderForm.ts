@@ -3,27 +3,20 @@ import { UseFormProps, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-
+export type FormDataType = {
+  name: string;
+  phone: string;
+  address: {
+    zipcode: string;
+    detail: string;
+  };
+}
 export type OrderFormDataType = {
-  order: {
-    name: string;
-    phone: string;
-    address: {
-      zipcode: string;
-      detail: string;
-    };
-  },
-  delivery: {
-    name: string;
-    phone: string;
-    address: {
-      zipcode: string;
-      detail: string;
-    };
-  }
+  order: FormDataType;
+  delivery: FormDataType;
   deliveryrequest: string;
 };
-const initialFormData:OrderFormDataType = {
+const initialOrderData:OrderFormDataType = {
   order: {
     name: "",
     phone: "",
@@ -111,7 +104,7 @@ const useOrderForm = (options?: UseFormProps<OrderFormDataType>) => {
   return useForm<OrderFormDataType>({
     resolver: yupResolver(OrderFormSchema),
     mode: 'onChange',
-    defaultValues: initialFormData,
+    defaultValues: initialOrderData,
     ...options,
   });
 };

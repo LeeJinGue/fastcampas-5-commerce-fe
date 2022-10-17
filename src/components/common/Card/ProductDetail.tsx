@@ -1,24 +1,27 @@
 import { ProductDetailDTOTType } from '@apis/product/ProductApi.type';
-import { Box, Flex, FlexProps, Text, Image } from '@chakra-ui/react';
+import { Box, Flex, FlexProps, Text, Image, useDisclosure } from '@chakra-ui/react';
+import DrawerBuy from '@components/ProductsDetailByIdPage/_fragments/DrawerBuy';
 import { productDetialType } from '@constants/dummy';
 import { ROUTES } from '@constants/routes';
+import useOpenModalByQueryParams from 'hooks/useOpenModalByQueryParams';
 import { useRouter } from 'next/router';
 import React from 'react'
 import RatioStarIcon from '../New/@Icons/System/RatioStar';
 import PrimaryButton from '../New/PrimaryButton';
 interface ProductDetailProps extends FlexProps {
   productData: ProductDetailDTOTType,
+  cart_id: number,
+  user_id: number,
 }
-function ProductDetail({ productData, ...props }: ProductDetailProps) {
+function ProductDetail({ productData, cart_id, user_id, ...props }: ProductDetailProps) {
   const {name, capacity, price, description, reviewCount, avgRate} = productData
   const route = useRouter()
-  const handleCartOnclick = () => {
-    route.push({pathname:ROUTES.CART})
-  }
-  const handleBuynowOnclick = () => {
-    route.push({pathname:ROUTES.PAYMENT.MAIN})
-  }
+  const [isOpenBuyDrawer, setIsOpenBuyDrawer] = React.useState(false);
+  const { closeModal, openModal } = useOpenModalByQueryParams({
+    drawer: setIsOpenBuyDrawer,
+  });
   return (
+    <>
     <Flex // Card/product detail
       px="16px" flexDir="column"
       bgColor="white" boxShadow="0px 0px 10px rgba(26, 26, 26, 0.1)" borderRadius="20px 20px 0px 0px"
@@ -47,10 +50,12 @@ function ProductDetail({ productData, ...props }: ProductDetailProps) {
       <Flex // 버튼들
       flexDir="column" justifyContent="center" pb="4px"
       >
-        <PrimaryButton btntype='Line' btnstate='Primary' btnshape='Round' mt="21px" w="343px" h="50px" onClick={handleCartOnclick} variant="outline">{"장바구니"}</PrimaryButton>
-        <PrimaryButton btntype='Solid' btnstate='Primary' btnshape='Round' mt="10px" w="343px" h="50px" onClick={handleBuynowOnclick}>{"바로구매"}</PrimaryButton>
+        <PrimaryButton btntype='Line' btnstate='Primary' btnshape='Round' mt="21px" w="343px" h="50px" onClick={()=>openModal('drawer')} variant="outline">{"장바구니"}</PrimaryButton>
+        <PrimaryButton btntype='Solid' btnstate='Primary' btnshape='Round' mt="10px" w="343px" h="50px" onClick={()=>openModal('drawer')}>{"바로구매"}</PrimaryButton>
       </Flex>
     </Flex>
+    <DrawerBuy isOpen={isOpenBuyDrawer} cart_id={cart_id} user_id={user_id} productData={productData} onClose={() => closeModal('drawer')} />
+    </>
   )
 }
 export default ProductDetail;

@@ -61,9 +61,9 @@ export class UserApi {
     const { data } = await this.axios({
       method: 'PATCH',
       url: `/v1/user/me/`,
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
+      // headers: {
+      //   Authorization: `Bearer ${accessToken}`,
+      // },
       data: etc,
     });
     return data;
