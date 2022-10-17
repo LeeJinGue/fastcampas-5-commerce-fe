@@ -8,15 +8,17 @@ import HomeLayout from '@components/common/@Layout/HomeLayout';
 import { ROUTES } from '@constants/routes';
 import MainLayout from '@components/common/@Layout/MainLayout';
 import MainHeader from '@components/common/@Layout/MainLayout/MainHeader/MainHeader';
+import { getToken } from '@utils/localStorage/token';
 
 function Home() {
   const router = useRouter();
-
   // For: Redirect To Starter Docs Page (나중에 꼭 지워주세요)
   // React.useEffect(() => {
   //   router.push(ROUTES.STARTER_DOCS.MAIN);
   // }, [router]);
-
+  React.useEffect(()=>{
+    if(!getToken()) router.replace({pathname:ROUTES.LOGIN})
+  },[])
   return (
     <>
       <Head>

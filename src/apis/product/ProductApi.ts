@@ -25,7 +25,7 @@ export class ProductApi {
     return data;
   };
 
-  getProductById = async (id: string): Promise<ProductDetailDTOTType> => {
+  getProductById = async (id: number): Promise<ProductDetailDTOTType> => {
     const { data } = await this.axios({
       method: 'GET',
       url: `/v1/product/${id}/`,

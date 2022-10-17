@@ -2,17 +2,20 @@ import React from 'react';
 import { Box, ChakraProps, Button, Flex, Image, Text } from '@chakra-ui/react';
 import { LAYOUT } from '@constants/layout';
 import Review from '@components/common/Card/Review';
-import { review_list } from '@constants/dummy';
 import Pagination from '@components/common/New/Pagination';
 import { useGetProductByIdQuery } from '@apis/product/ProductApi.query';
+import useAppStore from '@features/useAppStore';
+import LoadingPage from '@components/common/New/LoadingPage';
 
 interface MypageMyreviewsPageProps extends ChakraProps {}
 
 function MypageMyreviewsPage({ ...basisProps }: MypageMyreviewsPageProps) {
-  // 아직 유저 아이디로 review받아오는 코드 추가 안해서 돌려서 Product를 통해 review리스트 받아와서 사용
-  const data = useGetProductByIdQuery({variables:"1"})
+  const {userData} = useAppStore(state => state.USER)
+  const {isError, isLoading,data} = useGetProductByIdQuery({variables:userData.id})
   console.log("#data test:",data)
-  const reviewList = data.data?.reviewList
+  if(isLoading) return <LoadingPage />
+  if(isError) return <Text>리뷰 가져오기 에러</Text>
+  const {reviewList} = data!
 
   return (
     <Flex pt={LAYOUT.HEADER.HEIGHT} pb="80px" flexDir="column" bgColor="white" w="375px"{...basisProps}>

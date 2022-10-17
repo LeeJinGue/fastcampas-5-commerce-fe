@@ -21,7 +21,7 @@ export type ReviewImageOnlyURLType = {
 export type ReviewGetAllParamType = {
   page?: number,    // default 1, 1이상이어야함
   page_size?: number, // default 5
-  user_id?: string,   // 없으면 모든 유저의 리뷰를 갖고옵니다
+  user_id?:  number,   // 없으면 모든 유저의 리뷰를 갖고옵니다
 };
 export type ReviewGetAllReturnType = {
   count: number,

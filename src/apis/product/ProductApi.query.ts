@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQueries, useQuery } from '@tanstack/react-query';
 
 import { InfiniteQueryHookParams, QueryHookParams } from '../type';
 
@@ -7,7 +7,8 @@ import { ProductParamGetType } from './ProductApi.type';
 
 export const PRODUCT_API_QUERY_KEY = {
   GET: (param?: ProductParamGetType) => ['product-list', param],
-  GET_BY_ID: (id?: string) => ['product-by-id', id],
+  GET_BY_ID: (id?: number) => ['product-by-id', id],
+  GET_BY_IDS: (id?: number) => ['product-by-ids', id],
 };
 
 export function useGetProductListQuery(
@@ -30,19 +31,34 @@ export function useGetProductByIdQuery(
     queryKey,
     () => productApi.getProductById(params?.variables),
     params?.options,
+    
+  
   );
 
   return { ...query, queryKey };
 }
-
+export function useGetProductsByIdListQueries(
+  params: QueryHookParams<typeof productApi.getProductById>[],
+) {
+  return useQueries({
+    queries: params.map((param) => {
+      const queryKey = PRODUCT_API_QUERY_KEY.GET_BY_IDS(param?.variables);
+      return {
+        queryKey,
+        queryFn: () => productApi.getProductById(param?.variables),
+        staleTime: Infinity,
+        // options: param?.options,
+      }
+    })})
+}
 export function useGetProductInfiniteQuery(
   params: InfiniteQueryHookParams<typeof productApi.getProductList>,
 ) {
   const queryKey = PRODUCT_API_QUERY_KEY.GET(params?.variables);
   const query = useInfiniteQuery(
     queryKey,
-    async ({pageParam}) => {
-      return productApi.getProductList({...pageParam}) 
+    async ({ pageParam }) => {
+      return productApi.getProductList({ ...pageParam })
     },
     {
       getNextPageParam: (last) => {
