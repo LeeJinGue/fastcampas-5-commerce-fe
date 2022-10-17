@@ -1,12 +1,12 @@
 export type CartDTOType = {   // 장바구니 타입
-  cartId: number,
-  cartItem: CartItemType[],
+  id: number,
+  cartitem: CartItemType[],
   userId: number,
 };
 export type CartItemType = {    // 장바구니에 담긴 상품의 타입
-  cartItemId: number,
+  id: number,
   cartId: number,
-  proudctId: number,
+  productId: number,
   count: number
 }
 
