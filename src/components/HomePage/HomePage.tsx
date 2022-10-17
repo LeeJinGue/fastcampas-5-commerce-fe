@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { useQuery } from '@tanstack/react-query';
 import { Box, BoxProps, Button, Divider, Flex, Image, Stack, Text, useRadioGroup } from '@chakra-ui/react';
 import { LAYOUT } from '@constants/layout';
 import DistributionProcess from './_fragment/DistributionProcess';
@@ -20,49 +20,54 @@ import { userSliceActions } from '@features/user/userSlice';
 import { getToken } from '@utils/localStorage/token';
 import store from '@features/store';
 import { useDispatch } from 'react-redux';
-import { useRouter } from 'next/router';
+import { Router, useRouter } from 'next/router';
 import { ROUTES } from '@constants/routes';
 import { useEffect } from 'react';
 import { useGetReviewListQuery } from '@apis/review/ReviewApi.query';
 import BadgeRadio from './_fragment/BadgeRadio';
+import { useGetCartQuery } from '@apis/cart/CartApi.query';
+import { cartSliceActions } from '@features/cart/cartSlice';
+import LoadingPage from '@components/common/New/LoadingPage';
+import { ReviewDTOType } from '@apis/review/ReviewApi.type';
+import userApi from '@apis/user/UserApi';
+import cartApi from '@apis/cart/CartApi';
 
-interface HomePageContentProps extends BoxProps { }
+interface HomePageViewProps extends BoxProps { 
+  reviewList: ReviewDTOType[],
+}
 const moveToTop = () => (document.documentElement.scrollTop = 0);
 
-const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
+const HomePageContent = ({}) => {
   const route = useRouter()
   const dispatch = useDispatch()
   const token = getToken()
-
-  // console.log("#test0 - token:",token)
-  if (token) {
-    // console.log("#test1 - token:",token)
-    const accessToken = token.access
-    const data = useGetUserMeQuery({
-      variables: {
-        accessToken
-      }
-    })
-    if (data.data && !data.isError) {
-      // API로 받아온 유저 데이터를 redux에 저장합니다.
-      // console.log("#test2 - data:",data)
-      dispatch(userSliceActions.setIsLogged(true))
-      dispatch(userSliceActions.setUserData(data.data))
+  const {data:allReview, isError, isLoading, isSuccess} = useGetReviewListQuery({
+    options: {
+      staleTime: Infinity,
     }
-  }
-  useEffect(() => {
-    if (!token) {
-      route.replace({ pathname: ROUTES.LOGIN })
-      // console.log("token이 없어요!")
-    }
-  }, [])
+  })
   
-  const allReview = useGetReviewListQuery()
+  if (token) {
+    const accessToken = token.access
+    useGetUserMeQuery({variables: {
+      accessToken,
+    }, options: {
+      staleTime: Infinity,
+      onSuccess: (userRes) => {
+        const user_id = userRes.id
+        dispatch(userSliceActions.setIsLogged(true))
+        dispatch(userSliceActions.setUserData(userRes))
+      }
+    }})
+  }
+  if(isLoading) return <LoadingPage />
+  if(!isSuccess && isError) return <Text>에러발생!</Text>
+  return <HomePageView reviewList={allReview!.results} />
+}
 
-  const handleProductAll = () => route.push({ pathname: ROUTES.PRODUCTS })
-  const handleEventDetail = () => route.push({ pathname: ROUTES.EVENTINFO })
-  const handleInquiry = () => route.push({ pathname: ROUTES.INQUIRY })
-  const handleInstagram = () => window.open(INSTGRAM_URL)
+const HomePageView = ({ ...basisProps }: HomePageViewProps) => {
+  const {reviewList} = basisProps
+  const route = useRouter()
   const [badgeText, setBadgeText] = useState("")
   const handleBadgeText = (badge: string) => {        // Radio 버튼 onChange 이벤트
     setBadgeText(badge)
@@ -72,6 +77,14 @@ const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
     onChange: handleBadgeText,
     name: "탈퇴 사유"
   })
+
+
+  const handleProductAll = () => route.push({ pathname: ROUTES.PRODUCTS })
+  const handleEventDetail = () => route.push({ pathname: ROUTES.EVENTINFO })
+  const handleInquiry = () => route.push({ pathname: ROUTES.INQUIRY })
+  const handleInstagram = () => window.open(INSTGRAM_URL)
+
+
   return (
     <Flex flexDir="column" bgColor="white">
       <Box pt={LAYOUT.HEADER.HEIGHT} display="flex" flexDirection="column"
@@ -226,8 +239,7 @@ const HomePageContent = ({ ...basisProps }: HomePageContentProps) => {
         </Stack>
         <Flex // Card/slide
           h="464px">
-          {!allReview.isLoading && !allReview.isError && allReview.isSuccess &&
-            allReview.data?.results.map((reviewData) => <SlideCard mt="76px" ml="10px" reviewData={reviewData} />)}
+            {reviewList.map((reviewData) => <SlideCard mt="76px" ml="10px" reviewData={reviewData} />)}
         </Flex>
       </Flex>
       <Flex // 인코스런에 대해 더 궁금하신가요?
