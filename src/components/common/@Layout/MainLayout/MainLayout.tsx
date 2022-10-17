@@ -28,7 +28,7 @@ const MainLayout = ({
     <>
       {header}
       <Container
-        minH={minH}
+        // minH={minH}
         display="flex"
         alignItems="center"
         flexDirection="column"
