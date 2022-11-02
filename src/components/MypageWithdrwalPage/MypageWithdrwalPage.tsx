@@ -13,11 +13,22 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { ROUTES } from '@constants/routes';
 import { deleteToken } from '@utils/localStorage/token';
+import { useGetUserMeQuery } from '@apis/user/UserApi.query';
+import LoadingPage from '@components/common/New/LoadingPage';
 const DEFAULT_REASON = WITHDRAWAL_REASONS[0]
-interface MypageWithdrwalPageProps extends ChakraProps { }
-function MypageWithdrwalPage({ ...basisProps }: MypageWithdrwalPageProps) {
+interface MypageWithdrwalDataPageProps extends ChakraProps { }
+interface MypageWithdrwalViewPageProps extends MypageWithdrwalDataPageProps {
+    userData: UserDTOType,
+ }
+function MypageWithdrwalDataPage({}:MypageWithdrwalDataPageProps){
+  const {data:userData, isError:userGetError, isLoading:userLoadingError} = useGetUserMeQuery({variables: {accessToken:""}})
+  if(userLoadingError) return <LoadingPage />
+  if(userGetError) return <Text>유저 불러오기 에러</Text>
+  if(userData === undefined) return <Text>유저정보 가져오기 실패</Text>
+  return <MypageWithdrwalViewPage userData={userData} />
+}
+function MypageWithdrwalViewPage({ userData, ...basisProps }: MypageWithdrwalViewPageProps) {
   const route = useRouter()
-  const userData = store.getState().USER.userData
   const {name, phone, email} = userData;
   const [reason, setReason] = useState(DEFAULT_REASON)    // 탈퇴 사유
   const [additionalReason, setAdditionalReason] = useState("")  // 기타 사유
@@ -108,4 +119,4 @@ function MypageWithdrwalPage({ ...basisProps }: MypageWithdrwalPageProps) {
   );
 }
 
-export default MypageWithdrwalPage;
+export default MypageWithdrwalDataPage;

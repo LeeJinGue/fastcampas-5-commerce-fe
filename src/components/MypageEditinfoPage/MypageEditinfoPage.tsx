@@ -15,7 +15,11 @@ import { ROUTES } from '@constants/routes';
 interface MypageEditmyinfoPageProps extends ChakraProps { }
 
 function MypageEditmyinfoPage({ ...basisProps }: MypageEditmyinfoPageProps) {
-  const formData = useEditInfoForm();
+  const {data:userData, isError:userDataError, isLoading:userDataLoading} = useGetUserMeQuery({variables:{accessToken:""}})
+  if(userDataLoading) return <Text>유저정보 로딩중</Text>
+  if(userDataError) return <Text>유저정보 가져오기 실패</Text>
+  if(userData === undefined) return <Text>유저정보 가져오기 실패</Text>
+  const formData = useEditInfoForm(userData);
   const route = useRouter()
   const { handleSubmit } = formData;
   const { mutateAsync:editInfoMutate, isLoading, isSuccess, data} = usePatchUserMe()
