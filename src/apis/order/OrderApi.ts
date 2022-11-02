@@ -36,10 +36,17 @@ export class OrderApi {
     return data;
   };
   postOrder = async (params: OrderPostParamType): Promise<OrderPostReturnType> => {
+    const userData = await this.axios({
+      method: 'GET',
+      url: `/v1/user/me/`,
+    })
+    const orderParam = {
+      userId: userData.data.id,
+      ...params}
     const { data } = await this.axios({
       method: 'POST',
-      url: `/v1/order`,
-      data: params,
+      url: `/v1/order/`,
+      data: orderParam,
     });
     return data;
   };
@@ -48,7 +55,7 @@ export class OrderApi {
     const { uuid } = params
     const { data } = await this.axios({
       method: 'GET',
-      url: `/v1/order/${uuid}`,
+      url: `/v1/order/${uuid}/`,
     });
     return data;
   };
@@ -56,7 +63,7 @@ export class OrderApi {
     const { uuid, ...etc } = params
     const { data } = await this.axios({
       method: 'PUT',
-      url: `/v1/order/${uuid}`,
+      url: `/v1/order/${uuid}/`,
       data: etc,
     });
     return data;
@@ -65,23 +72,31 @@ export class OrderApi {
     const { uuid, ...etc } = params
     const { data } = await this.axios({
       method: 'PATCH',
-      url: `/v1/order/${uuid}`,
+      url: `/v1/order/${uuid}/`,
       data: etc,
     });
     return data;
   };
   getOrderStatus = async (params: OrderGetStatusParamType): Promise<OrderGetStatusReturnType> => {
+    const userData = await this.axios({
+      method: 'GET',
+      url: `/v1/user/me/`,
+    })
+    const {user_id, ...paramWithoutId} = params
+    const orderStatusParam = {
+      user_id: userData.data.id,
+      ...paramWithoutId}
     const { data } = await this.axios({
       method: 'GET',
-      url: `/v1/order/status`,
-      data: params,
+      url: `/v1/order/status/`,
+      data: orderStatusParam,
     });
     return data;
   };
   postOrderStatus = async (params: OrderPostStatusParamType): Promise<OrderPostStatusReturnType> => {
     const { data } = await this.axios({
       method: 'POST',
-      url: `/v1/order/status`,
+      url: `/v1/order/status/`,
       data: params,
     });
     return data;

@@ -4,8 +4,16 @@ import { LAYOUT } from '@constants/layout';
 import PriceCard from '@components/common/Card/PriceCard';
 import DeliveryInfoText from '@components/PaymentPage/_fragment/DeliveryInfoText';
 import PrimaryButton from '@components/common/New/PrimaryButton';
+import { useRouter } from 'next/router';
 
 interface PaymentSuccessPageProps extends ChakraProps {}
+interface PaymentSuccessPageDataProps extends PaymentSuccessPageProps {}
+
+function PaymentSuccessPageData({...basisProps}:PaymentSuccessPageDataProps){
+  const route = useRouter()
+  console.log("# query test:",route.query)
+  return <PaymentSuccessPage {...basisProps} />
+}
 
 function PaymentSuccessPage({ ...basisProps }: PaymentSuccessPageProps) {
   return (
@@ -17,7 +25,7 @@ function PaymentSuccessPage({ ...basisProps }: PaymentSuccessPageProps) {
       px="16px" h="55px" justifyContent="start" alignItems="center">
         <Text textStyle="titleSmall" textColor="black">{`[2021-04-01]`}</Text>
       </Flex>
-      <PriceCard px="16px" isPaymentComplete={true} />
+      <PriceCard px="16px" ispaymentcomplete={true} productid={58} count={0} status={'테스트중'} />
       <Box bgColor="gray.100" h="10px"/>
       <Flex   // 배송지 정보
       h="55px" alignItems="center" px="16px">

@@ -40,6 +40,7 @@ const HomePageContent = ({}) => {
   })
   
   if (token) {
+    console.log("# token:", token)
     const accessToken = token.access
     useGetUserMeQuery({variables: {
       accessToken,
@@ -220,17 +221,16 @@ const HomePageView = ({ ...basisProps }: HomePageViewProps) => {
           {"인코스런을 "}<Text as="span" textStyle="extraLargeBold">{"직접 사용해본"}</Text> <br />
           {"고객님의 솔직한 리뷰"}
         </Text>
-        <Stack {...getRadioProps} w="500px" mb="30px">
+   
           <Flex // Tab Component
-            mt="50px"
-            flexDir="row"
+            mt="50px" w="500px" {...getRadioProps} mb="30px" 
           >
             {BADGE_NAME_LIST.map((name) =>
               <BadgeRadio key={name} ml="10px" badgeName={name} {...getRadioProps({ value: name })}></BadgeRadio>)}
           </Flex>
-        </Stack>
+
         <Flex // Card/slide
-          h="464px">
+          h="464px" w="375px" overflowX="scroll">
             {reviewList.map((reviewData) => <SlideCard mt="76px" ml="10px" reviewData={reviewData} />)}
         </Flex>
       </Flex>
