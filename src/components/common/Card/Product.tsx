@@ -52,7 +52,7 @@ function Product({ productData, ...props }: productProps) {
       </Flex>
       <Flex // 태그들
         ml="30px" mt="25px">
-        {tags.map((tag) => {
+        {tags && tags.map((tag) => {
           return (
             <Text ml={tag.id === 0 ? "0px" : "5px"} textStyle="text" textColor="gray.700">{`# ${tag.name}`}</Text>
           )
