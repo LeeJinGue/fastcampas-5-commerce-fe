@@ -8,6 +8,8 @@ import PrimaryButton from '@components/common/New/PrimaryButton';
 import CheckboxIcon from '@components/common/New/@Icons/System/CheckboxIcon';
 import TotalPaymentIcon from '@components/common/New/@Icons/Line/TotalPayment';
 import PriceCard from '@components/common/Card/PriceCard';
+import { CartDTOType } from '@apis/cart/CartApi.type';
+import { OrderItemStateType, orderItemType } from '@features/orderItem/orderItemSlice';
 const initialFormData = {
   name: "",
   phone: "",
@@ -23,6 +25,7 @@ const initialOrderData: OrderFormDataType = {
 }
 interface PaymentPageProps extends BoxProps {
   formData: UseFormReturn<OrderFormDataType>;
+  orderData: OrderItemStateType,
 }
 
 function PaymentPageView({
@@ -33,12 +36,15 @@ function PaymentPageView({
     setValue,
   },
   onSubmit,
+  orderData,
   ...basisProps
 }: PaymentPageProps) {
+  const {orderItemList} = orderData
   const [isAgree, setIsAgree] = useState(false)
   const handleAgree = () => setIsAgree(prev => !prev)
   const [isSame, setIsSame] = useState(false)
   const [deliveryData, setDeliveryData] = useState<FormDataType>(initialFormData)
+  const {totalCost, totalDeliveryCost} = orderData
   const handleSame = () => {
     setIsSame(prev => {
       if (prev) {
@@ -54,11 +60,11 @@ function PaymentPageView({
 
   }
   return (
-    <Flex
-      {...basisProps} bgColor="white" w="375px" px="16px" pt={LAYOUT.HEADER.HEIGHT} pb="80px" flexDir="column">
+    <Box as="form"
+      {...basisProps} onSubmit={onSubmit} bgColor="white" w="375px" px="16px" pt={LAYOUT.HEADER.HEIGHT} pb="80px" flexDir="column">
       <Text mt="50px" textStyle="titleLarge" textColor="black">{"주문결제"}</Text>
       <Text mt="80px" textStyle="title" textColor="black">{"주문상품"}</Text>
-      <PriceCard isPaymentComplete={false} />
+      {orderItemList.map((orderItem) => <PriceCard key={orderItem.cartItemId} ispaymentcomplete={false} productid={orderItem.productId} count={orderItem.count} status={''} />)}
       <Text mt="45px" textStyle="title" textColor="black">{"주문자 정보"}</Text>
       <Flex   // 주문 Form
         flexDir="column" mt="40px">
@@ -157,25 +163,26 @@ function PaymentPageView({
       <Flex flexDir="column" mt="40px">
         <Flex justifyContent="space-between" textStyle="text" textColor="gray.600">
           <Text>{"총 상품금액"}</Text>
-          <Text>{54000}{"원"}</Text>
+          <Text>{totalCost}{"원"}</Text>
         </Flex>
         <Flex mt="10px" justifyContent="space-between" textStyle="text" textColor="gray.600">
           <Text>{"총 배송비"}</Text>
-          <Text>{0}{"원"}</Text>
+          <Text>{totalDeliveryCost}{"원"}</Text>
         </Flex>
       </Flex>
       <Box w="343px" h="0" my="20px" border="1px solid" borderColor="gray.200" />
       <Flex justifyContent="space-between" >
         <Text textStyle="text" textColor="black">{"결제금액"}</Text>
-        <Text textStyle="title" textColor="primary.500">{54000}{"원"}</Text>
+        <Text textStyle="title" textColor="primary.500">{totalCost+totalDeliveryCost}{"원"}</Text>
       </Flex>
       <Box w="343px" h="0" my="20px" border="1px solid" borderColor="gray.200" />
       <Flex alignItems="center">
         <CheckboxIcon state={isAgree ? 'Select' : 'Default'} shape={'Rectangle'} _hover={{ cursor: "pointer" }} onClick={handleAgree} />
         <Text ml="10px" textColor="gray.600" textStyle="text">{"개인정보 수집 이용 동의(필수)"}</Text>
       </Flex>
-      <PrimaryButton w="343px" h="50px" mt="40px" btntype={'Solid'} btnstate={'Primary'} btnshape={'Round'} type='submit'>{"결제하기"}</PrimaryButton>
-    </Flex>
+      <PrimaryButton w="343px" h="50px" mt="40px" 
+      btntype={'Solid'} btnstate={'Primary'} btnshape={'Round'} type='submit'>{"결제하기"}</PrimaryButton>
+    </Box>
   );
 }
 

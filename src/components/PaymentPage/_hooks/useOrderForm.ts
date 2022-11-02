@@ -97,7 +97,6 @@ export const OrderFormSchema = yup.object().shape({
       detail: yup.string().required('해당 항목은 필수값 입니다.'),
     }),
   }),
-  deliveryrequest: yup.string().required('해당 항목은 필수값 입니다.'),
 });
 
 const useOrderForm = (options?: UseFormProps<OrderFormDataType>) => {

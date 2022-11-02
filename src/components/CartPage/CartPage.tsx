@@ -18,6 +18,9 @@ import useAppStore from '@features/useAppStore';
 import { CartDTOType } from '@apis/cart/CartApi.type';
 import { useRouter } from 'next/router';
 import { ROUTES } from '@constants/routes';
+import useCheckList from './_hook/useCheckList';
+import { useDispatch, useSelector } from 'react-redux';
+import { orderItemSliceActions } from '@features/orderItem/orderItemSlice';
 
 export type cartItem = {
   count: number,
@@ -46,33 +49,41 @@ function EmptyCartPage({ ...basisProps }: EmptyCartPageProps) {
 }
 function CartPageData({...basisProps}){
   const { userData } =  useAppStore(state => state.USER)
+  const {mutateAsync: postCartMutation} = usePostCartMutation()
   const {id:user_id} = userData
-  const {refetch, data:cartData, isError, isLoading} = useGetCartQuery({variables: {user_id}, options: {
+  const {refetch, data:cartData, isError, isLoading} = useGetCartQuery({variables: {user_id:0}, options: {
     notifyOnChangeProps: ["data"],
   }})
-  if(isLoading) return <LoadingPage />
+  if(isLoading || cartData===undefined) return <LoadingPage />
   if(isError){
     return <Text>장바구니 정보 불러오기 실패</Text>
   }
-  const carts = cartData![0]
-  if(carts.cartitem && carts.cartitem.length === 0) return <EmptyCartPage />
-  return (
-  <>
-    <CartPageView refetch={refetch} cartData={carts} {...basisProps}/>
-  </>
-  )
+  if(cartData && cartData.length === 0){
+    // cartData가 없다면, 장바구니를 새로 생성합니다.
+    postCartMutation({userId: user_id}).then(res => {
+      console.log("새 장바구니를 생성했습니다:",res)
+      return <EmptyCartPage />
+    })
+  }
+    if(cartData && cartData[0].cartitem && cartData[0].cartitem.length === 0) return <EmptyCartPage />
+    return (
+    <>
+      <CartPageView refetch={refetch} cartData={cartData[0]} {...basisProps}/>
+    </>
+    )
+  
 }
 function CartPageView({ refetch,cartData,...basisProps }: CartPageViewProps) {
+  const dispatch =  useDispatch()
+  const orderItemList = useAppStore(state => state.ORDER_ITEM)
   const { mutateAsync: deleteCartItemMutation } = useDeleteCartItemByCartItemIdMutation()
   const [totalCost, setTotalCost] = useState(0)
   const [totalDeliveryCost, setTotalDeliveryCost] = useState(0)
-  const [isCheckedList, setIsCheckedList] = useState<boolean[]>(Array.from({length: cartData.cartitem.length}, v => false))
+  const {checkList, setCheckList, changeByIndex, setAllCheck, isAllCheck} = useCheckList({length: cartData.cartitem.length, initVal:false})
+  const route = useRouter()
   const handleCheckAll = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newCheckList = isCheckedList.map((value) => e.target.checked)
-    setIsCheckedList(newCheckList)
-    setAlLcheck(e.target.checked)
+    setAllCheck(e.target.checked)
   }
-  const [allCheck, setAlLcheck] = useState(false)
   const handleDeleteItem = (id:number, index:number) => {
     deleteCartItemMutation({cartItemId: id}).then((res) => {
       refetch()
@@ -80,6 +91,27 @@ function CartPageView({ refetch,cartData,...basisProps }: CartPageViewProps) {
       console.log("# cartItem 삭제 에러:",err)
     })
   }
+  const handleDeleteSelectedItem = async() => {
+    checkList.forEach((isCheck, index) => {
+      if(isCheck) {
+        deleteCartItemMutation({cartItemId:cartData.cartitem[index].id})
+        return undefined
+      }
+      return isCheck
+    })
+    const newCheckArray = checkList.filter((isCheck) => isCheck !== undefined)
+    setCheckList(newCheckArray)
+    refetch()
+  }
+  const handlePayment = (total:number) => {
+    dispatch(orderItemSliceActions.setTotal({totalDeliveryCost, totalCost}))
+    if(totalCost === 0) {
+      alert("선택된 아이템이 없습니다.")
+      return
+    }
+    route.push({pathname:ROUTES.PAYMENT.MAIN})
+  }
+
     return (
       <Flex   // 장바구니 카드 리스트
         flexDir="column" pt={LAYOUT.HEADER.HEIGHT} w="375px" bgColor="gray.200" {...basisProps}>
@@ -87,18 +119,20 @@ function CartPageView({ refetch,cartData,...basisProps }: CartPageViewProps) {
           w="375px" h="50px" bgColor="white" px="16px" justifyContent="space-between" alignItems="center">
           <Flex justifyContent="center" alignItems="center">
             <Checkbox
-            onChange={handleCheckAll} isChecked={allCheck}
-            icon={<CheckboxIcon state={allCheck ? "Select" : "Default"} shape="Rectangle" />}>
+            onChange={handleCheckAll} isChecked={isAllCheck}
+            icon={<CheckboxIcon state={isAllCheck ? "Select" : "Default"} shape="Rectangle" />}>
               <Text ml="10px" textStyle="text" textColor="gray.600">{"모두선택"}</Text>
             </Checkbox>
-            {/* <CheckboxIcon state="Default" shape={'Rectangle'}  /> */}
           </Flex>
-          <Button bgColor="white">
+          <Button bgColor="white" onClick={handleDeleteSelectedItem}>
             <Text textStyle="text" textColor="gray.400">{"선택삭제"}</Text>
           </Button>
         </Flex>
         {cartData.cartitem.map((cart, cartIndex) => {
-          return <Commerce mt="10px" handledeleteitem={handleDeleteItem} ischecklist={isCheckedList} setischeckedlist={setIsCheckedList}
+          return <Commerce mt="10px" handledeleteitem={handleDeleteItem} 
+          ischeck={checkList[cartIndex]} changeByIndex={changeByIndex}
+          
+          // setischeck={setCheckList[cartIndex]}
           cartindex={cartIndex} itemdata={cart} key={cart.id} 
           settotalcost={setTotalCost} settotaldeliverycost={setTotalDeliveryCost} />
         })}
@@ -123,7 +157,7 @@ function CartPageView({ refetch,cartData,...basisProps }: CartPageViewProps) {
             <Text textStyle="text" textColor="black">{"결제금액"}</Text>
             <Text textStyle="title" textColor="primary.500">{totalCost+totalDeliveryCost}{"원"}</Text>
           </Flex>
-          <PrimaryButton mb="30px" h="50px" w="343px" btntype={'Solid'} btnstate={'Primary'} btnshape={'Round'}>{"결제하기"}</PrimaryButton>
+          <PrimaryButton mb="30px" h="50px" w="343px" onClick={() => handlePayment(totalCost+totalDeliveryCost)} btntype={'Solid'} btnstate={'Primary'} btnshape={'Round'}>{"결제하기"}</PrimaryButton>
         </Flex>
       </Flex>
     );

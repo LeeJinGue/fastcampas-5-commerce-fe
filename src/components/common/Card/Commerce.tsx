@@ -3,7 +3,10 @@ import { CartDTOType, CartItemType } from '@apis/cart/CartApi.type';
 import { useGetProductByIdQuery } from '@apis/product/ProductApi.query';
 import { ProductDetailDTOTType, ProductSimpleDTOType } from '@apis/product/ProductApi.type';
 import { Flex, FlexProps, Text, Image, Checkbox } from '@chakra-ui/react';
+import { orderItemSliceActions, orderItemType } from '@features/orderItem/orderItemSlice';
+import useAppStore from '@features/useAppStore';
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux';
 import CartQuantityIcon from '../New/@Icons/System/CartQuantity';
 import CheckboxIcon from '../New/@Icons/System/CheckboxIcon';
 import XIcon from '../New/@Icons/System/XIcon';
@@ -14,27 +17,50 @@ interface CommerceProps extends FlexProps {
   itemdata: CartItemType,
   cartindex: number,
   handledeleteitem: (id: number, index: number) => void
-  setischeckedlist: React.Dispatch<React.SetStateAction<boolean[]>>,
-  ischecklist: boolean[]
+  // setischeckedlist: React.Dispatch<React.SetStateAction<boolean[]>>,
+  // setischeck: React.Dispatch<React.SetStateAction<boolean>>,
+  ischeck: boolean
+  changeByIndex: (index: number, value:boolean) => void
 }
-function Commerce({ ...props }: CommerceProps) {
-  const { setischeckedlist, ischecklist, itemdata, settotalcost, settotaldeliverycost, cartindex, handledeleteitem } = props
-  const [count, setCount] = React.useState(itemdata.count)
+interface CommerceViewProps extends CommerceProps{
+  productdata:ProductDetailDTOTType,
+}
+
+function Commerce({ itemdata,...props }: CommerceProps) {
   const { isError, isLoading, data } = useGetProductByIdQuery({ variables: itemdata.productId })
+  if (isLoading || data===undefined) return <Text>상품정보 로딩중</Text>
+  if (isError) return <Text>에러발생</Text>
+  return <CommerceView productdata={data} itemdata={itemdata} {...props}/>
+}
+function CommerceView({...props}:CommerceViewProps){
+  const dispatch = useDispatch()
+  const orderData = useAppStore(state => state.ORDER_ITEM)
+  const { changeByIndex,ischeck, itemdata, settotalcost, settotaldeliverycost, cartindex, handledeleteitem } = props
+  const { price, photo, name, capacity } = props.productdata
+  const [count, setCount] = React.useState(itemdata.count)
+  
+  const delivery = count * price < 30000 ? 2500 : 0
+  const total = count * price + delivery
   const { mutateAsync: patchCartItemCount } = usePatchCartItemByCartItemIdMutation()
-  const [isCheck, setIsCheck] = React.useState(ischecklist[cartindex])
-  const [tot, setTot] = React.useState(0)
-  const [del, setDel] = React.useState(0)
   const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsCheck(e.target.checked)
-    setischeckedlist(prev => {
-      prev[cartindex] = e.target.checked
-      return prev.concat()
-    })
+    changeByIndex(cartindex, e.target.checked)
   }
   useEffect(() => {
     if (price === undefined) return
-    if(!isCheck) return
+    if(!ischeck){
+      dispatch(orderItemSliceActions.
+        delOrderItem(itemdata.id))
+      return
+    }
+    const orderItem:orderItemType = {
+      name, capacity, count, price, 
+      productId:itemdata.productId,
+      cartItemId:itemdata.id
+    }
+    dispatch(orderItemSliceActions
+      .addOrderItem({cartItemId: itemdata.id, orderItem}))
+
+
     const tot = count * price
     const del = tot < 30000 ? 2500 : 0
 
@@ -47,21 +73,17 @@ function Commerce({ ...props }: CommerceProps) {
       settotalcost(prev => prev - (tot))
       settotaldeliverycost(prev => prev - del)
     }
-  }, [count, isCheck])
-  if (isLoading) return <Text>상품정보 로딩중</Text>
-  if (isError) return <Text>에러발생</Text>
-  const { price, photo, name, capacity } = data!
-  const delivery = count * price < 30000 ? 2500 : 0
-  const total = count * price + delivery
+  }, [count, ischeck
+  ])
   return (
     <>
-      <Flex   // Card/Commerce
+    <Flex   // Card/Commerce
         px="16px" py="20px" bgColor="white" {...props}
       >
         <Checkbox
           alignItems="start"
-          onChange={handleCheck} isChecked={ischecklist[cartindex]}
-          icon={<CheckboxIcon state={ischecklist[cartindex] ? "Select" : "Default"} shape="Rectangle" />}>
+          onChange={handleCheck} isChecked={ischeck}
+          icon={<CheckboxIcon state={ischeck ? "Select" : "Default"} shape="Rectangle" />}>
         </Checkbox>
         <Flex   // 상품 정보 전체
           ml="10px" flexDir="column" w="full"
@@ -95,8 +117,6 @@ function Commerce({ ...props }: CommerceProps) {
         </Flex>
       </Flex>
     </>
-
   )
 }
-
 export default Commerce;

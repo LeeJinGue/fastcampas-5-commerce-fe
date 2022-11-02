@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import HomeLayout from '@components/common/@Layout/HomeLayout';
 import LoginPage from '@components/LoginPage';
 import LoginLayout from '@components/common/@Layout/LoginLayout';
 

@@ -12,10 +12,6 @@ import { getToken } from '@utils/localStorage/token';
 
 function Home() {
   const router = useRouter();
-  // For: Redirect To Starter Docs Page (나중에 꼭 지워주세요)
-  // React.useEffect(() => {
-  //   router.push(ROUTES.STARTER_DOCS.MAIN);
-  // }, [router]);
   React.useEffect(()=>{
     if(!getToken()) router.replace({pathname:ROUTES.LOGIN})
   },[])
@@ -24,9 +20,9 @@ function Home() {
       <Head>
         <title>커머스 | 메인</title>
       </Head>
-      <MainLayout header={<MainHeader bg="transparent" left="50%" transform="translate(-50%, 0)" />} content={<HomePage/>} />
+      <MainLayout header={<MainHeader bg="transparent" left="50%" transform="translate(-50%, 0)" />} 
+      content={<HomePage/>} />
     </>
   );
 }
-
 export default Home;

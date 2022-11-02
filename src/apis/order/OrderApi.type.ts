@@ -1,5 +1,5 @@
 export type OrderDTOType = {
-  id: number,
+  id: string,
   userId: number,
   price: number,
   shippingPrice: number,
@@ -41,16 +41,18 @@ export type OrderGetAllReturnType = {
 
 // POST /v1/order/
 export type OrderPostParamType = {
-  userId: number,
+  // userId: number,
   price: number,
-  paymentKey: string,
+  // paymentKey: string,
   method: string,
   userName: string,
   userPhone: string,
-  userAddr: string,
+  userAddrDetail: string,
+  userAddrPost: string,
   shipName: string,
   shipPhone: string,
-  shipAddr: string,
+  shipAddrDetail: string,
+  shipAddrPost: string,
   orderMessage: string,
 }
 export type OrderPostReturnType = OrderDTOType
