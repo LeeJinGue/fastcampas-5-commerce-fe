@@ -11,6 +11,12 @@ function useCheckList({length, initVal}: useCheckListProps) {
     (index: number, value:boolean) => {
       const newCheckList = checkList.concat([])
       newCheckList[index] = value
+      let isAlltrue = true
+      newCheckList.forEach((check) => {
+        isAlltrue = check && isAlltrue
+      })
+      if(isAlltrue) setIsAllCheck(true)
+      else setIsAllCheck(false)
       setCheckList(newCheckList)
     },[checkList],)
   const setAllCheck = useCallback((value:boolean) => {
