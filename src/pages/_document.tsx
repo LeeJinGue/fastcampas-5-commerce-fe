@@ -11,10 +11,10 @@ import { ColorModeScript } from '@chakra-ui/color-mode';
 
 import config from '@theme/foundations/config';
 
-const SITE_NAME = 'TOKTOKHAN.DEV';
-const SITE_TITLE = 'TOKTOKHAN.DEV';
-const SITE_DESCRIPTION = '디지털프로덕트의 TOKTOK한 경험';
-const SITE_IMAGE = '/images/new_og.png';
+const SITE_NAME = 'INCOURESE.RUN';
+const SITE_TITLE = 'COMMERCE';
+const SITE_DESCRIPTION = '화장품 커머스 서비스';
+const SITE_IMAGE = '/images/og.png';
 
 const GOOGLE_ANALYTICS_ID = 'G-입력해주세요';
 
@@ -54,13 +54,13 @@ class MyDocument extends Document {
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           {/* SEO */}
-          <link rel="apple-touch-icon" href="/icons/120.png" />
-          <link rel="apple-touch-icon" sizes="152x152" href="/icons/152.png" />
-          <link rel="apple-touch-icon" sizes="180x180" href="/icons/180.png" />
-          <link rel="apple-touch-icon" sizes="167x167" href="/icons/167.png" />
+          <link rel="apple-touch-icon" href="/icons/logo.png" />
+          <link rel="apple-touch-icon" sizes="152x152" href="/icons/logo.png" />
+          <link rel="apple-touch-icon" sizes="180x180" href="/icons/logo.png" />
+          <link rel="apple-touch-icon" sizes="167x167" href="/icons/logo.png" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
 
-          <link rel="canonical" href="https://www.toktokhan.dev/" />
+          <link rel="canonical" href="https://fastcampus-5-commerce-fe.vercel.app/" />
           <meta name="description" content={SITE_DESCRIPTION} />
           <meta property="og:type" content="website" />
           <meta property="og:site_name" content={SITE_NAME} />

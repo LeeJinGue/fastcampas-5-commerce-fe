@@ -6,6 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useGetUserMeQuery } from '@apis/user/UserApi.query';
 import { getToken } from '@utils/localStorage/token';
 import store from '@features/store';
+import { UserDTOType } from '@apis/user/UserApi.type';
 
 export type EditInfoFormDataType = {
   username: string;
@@ -71,8 +72,8 @@ export const EditInfoFormSchema = yup.object().shape({
     ),
 });
 
-const useEditInfoForm = (options?: UseFormProps<EditInfoFormDataType>) => {
-  const { userData } = store.getState().USER
+const useEditInfoForm = (userData:UserDTOType, options?: UseFormProps<EditInfoFormDataType> ) => {
+  // const { userData } = store.getState().USER
   const { name, nickname, email, phone, gender, profile, id, age } = userData
   const defaultValues = {
     username: name,

@@ -6,11 +6,21 @@ import Pagination from '@components/common/New/Pagination';
 import { useGetProductByIdQuery } from '@apis/product/ProductApi.query';
 import useAppStore from '@features/useAppStore';
 import LoadingPage from '@components/common/New/LoadingPage';
+import { UserDTOType } from '@apis/user/UserApi.type';
+import { useGetUserMeQuery } from '@apis/user/UserApi.query';
 
-interface MypageMyreviewsPageProps extends ChakraProps {}
-
-function MypageMyreviewsPage({ ...basisProps }: MypageMyreviewsPageProps) {
-  const {userData} = useAppStore(state => state.USER)
+interface MypageMyreviewsDataPageProps extends ChakraProps { }
+interface MypageMyreviewsViewPageProps extends MypageMyreviewsDataPageProps {
+    userData: UserDTOType,
+ }
+function MypageMyreviewsDataPage({...basisProps}:MypageMyreviewsDataPageProps){
+  const {data:userData, isError:userGetError, isLoading:userLoadingError} = useGetUserMeQuery({variables: {accessToken:""}})
+  if(userLoadingError) return <LoadingPage />
+  if(userGetError) return <Text>유저 불러오기 에러</Text>
+  if(userData === undefined) return <Text>유저정보 가져오기 실패</Text>
+  return <MypageMyreviewsViewPage userData={userData} {...basisProps}/>
+}
+function MypageMyreviewsViewPage({userData, ...basisProps }: MypageMyreviewsViewPageProps) {
   const {isError, isLoading,data} = useGetProductByIdQuery({variables:userData.id})
   console.log("#data test:",data)
   if(isLoading) return <LoadingPage />
@@ -31,4 +41,4 @@ function MypageMyreviewsPage({ ...basisProps }: MypageMyreviewsPageProps) {
   );
 }
 
-export default MypageMyreviewsPage;
+export default MypageMyreviewsDataPage;

@@ -50,9 +50,9 @@ export class UserApi {
     const { data } = await this.axios({
       method: 'GET',
       url: `/v1/user/me/`,
-      headers: {
-        Authorization: `Bearer ${params.accessToken}`,
-      }
+      // headers: {
+      //   Authorization: `Bearer ${params.accessToken}`,
+      // }
     });
     return data;
   };
