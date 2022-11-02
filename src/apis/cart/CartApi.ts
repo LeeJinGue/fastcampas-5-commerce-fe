@@ -3,6 +3,7 @@ import { AxiosInstance } from 'axios';
 import instance from '@apis/_axios/instance';
 
 import { CartDeleteByCartItemIdParamType, CartGetByCartItemIdParamType, CartGetByCartItemIdReturnType, CartGetByUserIdParamType, CartGetByUserIdReturnType, CartPatchByCartItemIdParamType, CartPatchByCartItemIdReturnType, CartPostByUserIdParamType, CartPostByUserIdReturnType, CartPostItemByCartIdParamType, CartPostItemByCartIdReturnType } from './CartApi.type';
+import { getToken } from '@utils/localStorage/token';
 
 export class CartApi {
   axios: AxiosInstance = instance;
@@ -13,17 +14,28 @@ export class CartApi {
   getCart = async (
     params?: CartGetByUserIdParamType,
   ): Promise<CartGetByUserIdReturnType> => {
+    const userData = await this.axios({
+      method: 'GET',
+      url: `/v1/user/me/`,      
+    })
+    const param = {userId:userData.data.id}
     const { data } = await this.axios({
       method: 'GET',
-      url: `/v1/cart/?user_id=${params?.user_id}`,
+      url: `/v1/cart/?user_id=${param.userId}`,
     });
     return data;
   };
   postCart = async (params: CartPostByUserIdParamType): Promise<CartPostByUserIdReturnType> => {
+    const token = getToken()!
+    const userData = await this.axios({
+      method: 'GET',
+      url: `/v1/user/me/`,      
+    })
+    const param = {userId:userData.data.id}
     const { data } = await this.axios({
       method: 'POST',
       url: `/v1/cart/`,
-      data: params,
+      data: param,
     });
     return data;
   };
