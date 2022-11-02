@@ -40,9 +40,10 @@ function MypageWithdrwalPage({ ...basisProps }: MypageWithdrwalPageProps) {
     if(vfstring === "인코스런"){
       const reasonParam = {reason, additionalReason}
       const {id} = userData
-      deleteUserMutate({id})
       postWithdrawalReasonMutate(reasonParam)
+      deleteUserMutate({id})
       deleteToken()
+      route.push({pathname:ROUTES.LOGIN})
     }else{
       alert("인코스런을 입력해주세요.")
     }
