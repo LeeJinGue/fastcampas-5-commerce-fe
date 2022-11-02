@@ -14,7 +14,6 @@ import UploadIcon from '@components/common/New/@Icons/System/Button/Upload';
 import { BADGE_NAME_LIST, INSTGRAM_URL } from '@constants/string';
 import SlideCard from '@components/common/Card/Slide';
 import { useGetUserMeQuery } from '@apis/user/UserApi.query';
-import { userSliceActions } from '@features/user/userSlice';
 import { getToken } from '@utils/localStorage/token';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
@@ -46,11 +45,6 @@ const HomePageContent = ({}) => {
       accessToken,
     }, options: {
       staleTime: Infinity,
-      onSuccess: (userRes) => {
-        const user_id = userRes.id
-        dispatch(userSliceActions.setIsLogged(true))
-        dispatch(userSliceActions.setUserData(userRes))
-      }
     }})
   }
   if(isLoading) return <LoadingPage />

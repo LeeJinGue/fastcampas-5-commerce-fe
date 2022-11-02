@@ -48,9 +48,9 @@ function EmptyCartPage({ ...basisProps }: EmptyCartPageProps) {
   )
 }
 function CartPageData({...basisProps}){
-  const { userData } =  useAppStore(state => state.USER)
   const {mutateAsync: postCartMutation} = usePostCartMutation()
-  const {id:user_id} = userData
+  // const { userData } =  useAppStore(state => state.USER)
+  // const {id:user_id} = userData
   const {refetch, data:cartData, isError, isLoading} = useGetCartQuery({variables: {user_id:0}, options: {
     notifyOnChangeProps: ["data"],
   }})
@@ -60,7 +60,8 @@ function CartPageData({...basisProps}){
   }
   if(cartData && cartData.length === 0){
     // cartData가 없다면, 장바구니를 새로 생성합니다.
-    postCartMutation({userId: user_id}).then(res => {
+    
+    postCartMutation({userId: cartData[0].userId}).then(res => {
       console.log("새 장바구니를 생성했습니다:",res)
       return <EmptyCartPage />
     })

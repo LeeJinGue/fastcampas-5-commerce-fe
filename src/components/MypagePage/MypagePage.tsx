@@ -9,10 +9,24 @@ import { useRouter } from 'next/router';
 import { ROUTES } from '@constants/routes';
 import { deleteToken, setToken } from '@utils/localStorage/token';
 import store from '@features/store';
+import { useGetUserMeQuery } from '@apis/user/UserApi.query';
+import { UserDTOType } from '@apis/user/UserApi.type';
 
-interface MypagePageProps extends ChakraProps { }
+interface MypageDataPageProps extends ChakraProps { 
+}
+interface MypagePageViewProps extends MypageDataPageProps { 
+  userdata: UserDTOType
+}
 
-function MypagePage({ ...basisProps }: MypagePageProps) {
+function MyPageDataPage({...basisProps}:MypageDataPageProps){
+  const {data, isError, isLoading} = useGetUserMeQuery({variables: {accessToken:""}})
+  if(isLoading) return <Text>로딩중...</Text>
+  if(isError) return <Text>유저 정보 불러오기 에러</Text>
+  return <>
+  {data && <MypageViewPage userdata={data} />}
+  </>
+}
+function MypageViewPage({ userdata, ...basisProps }: MypagePageViewProps) {
   const route = useRouter()
   const goEditInfo = useCallback(() => {route.push({ pathname: ROUTES.MYPAGE.EDIT_INFO })},[],)
   const goMyreviews = useCallback(() => {route.push({ pathname: ROUTES.MYPAGE.MY_REVIEWS })},[],)
@@ -22,7 +36,7 @@ function MypagePage({ ...basisProps }: MypagePageProps) {
     deleteToken()
     route.replace({ pathname: ROUTES.LOGIN }) 
   },[],)
-  const {name, email} = store.getState().USER.userData
+  const {name, email} = userdata
   return (
     <Flex {...basisProps} pt={LAYOUT.HEADER.HEIGHT} flexDir="column" bgColor="white">
       <Flex mt="70px" flexDir="column" px="16px">
@@ -54,4 +68,4 @@ function MypagePage({ ...basisProps }: MypagePageProps) {
   );
 }
 
-export default MypagePage;
+export default MyPageDataPage;
