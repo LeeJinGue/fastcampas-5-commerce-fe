@@ -1,13 +1,8 @@
 import { ThemeProvider, useColorMode, useTheme } from '@chakra-ui/react';
-
-import ToggleColorModeButton from '@components/common/ToggleColorModeButton';
-
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { mode } from '@theme/foundations/colors';
 
 import withAppProvider from 'contexts/app/app.provider';
-import { withGlobalModalHandlerContext } from 'contexts/modal/useGlobalModalHandler.context';
-
 function MyApp({ Component, pageProps }: any) {
   const theme = useTheme();
   const { colorMode } = useColorMode();
@@ -24,4 +19,4 @@ function MyApp({ Component, pageProps }: any) {
   );
 }
 
-export default withAppProvider(withGlobalModalHandlerContext(MyApp));
+export default withAppProvider(MyApp);
