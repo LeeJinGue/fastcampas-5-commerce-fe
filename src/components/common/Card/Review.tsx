@@ -25,7 +25,7 @@ function Review({iscomment, reviewData,...props}: ReviewProps) {
             <Flex // 리뷰어 아이디 및 리뷰날짜
             flexDir="column">
               <Text textStyle="titleSmall" textColor="black">{nickname}</Text> 
-              <Text textStyle="textSmall" textColor="gray.600">{formatReviewTime(new Date(created))}</Text>
+              <Text textStyle="textSmall" textColor="gray.600">{formatReviewTime(created)}</Text>
             </Flex>
             <RatioStars // rate에 따른 별점
             size="16" rate={rate}/>
