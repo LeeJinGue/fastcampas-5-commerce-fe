@@ -8,6 +8,7 @@ import useAppStore from '@features/useAppStore';
 import LoadingPage from '@components/common/New/LoadingPage';
 import { UserDTOType } from '@apis/user/UserApi.type';
 import { useGetUserMeQuery } from '@apis/user/UserApi.query';
+import { useGetReviewListQuery } from '@apis/review/ReviewApi.query';
 
 interface MypageMyreviewsDataPageProps extends ChakraProps { }
 interface MypageMyreviewsViewPageProps extends MypageMyreviewsDataPageProps {
@@ -21,16 +22,17 @@ function MypageMyreviewsDataPage({...basisProps}:MypageMyreviewsDataPageProps){
   return <MypageMyreviewsViewPage userData={userData} {...basisProps}/>
 }
 function MypageMyreviewsViewPage({userData, ...basisProps }: MypageMyreviewsViewPageProps) {
-  const {isError, isLoading,data} = useGetProductByIdQuery({variables:userData.id})
-  console.log("#data test:",data)
+  const {isError, isLoading,data:reviewData} = useGetReviewListQuery({variables:{user_id:userData.id}})
+  // console.log("# review data test:",reviewData)
   if(isLoading) return <LoadingPage />
   if(isError) return <Text>리뷰 가져오기 에러</Text>
-  const {reviewList} = data!
+  if(!reviewData) return <Text>리뷰 데이터가 없습니다.</Text>
+  const {results:reviewList, count:reviewCount} = reviewData
 
   return (
     <Flex pt={LAYOUT.HEADER.HEIGHT} pb="80px" flexDir="column" bgColor="white" w="375px"{...basisProps}>
       <Text px="16px" mt="50px" textStyle="titleLarge" textColor="black">내 상품 리뷰</Text>
-      <Text px="16px" mt="80px" textStyle="title" textColor="black">{"총 "}<Text as="span" textColor="primary.500">{"78"}</Text>건</Text>
+      <Text px="16px" mt="80px" textStyle="title" textColor="black">{"총 "}<Text as="span" textColor="primary.500">{reviewCount}</Text>건</Text>
       <Flex flexDir="column" mt="30px">
         {reviewList && reviewList.map((value) => {
           return <Review iscomment={false} reviewData={value}/>
