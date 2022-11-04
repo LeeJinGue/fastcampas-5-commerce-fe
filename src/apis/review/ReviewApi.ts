@@ -25,10 +25,11 @@ export class ReviewApi {
   getReviewList = async (
     params?: ReviewGetAllParamType,
   ): Promise<ReviewGetAllReturnType> => {
+    const query = params?.user_id ? `?user_id=${params.user_id}` : ""
     const { data } = await this.axios({
       method: 'GET',
-      url: `/v1/review/`,
-      data: params,
+      url: `/v1/review/${query}`,
+      // data: params, data로는 안되고 query로 줘야 넘어간다.
     });
     return data;
   };
