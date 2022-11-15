@@ -29,4 +29,3 @@ export const status_to_shipping_status = (status: string) =>{
     default: "이상함"
   }
 }
-export const TOSS_PAYMENT_SUCCESS_URL = `${CONFIG.DOMAIN}${ROUTES.PAYMENT.SUCCESS}`
