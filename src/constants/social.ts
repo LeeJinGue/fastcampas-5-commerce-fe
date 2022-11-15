@@ -6,5 +6,4 @@ export const SOCIAL = {
   KAKAO_CLIENT_ID: CONFIG.AUTH_KAKAO_CLIENT_KEY,
   REDIRECT_URL: `${BASE}/social_login/callback`,
 };
-export const TOSS_PAYMENT_CALL_BACK_URL = `${BASE}/${ROUTES.PAYMENT.CALLBACK}`
 export const DAUM_ADDRESS_SCRIPT_URL = "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"

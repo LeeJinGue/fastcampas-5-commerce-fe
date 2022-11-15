@@ -1,18 +1,13 @@
 import React, { useState } from 'react';
-import { Box, ChakraProps, Button, Flex, Image, Text } from '@chakra-ui/react';
-import { LAYOUT } from '@constants/layout';
-import { useRouter } from 'next/router';
+import { ChakraProps } from '@chakra-ui/react';
 import useOrderForm from './_hooks/useOrderForm';
 import PaymentPageView from './PaymentPage.view';
 import { usePosthOrderStatus, usePostOrderMutation } from '@apis/order/OrderApi.mutation'
 import { OrderPostParamType } from '@apis/order/OrderApi.type';
-import { useGetCartQuery } from '@apis/cart/CartApi.query';
-import LoadingPage from '@components/common/New/LoadingPage';
 import useAppStore from '@features/useAppStore';
-import { TOSS_PAYMENT_CALL_BACK_URL } from '@constants/social';
 import { CONFIG } from '@config';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
-import { ROUTES } from '@constants/routes';
+import { TOSS_PAYMENT_CALL_BACK_URL } from '@constants/toss';
 
 interface PaymentPageProps extends ChakraProps { }
 function PaymentPage({ ...basisProps }: PaymentPageProps) {
