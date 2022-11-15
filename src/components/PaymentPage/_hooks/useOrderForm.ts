@@ -7,7 +7,8 @@ export type FormDataType = {
   name: string;
   phone: string;
   address: {
-    zipcode: string;
+    base: string,
+    post: string;
     detail: string;
   };
 }
@@ -15,13 +16,15 @@ export type OrderFormDataType = {
   order: FormDataType;
   delivery: FormDataType;
   deliveryrequest: string;
+  privacyAgree: boolean;
 };
 const initialOrderData:OrderFormDataType = {
   order: {
     name: "",
     phone: "",
     address: {
-      zipcode: "",
+      base: "",
+      post: "",
       detail: "",
     },
   },
@@ -29,11 +32,13 @@ const initialOrderData:OrderFormDataType = {
     name: "",
     phone: "",
     address: {
-      zipcode: "",
+      base: "",
+      post: "",
       detail: "",
     },
   },
   deliveryrequest: "",
+  privacyAgree: false
 }
 /**
  * yup 을 이용하여 form의 유효성 검사를 도와줍니다.
@@ -68,7 +73,7 @@ export const OrderFormSchema = yup.object().shape({
         },
       ),
     address: yup.object().shape({
-      zipcode: yup.string().required('해당 항목은 필수값 입니다.'),
+      base: yup.string().required('해당 항목은 필수값 입니다.'),
       detail: yup.string().required('해당 항목은 필수값 입니다.'),
     }),
   }),
@@ -93,10 +98,14 @@ export const OrderFormSchema = yup.object().shape({
         },
       ),
     address: yup.object().shape({
-      zipcode: yup.string().required('해당 항목은 필수값 입니다.'),
+      base: yup.string().required('해당 항목은 필수값 입니다.'),
       detail: yup.string().required('해당 항목은 필수값 입니다.'),
     }),
   }),
+  privacyAgree: yup
+  .boolean()
+  .required('해당 항목은 필수값입니다.')
+  .isTrue('개인정보 수집항목에 동의해주세요.')
 });
 
 const useOrderForm = (options?: UseFormProps<OrderFormDataType>) => {
