@@ -8,11 +8,16 @@ export type OrderDTOType = {
   status: string,
   userName: string,
   userPhone: string,
+  userAddrPost: string,
   userAddr: string,
+  userAddrDetail: string,
   shipName: string,
   shipPhone: string,
+  shipAddrPost: string,
   shipAddr: string,
+  shipAddrDetail: string,
   orderMessage: string,
+  shippingStatus: string,
   created: string,
 };
 
@@ -43,16 +48,20 @@ export type OrderGetAllReturnType = {
 export type OrderPostParamType = {
   // userId: number,
   price: number,
+  shippingPrice: number,
+  amount: number,
   // paymentKey: string,
   method: string,
   userName: string,
   userPhone: string,
   userAddrDetail: string,
   userAddrPost: string,
+  userAddr: string,
   shipName: string,
   shipPhone: string,
   shipAddrDetail: string,
   shipAddrPost: string,
+  shipAddr: string,
   orderMessage: string,
 }
 export type OrderPostReturnType = OrderDTOType
@@ -104,12 +113,14 @@ export type OrderGetStatusReturnType = {
   previous?: string,
   results: OrderStatusType[]
 }
+export type OrderStatusGetByIdParamType = {
+  orderId: string;
+}
 export type OrderStatusType = {
   id: number,
   orderId: string,
   productId: number,
   count: number,
-  shippingStatus: string,
   created: string,
 }
 // POST /v1/order/status/

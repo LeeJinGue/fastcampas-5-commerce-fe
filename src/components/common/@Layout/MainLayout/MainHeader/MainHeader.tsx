@@ -29,7 +29,7 @@ const MainHeader = ({ variant = 'light', ...basisProps}: MainHeaderProps) => {
         px={'16px'}
         alignItems="center"
         justifyContent="space-between"
-        position="absolute"
+        position="fixed"
         zIndex="sticky"
         transition="all 0.3s"
         w="375px"
@@ -47,7 +47,7 @@ const MainHeader = ({ variant = 'light', ...basisProps}: MainHeaderProps) => {
           bg="transparent"
           aria-label="btn-toggle-drawer"
         />
-        <LogoComponent align='center' />
+        <LogoComponent align='center' aria-label={'btn-header-logo'} />
         <IconButton //
           color='black'
           icon={<CartIcon />}

@@ -5,10 +5,11 @@ import PriceCard from '@components/common/Card/PriceCard';
 import PrimaryButton from '@components/common/New/PrimaryButton';
 import Pagination from '@components/common/New/Pagination';
 import DateText from '@components/common/New/DateText';
-import { useGetOrderStatusQuery } from '@apis/order/OrderApi.query';
+import { useGetOrderListQuery, useGetOrderStatusQuery } from '@apis/order/OrderApi.query';
 import { OrderStatusType } from '@apis/order/OrderApi.type';
 import { useRouter } from 'next/router';
 import { ROUTES } from '@constants/routes';
+import orderApi from '@apis/order/OrderApi';
 
 interface MypageOrderhistoryPageProps extends MypageOrderhistoryPageDataProps {
   orderStatusList: OrderStatusType[],
@@ -49,12 +50,13 @@ function MypageOrderhistoryPage({
     <>
       <Text ml="16px" mt="50px" textStyle="titleLarge" textColor="black">주문내역</Text>
       {orderStatusList && orderStatusList.map((orderStatus) => {
-        
+        // const orderData = await orderApi.getOrderById({uuid:orderStatus.orderId})
+        const shippingStatus = "PAID"
         return <>
           <DateText mt="80px" ml="16px" date={orderStatus.created} />
           <PriceCard px="16px" ispaymentcomplete={true} productid={orderStatus.productId}
-            count={orderStatus.count} status={orderStatus.shippingStatus} />
-          {orderStatus.shippingStatus === "PAID" ?
+            count={orderStatus.count} status={shippingStatus} />
+          {shippingStatus === "PAID" ?
           
           <PrimaryButton
             mt="10px" mb="20px" mr="16px"
@@ -69,8 +71,7 @@ function MypageOrderhistoryPage({
             alignSelf="end" w="140px" h="40px"
             btntype={'Solid'} btnstate={'Primary'} btnshape={'Rectangle'}>
             주문취소
-          </PrimaryButton>
-          
+          </PrimaryButton>          
           }
         </>
       })}

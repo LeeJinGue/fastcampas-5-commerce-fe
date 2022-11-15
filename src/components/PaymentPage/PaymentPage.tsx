@@ -1,57 +1,52 @@
-import React from 'react';
-import { Box, ChakraProps, Button, Flex, Image, Text } from '@chakra-ui/react';
-import { LAYOUT } from '@constants/layout';
-import { useRouter } from 'next/router';
+import React, { useState } from 'react';
+import { ChakraProps } from '@chakra-ui/react';
 import useOrderForm from './_hooks/useOrderForm';
 import PaymentPageView from './PaymentPage.view';
 import { usePosthOrderStatus, usePostOrderMutation } from '@apis/order/OrderApi.mutation'
 import { OrderPostParamType } from '@apis/order/OrderApi.type';
-import { useGetCartQuery } from '@apis/cart/CartApi.query';
-import LoadingPage from '@components/common/New/LoadingPage';
 import useAppStore from '@features/useAppStore';
-import { tossInstance } from '@apis/_toss/instance';
-import { TOSS_PAYMENT_SUCCESS_URL } from '@constants/string';
 import { CONFIG } from '@config';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
-import { ROUTES } from '@constants/routes';
+import { TOSS_PAYMENT_CALL_BACK_URL } from '@constants/toss';
 
 interface PaymentPageProps extends ChakraProps { }
-const CLIENT_KEY = "test_ck_XLkKEypNArW7nYnpZAzrlmeaxYG5"
 function PaymentPage({ ...basisProps }: PaymentPageProps) {
   const orderData = useAppStore(state => state.ORDER_ITEM)
   const orderDataList = orderData.orderItemList
-  
+  const [isagree, setisagree] = useState(false)
   const formData = useOrderForm();
-  const route = useRouter()
   const { handleSubmit } = formData;
   const { data:postOrderData, isSuccess:postOrderSuccess ,mutateAsync: orderPostMutate } = usePostOrderMutation()
   const { data:postOrderStatusData, isSuccess:postOrderStatusSuccess ,mutateAsync: orderStatusPostMutate } = usePosthOrderStatus()
   const onSubmit = handleSubmit(({ order, delivery, deliveryrequest }) => {
-    console.log("외않되지?")
     // 주문결제 성공!
     console.log(
-      `submitted order: ${order.name}, ${order.phone} , ${order.address.detail}, ${order.address.zipcode}`,
+      `# submitted 주문자: 이름-${order.name}, 핸드폰 번호-${order.phone}, 주소-${order.address.base}, 상세주소-${order.address.detail}, 우편번호-${order.address.post} `,
     );
     console.log(
-      `submitted delivery: ${delivery.name}, ${delivery.phone} , ${delivery.address.detail}, ${delivery.address.zipcode}`,
+      `# submitted 배송지: 이름-${delivery.name}, 핸드폰 번호-${delivery.phone}, 주소-${delivery.address.base}, 상세주소-${delivery.address.detail}, 우편번호-${delivery.address.post} `,
     );
     console.log(
-      `submitted deliver request: ${deliveryrequest}`,
+      `# submitted 배송요청사항: ${deliveryrequest}`,
     );
     const orderParam: OrderPostParamType = {
       // userId: 0,
-      price: orderData.totalCost,
       // paymentKey: '',
       method: "CARD",
       userName: order.name,
       userPhone: order.phone.replaceAll("-", ""),
-      userAddrPost: order.address.zipcode,
+      userAddr: order.address.base,
+      userAddrPost: order.address.post,
       userAddrDetail: order.address.detail,
       shipName: delivery.name,
       shipPhone: delivery.phone.replaceAll("-", ""),
-      shipAddrPost: delivery.address.zipcode,
+      shipAddrPost: delivery.address.post,
       shipAddrDetail: delivery.address.detail,
-      orderMessage: deliveryrequest
+      shipAddr: delivery.address.base,
+      orderMessage: deliveryrequest,
+      price: orderData.totalCost,
+      shippingPrice: orderData.totalDeliveryCost,
+      amount: orderData.totalDeliveryCost+orderData.totalCost,
     }
     orderPostMutate(orderParam).then(async(res) =>{
       console.log("# order response:", res)
@@ -59,18 +54,16 @@ function PaymentPage({ ...basisProps }: PaymentPageProps) {
       const orderId = res.id
       orderStatusPostMutate({orderId, productId:orderDataList[0].productId, count:orderDataList[0].count,}).then(statusRes => {
         console.log("# statusRes:",statusRes)
-        console.log("# client key:",CLIENT_KEY)
-        
-        loadTossPayments(CLIENT_KEY)
+        loadTossPayments(CONFIG.TOSS_CLIENT_KEY!)
         .then(tossPayments => {
           console.log("# tossPayment 테스트:",tossPayments)
           tossPayments.requestPayment('카드', {
-            amount: orderData.totalCost,
+            amount: orderData.totalDeliveryCost+orderData.totalCost,
             orderId,
             orderName: '토스 티셔츠 외 2건',
-            customerName: '인코스런커머스트랙',
-            successUrl: `http://localhost:3000${ROUTES.PAYMENT.SUCCESS}`,
-            failUrl: `http://localhost:3000${ROUTES.PAYMENT.SUCCESS}`,
+            customerName: '인코스런커머스',
+            successUrl: TOSS_PAYMENT_CALL_BACK_URL,
+            failUrl: TOSS_PAYMENT_CALL_BACK_URL,
             // windowTarget: "self",
           })
         })
@@ -86,14 +79,11 @@ function PaymentPage({ ...basisProps }: PaymentPageProps) {
 
     // route.replace('/payment/success')
   });
-  // const {data, isError, isLoading} = useGetCartQuery({variables:{
-  //   user_id:0
-  // }})
-  // if(isLoading) return <LoadingPage>로딩중</LoadingPage>
-  // if(isError) return <Text>상품 정보 갖고오기 에러발생!</Text>
-  // const carts = data[0]!
+  
   return (
-    <PaymentPageView orderData={orderData} formData={formData} onSubmit={onSubmit} />
+    <PaymentPageView 
+    isagree={isagree} setisagree={setisagree}
+    orderData={orderData} formData={formData} onSubmit={onSubmit} />
   );
 }
 

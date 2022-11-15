@@ -31,8 +31,8 @@ function SlideCard({ reviewData, ...props }: SlideCardProps) {
       </Flex>
       <Text // 날짜
         textStyle="textSmall"
-        textColor="gray.700"
-      >{formatReviewTime(new Date(created))}</Text>
+        textColor="gray.600"
+      >{formatReviewTime(created)}</Text>
       <Text // 리뷰 내용
         textStyle="text"
         textColor="black"
