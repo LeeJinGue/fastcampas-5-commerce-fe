@@ -3,12 +3,14 @@ import { useQuery } from '@tanstack/react-query';
 import { QueryHookParams } from '../type';
 
 import orderApi from './OrderApi';
-import { OrderGetAllParamType, OrderGetByIdParamType, OrderGetStatusParamType, OrderParamGetType } from './OrderApi.type';
+import {OrderStatusGetByIdParamType, OrderGetAllParamType, OrderGetByIdParamType, OrderGetStatusParamType, OrderParamGetType } from './OrderApi.type';
 
 export const ORDER_API_QUERY_KEY = {
   GET: (param?: OrderGetAllParamType) => ['order-list', param],
   GET_BY_ID: (param?: OrderGetByIdParamType) => ['order-by-id', param],
   GET_STATUS: (param?: OrderGetStatusParamType) => ['order-status', param],
+  GET_STATUS_BY_ID: (param?: OrderStatusGetByIdParamType) => ['order-status-by-id', param],
+  
 };
 
 export function useGetOrderListQuery(
@@ -41,6 +43,17 @@ export function useGetOrderStatusQuery(
   const query = useQuery(
     queryKey,
     () => orderApi.getOrderStatus(params?.variables),
+    params?.options,
+  );
+  return { ...query, queryKey };
+}
+export function useGetOrderStatusByIdQuery(
+  params: QueryHookParams<typeof orderApi.getOrderStatusById>,
+) {
+  const queryKey = ORDER_API_QUERY_KEY.GET_STATUS_BY_ID(params?.variables);
+  const query = useQuery(
+    queryKey,
+    () => orderApi.getOrderStatusById(params?.variables),
     params?.options,
   );
   return { ...query, queryKey };
