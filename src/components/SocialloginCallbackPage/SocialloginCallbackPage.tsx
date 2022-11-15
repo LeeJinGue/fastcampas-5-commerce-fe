@@ -5,15 +5,20 @@ import { setToken } from '@utils/localStorage/token';
 import { usePostUserSocialLogin } from '@apis/user/UserApi.mutation';
 import { ROUTES } from '@constants/routes';
 import LoadingPage from '@components/common/New/LoadingPage';
-interface SocialloginCallbackPageProps extends ChakraProps { }
+import { GetServerSideProps } from 'next';
+interface SocialloginCallbackPageProps extends ChakraProps {
+
+}
 function SocialloginCallbackPage({
   ...basisProps
 }: SocialloginCallbackPageProps) {
   const route = useRouter()
   const { code, state } = route.query
+  const { isReady } = route
   const { mutateAsync: socialLoginMutate } = usePostUserSocialLogin()
   React.useEffect(() => {
     // Redirect URL을 통해 카카오 로그인
+    if(!isReady) return
     if (typeof code === "string" && typeof state === "string") {
       // console.log("#code:", code)
       socialLoginMutate({ code: code, state: state })
@@ -51,19 +56,12 @@ function SocialloginCallbackPage({
           console.log("#social Login err:", err)
         })
     }
-  }, [code])
+  }, [isReady])
 
   return (
     <LoadingPage />
-    // <Flex w="375px" h="782px" justifyContent="center" alignItems="center" bgColor="white" {...basisProps} >
-    //   <Spinner thickness='4px'
-    //     speed='0.65s'
-    //     emptyColor='gray.200'
-    //     color='primary.500' 
-    //     w="70px" h="70px"
-    //     size="xl"/>
-    // </Flex>
   );
 }
+
 
 export default SocialloginCallbackPage;
