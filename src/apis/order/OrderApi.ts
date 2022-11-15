@@ -17,7 +17,10 @@ import {
   OrderPostStatusReturnType,
   OrderPutByIdParamType,
   OrderPutByIdReturnType,
+  OrderStatusGetByIdParamType,
+  OrderStatusType,
 } from './OrderApi.type';
+import { UserDTOType } from '@apis/user/UserApi.type';
 
 export class OrderApi {
   axios: AxiosInstance = instance;
@@ -31,7 +34,7 @@ export class OrderApi {
     const { data } = await this.axios({
       method: 'GET',
       url: `/v1/order/`,
-      data:params,
+      data: params,
     });
     return data;
   };
@@ -42,7 +45,8 @@ export class OrderApi {
     })
     const orderParam = {
       userId: userData.data.id,
-      ...params}
+      ...params
+    }
     const { data } = await this.axios({
       method: 'POST',
       url: `/v1/order/`,
@@ -82,16 +86,43 @@ export class OrderApi {
       method: 'GET',
       url: `/v1/user/me/`,
     })
-    const {user_id, ...paramWithoutId} = params
+    const { user_id, ...paramWithoutId } = params
     const orderStatusParam = {
       user_id: userData.data.id,
-      ...paramWithoutId}
+      ...paramWithoutId
+    }
     const { data } = await this.axios({
       method: 'GET',
       url: `/v1/order/status/`,
       data: orderStatusParam,
     });
     return data;
+  };
+  getOrderStatusById = async (params: OrderStatusGetByIdParamType): Promise<OrderStatusType | undefined> => {
+    const userData = await this.axios.get<UserDTOType>(`/v1/user/me/`)
+    const { orderId } = params
+    let page = 1
+    const orderStatusParam = {
+      user_id: userData.data.id,
+      page,
+    }
+    const { data } = await this.axios.get<OrderGetStatusReturnType>(`/v1/order/status/`, { data: orderStatusParam })
+    const filterList = data.results.filter((orderStatusData) => orderStatusData.orderId === orderId)
+    if (filterList.length !== 0) return filterList[0]
+    let nextPage = data.next
+    while (page < 5) {
+      page++
+      const { data } = await this.axios.get<OrderGetStatusReturnType>(`/v1/order/status/`, { data: orderStatusParam })
+      console.log(`# page ${page}의 orderStatus:`,data)
+      nextPage = data.next
+      const filterList = data.results.filter((orderStatusData) => orderStatusData.orderId === orderId)
+      if (filterList.length !== 0){
+        console.log("# OrderId에 해당하는 주문의 OrderStatus:",filterList)
+        return filterList[0]
+      } 
+    }
+    console.log("# OrderId에 해당하는 주문의 OrderStatus가 없습니다.")
+    return undefined
   };
   postOrderStatus = async (params: OrderPostStatusParamType): Promise<OrderPostStatusReturnType> => {
     const { data } = await this.axios({
@@ -101,7 +132,7 @@ export class OrderApi {
     });
     return data;
   };
-  
+
 }
 
 const orderApi = new OrderApi();

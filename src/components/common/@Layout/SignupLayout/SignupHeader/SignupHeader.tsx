@@ -19,7 +19,7 @@ const SignupHeader = () => {
         h={LAYOUT.HEADER.HEIGHT}
         background="white"
       >
-        <LogoComponent align='start' />
+        <LogoComponent align='start' aria-label={'btn-header-logo'} />
       </Flex>
     </>
   );

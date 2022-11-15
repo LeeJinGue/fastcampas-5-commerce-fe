@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Box, ChakraProps, Button, Flex, Image, Text, BoxProps, Input } from '@chakra-ui/react';
+import { Box, ChakraProps, Button, Flex, Image, Text, BoxProps, Input, FormControl, Checkbox } from '@chakra-ui/react';
 import { LAYOUT } from '@constants/layout';
-import { UseFormReturn } from 'react-hook-form';
+import { UseFormReturn, useWatch } from 'react-hook-form';
 import { FormDataType, OrderFormDataType } from './_hooks/useOrderForm';
 import FormHelper from '@components/common/FormHelper/FormHelper';
 import PrimaryButton from '@components/common/New/PrimaryButton';
@@ -10,22 +10,31 @@ import TotalPaymentIcon from '@components/common/New/@Icons/Line/TotalPayment';
 import PriceCard from '@components/common/Card/PriceCard';
 import { CartDTOType } from '@apis/cart/CartApi.type';
 import { OrderItemStateType, orderItemType } from '@features/orderItem/orderItemSlice';
+import { Address, useDaumPostcodePopup } from 'react-daum-postcode';
+import { DAUM_ADDRESS_SCRIPT_URL } from '@constants/social';
+import CheckLineIcon from '@components/common/New/@Icons/System/CheckLine';
+type AddrType = "O" | "D"
+// O: Order(주문자 정보), D: Delivery(배송지 정보)
 const initialFormData = {
   name: "",
   phone: "",
   address: {
-    zipcode: "",
+    base: "",
     detail: "",
+    post: "",
   }
 }
 const initialOrderData: OrderFormDataType = {
   order: initialFormData,
   delivery: initialFormData,
   deliveryrequest: "",
+  privacyAgree: false
 }
 interface PaymentPageProps extends BoxProps {
   formData: UseFormReturn<OrderFormDataType>;
   orderData: OrderItemStateType,
+  isagree: boolean,
+  setisagree: (value: React.SetStateAction<boolean>) => void,
 }
 
 function PaymentPageView({
@@ -34,14 +43,19 @@ function PaymentPageView({
     formState: { errors },
     getValues,
     setValue,
+    control
   },
   onSubmit,
   orderData,
+  isagree,
+  setisagree,
   ...basisProps
 }: PaymentPageProps) {
   const {orderItemList} = orderData
-  const [isAgree, setIsAgree] = useState(false)
-  const handleAgree = () => setIsAgree(prev => !prev)
+  
+  const handleAgree = () => {
+    setisagree(prev => !prev)
+  }
   const [isSame, setIsSame] = useState(false)
   const [deliveryData, setDeliveryData] = useState<FormDataType>(initialFormData)
   const {totalCost, totalDeliveryCost} = orderData
@@ -57,8 +71,47 @@ function PaymentPageView({
       }
       return !prev
     })
-
   }
+  const postOpen = useDaumPostcodePopup(DAUM_ADDRESS_SCRIPT_URL);
+  const privacyAgree = useWatch({
+    control,
+    name: "privacyAgree"
+  })
+  const handleOrderAddressComplete = (data:Address) => {
+    let fullAddress = data.jibunAddress;
+    let extraAddress = '';
+
+    if (data.userSelectedType === 'R') {
+      fullAddress = data.roadAddress
+      if (data.bname !== '') {
+        extraAddress += data.bname;
+      }
+      if (data.buildingName !== '') {
+        extraAddress += extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
+      }
+      fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
+    }
+    // J면 jibun(지번), R이면 Road(도로명)
+    setValue("order.address.base", fullAddress)
+    setValue("order.address.post", data.zonecode)
+  };
+  const handleDeliveryAddressComplete = (data:Address) => {
+    let fullAddress = data.jibunAddress;
+    let extraAddress = '';
+    if (data.userSelectedType === 'R') {
+      fullAddress = data.roadAddress
+      if (data.bname !== '') {
+        extraAddress += data.bname;
+      }
+      if (data.buildingName !== '') {
+        extraAddress += extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
+      }
+      fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
+    }
+    // J면 jibun(지번), R이면 Road(도로명)
+    setValue("delivery.address.base", fullAddress)
+    setValue("delivery.address.post", data.zonecode)
+  };
   return (
     <Box as="form"
       {...basisProps} onSubmit={onSubmit} bgColor="white" w="375px" px="16px" pt={LAYOUT.HEADER.HEIGHT} pb="80px" flexDir="column">
@@ -85,14 +138,18 @@ function PaymentPageView({
             {...register('order.phone')} autoComplete="off" />
         </FormHelper>
         <FormHelper mt="40px" label="주소"
-          errorText={errors.order?.address?.zipcode?.message}>
+          errorText={errors.order?.address?.base?.message}>
           <Flex>
             <Input
-              boxSizing='border-box' pl="20px" textStyle="text"
+              readOnly boxSizing='border-box' pl="20px" textStyle="text"
               h="40px" alignSelf="stretch"
               border={"1px solid"} borderColor="black" borderRadius="100px"
-              {...register('order.address.zipcode')} autoComplete="off" />
-            <PrimaryButton ml="10px" btntype={'Solid'} btnstate={'Primary'} btnshape={'Rectangle'}>{"우편번호 검색"}</PrimaryButton>
+              {...register('order.address.base')} autoComplete="off" />
+            <PrimaryButton ml="10px" btntype={'Solid'} onClick={() => 
+            {
+              postOpen({ onComplete: handleOrderAddressComplete });
+            }}
+            btnstate={'Primary'} btnshape={'Rectangle'}>{"우편번호 검색"}</PrimaryButton>
           </Flex>
           <Input
             boxSizing='border-box' mt="10px" pl="20px" textStyle="text"
@@ -128,14 +185,19 @@ function PaymentPageView({
             {...register('delivery.phone')} autoComplete="off" />
         </FormHelper>
         <FormHelper mt="40px" label="주소"
-          errorText={errors.delivery?.address?.zipcode?.message}>
+          errorText={errors.delivery?.address?.base?.message}>
           <Flex>
             <Input
-              boxSizing='border-box' pl="20px" textStyle="text"
+              readOnly boxSizing='border-box' pl="20px" textStyle="text"
               h="40px" alignSelf="stretch"
               border={"1px solid"} borderColor="black" borderRadius="100px"
-              {...register('delivery.address.zipcode')} autoComplete="off" />
-            <PrimaryButton ml="10px" btntype={'Solid'} btnstate={'Primary'} btnshape={'Rectangle'}>{"우편번호 검색"}</PrimaryButton>
+              {...register('delivery.address.base')} autoComplete="off" />
+            <PrimaryButton ml="10px" btntype={'Solid'} btnstate={'Primary'} onClick={() =>{
+              postOpen({ onComplete: handleDeliveryAddressComplete });
+            }
+            // handlePostClick(handleDeliveryAddressComplete)
+          } 
+            btnshape={'Rectangle'}>{"우편번호 검색"}</PrimaryButton>
           </Flex>
           <Input
             boxSizing='border-box' mt="10px" pl="20px" textStyle="text"
@@ -176,10 +238,21 @@ function PaymentPageView({
         <Text textStyle="title" textColor="primary.500">{totalCost+totalDeliveryCost}{"원"}</Text>
       </Flex>
       <Box w="343px" h="0" my="20px" border="1px solid" borderColor="gray.200" />
-      <Flex alignItems="center">
-        <CheckboxIcon state={isAgree ? 'Select' : 'Default'} shape={'Rectangle'} _hover={{ cursor: "pointer" }} onClick={handleAgree} />
+      {/* <Flex alignItems="center">
+        <CheckboxIcon state={isagree ? 'Select' : 'Default'} shape={'Rectangle'} _hover={{ cursor: "pointer" }} onClick={handleAgree} />
         <Text ml="10px" textColor="gray.600" textStyle="text">{"개인정보 수집 이용 동의(필수)"}</Text>
-      </Flex>
+      </Flex> */}
+      <FormHelper mt="50px"
+        errorText={errors.privacyAgree?.message}>
+        <Flex alignItems="center">
+        <Checkbox
+              {...register('privacyAgree')}
+              isChecked={privacyAgree}
+              icon={<CheckLineIcon isChecked={privacyAgree} />}
+        ></Checkbox>
+        <Text ml="10px" textColor="gray.600" textStyle="text">{"개인정보 수집 이용 동의(필수)"}</Text>
+        </Flex>
+      </FormHelper>
       <PrimaryButton w="343px" h="50px" mt="40px" 
       btntype={'Solid'} btnstate={'Primary'} btnshape={'Round'} type='submit'>{"결제하기"}</PrimaryButton>
     </Box>

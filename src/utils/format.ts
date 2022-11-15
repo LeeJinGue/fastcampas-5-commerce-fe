@@ -109,6 +109,23 @@ export const formatExamTime = (SECONDS: number) => {
   }
   return `${seconds}초`;
 };
-export const formatReviewTime = (time: Date):string => {
-  return time.getFullYear()+"."+time.getMonth()+"."+time.getDate()
+export const formatReviewTime = (time: string):string => {
+  // 2022-11-03T17:47:05.677545 -> 2022.11.03으로 변경하는 함수
+  const createdTime = new Date(time)
+  const YYYY = createdTime.getFullYear()
+  const month = createdTime.getMonth() + 1
+  const MM = month >= 10 ? month : "0"+month
+  const date = createdTime.getDate()
+  const DD = date >= 10 ? date : "0"+date
+  return `${YYYY}.${MM}.${DD}`
+}
+export const formatCreatedTimeToDate = (time:string):string => {
+  // 2022-11-03T17:47:05.677545 -> [2022-11-03]으로 변경하는 함수
+  const createdTime = new Date(time)
+  const YYYY = createdTime.getFullYear()
+  const month = createdTime.getMonth() + 1
+  const MM = month >= 10 ? month : "0"+month
+  const date = createdTime.getDate()
+  const DD = date >= 10 ? date : "0"+date
+  return `[${YYYY} - ${MM} - ${DD}]`
 }

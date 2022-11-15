@@ -19,28 +19,33 @@ import { useRouter } from 'next/router';
 interface MypageOrderhistoryWritereviewPageDataProps extends ChakraProps {
 }
 interface MypageOrderhistoryWritereviewPageProps extends MypageOrderhistoryWritereviewPageDataProps {
-
+  orderStautsData: OrderStatusType,
+  orderData: OrderDTOType
 }
 const initRatioList:ratioType[] = ["empty","empty","empty","empty","empty"]
 function MypageOrderhistorywritereviewPageData({...basisProps}:MypageOrderhistoryWritereviewPageDataProps ){
-
-  return <MypageOrderhistoryWritereviewPage  />
+  const route = useRouter()
+  const orderStautsData:OrderStatusType = {
+    id: typeof route.query.id === "string" ? Number.parseInt(route.query.id) : 0,
+    orderId: typeof route.query.orderId === "string" ? route.query.orderId : '',
+    productId: typeof route.query.productId === "string" ? Number.parseInt(route.query.productId) : 0,
+    count: typeof route.query.count === "string" ? Number.parseInt(route.query.count) : 0,
+    created: typeof route.query.created === "string" ? route.query.created : ''
+  }
+  const {data: orderData, isError, isLoading} = useGetOrderByIdQuery({variables: {uuid: orderStautsData.orderId}})
+  if(isLoading) return <Text>주문 데이터 로딩중</Text>
+  if(isError) return <Text>주문 데이터 에러</Text>
+  if(orderData === undefined) return <Text>주문 데이터가 없습니다.</Text>
+  return <MypageOrderhistoryWritereviewPage orderStautsData={orderStautsData} orderData={orderData} />
 
 }
 function MypageOrderhistoryWritereviewPage({
 
   ...basisProps
 }: MypageOrderhistoryWritereviewPageProps) {
-  const route = useRouter()
-  const orderStauts:OrderStatusType = {
-    id: typeof route.query.id === "string" ? Number.parseInt(route.query.id) : 0,
-    orderId: typeof route.query.orderId === "string" ? route.query.orderId : '',
-    productId: typeof route.query.productId === "string" ? Number.parseInt(route.query.productId) : 0,
-    count: typeof route.query.count === "string" ? Number.parseInt(route.query.count) : 0,
-    shippingStatus: typeof route.query.shippingStatus === "string" ? route.query.shippingStatus : '',
-    created: typeof route.query.created === "string" ? route.query.created : ''
-  }
-  const {productId, count, shippingStatus, created} = orderStauts
+  const {orderStautsData, orderData} = basisProps
+  const {productId, count, created} = orderStautsData
+  const { shippingStatus } = orderData
   const [review, setReview] = useState("")
   const [reviewPhotos, setReviewPhotos] = useState(["/images/review_img1.png","/images/review_img2.png"])
   const [ratioList, setRatioList] = useState(initRatioList)
@@ -103,4 +108,4 @@ function MypageOrderhistoryWritereviewPage({
   );
 }
 
-export default MypageOrderhistoryWritereviewPage;
+export default MypageOrderhistorywritereviewPageData;
