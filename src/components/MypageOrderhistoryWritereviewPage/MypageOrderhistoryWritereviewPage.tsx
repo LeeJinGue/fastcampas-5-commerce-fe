@@ -18,6 +18,7 @@ import { usePostReviewMutation } from '@apis/review/ReviewApi.mutation';
 import { ReviewPostParamType } from '@apis/review/ReviewApi.type';
 import { isOverSize } from '@utils/file';
 import { useUploadFileToS3Mutation } from '@apis/S3FileUploader/S3FileUploaderApi.mutation';
+import { ROUTES } from '@constants/routes';
 
 const FILE_MAX_SIZE_MB = 10;
 interface MypageOrderhistoryWritereviewPageDataProps extends ChakraProps {
@@ -48,6 +49,7 @@ function MypageOrderhistoryWritereviewPage({
   ...basisProps
 }: MypageOrderhistoryWritereviewPageProps) {
   const toast = useToast()
+  const route = useRouter()
   const { orderstatusdata, orderdata } = basisProps
   const { mutateAsync: postReviewMutate } = usePostReviewMutation()
   const { productId, count, created } = orderstatusdata
@@ -65,6 +67,11 @@ function MypageOrderhistoryWritereviewPage({
       content,
       orderItemId: 1,
       reviewimagePath: reviewimagePath,
+    }).then(res => {
+      console.log("리뷰 작성 완료, 리뷰 정보:",res)
+      route.replace({pathname: ROUTES.MYPAGE.ORDER_HISTORY})
+    }).catch(err => {
+      console.log("리뷰 작성 에러:",err)
     })
   }
 
