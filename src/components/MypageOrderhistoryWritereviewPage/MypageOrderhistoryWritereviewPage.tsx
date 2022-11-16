@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Box, ChakraProps, Button, Flex, Image, Text, Divider, Input, IconButton, Textarea } from '@chakra-ui/react';
+import React, { useCallback, useState } from 'react';
+import { Box, ChakraProps, Button, Flex, Image, Text, Divider, Input, IconButton, Textarea, useToast } from '@chakra-ui/react';
 import { LAYOUT } from '@constants/layout';
 import DateText from '@components/common/New/DateText';
 import PriceCard from '@components/common/Card/PriceCard';
@@ -11,99 +11,141 @@ import { useGetOrderByIdQuery, useGetOrderListQuery, useGetOrderStatusQuery } fr
 import { useGetUserMeQuery } from '@apis/user/UserApi.query';
 import { getToken } from '@utils/localStorage/token';
 import LoadingPage from '@components/common/New/LoadingPage';
-import { OrderDTOType, OrderStatusType } from '@apis/order/OrderApi.type';
+import { OrderDTOType, OrderGetByIdReturnType, OrderStatusType } from '@apis/order/OrderApi.type';
 import { orderItemType } from '@features/orderItem/orderItemSlice';
 import { useRouter } from 'next/router';
+import { usePostReviewMutation } from '@apis/review/ReviewApi.mutation';
+import { ReviewPostParamType } from '@apis/review/ReviewApi.type';
+import { isOverSize } from '@utils/file';
+import { useUploadFileToS3Mutation } from '@apis/S3FileUploader/S3FileUploaderApi.mutation';
 
-
+const FILE_MAX_SIZE_MB = 10;
 interface MypageOrderhistoryWritereviewPageDataProps extends ChakraProps {
 }
 interface MypageOrderhistoryWritereviewPageProps extends MypageOrderhistoryWritereviewPageDataProps {
-  orderStautsData: OrderStatusType,
-  orderData: OrderDTOType
+  orderstatusdata: OrderStatusType,
+  orderdata: OrderGetByIdReturnType 
 }
-const initRatioList:ratioType[] = ["empty","empty","empty","empty","empty"]
-function MypageOrderhistorywritereviewPageData({...basisProps}:MypageOrderhistoryWritereviewPageDataProps ){
+const initRatioList: ratioType[] = ["empty", "empty", "empty", "empty", "empty"]
+function MypageOrderhistorywritereviewPageData({ ...basisProps }: MypageOrderhistoryWritereviewPageDataProps) {
   const route = useRouter()
-  const orderStautsData:OrderStatusType = {
+  const orderstatusdata: OrderStatusType = {
     id: typeof route.query.id === "string" ? Number.parseInt(route.query.id) : 0,
     orderId: typeof route.query.orderId === "string" ? route.query.orderId : '',
     productId: typeof route.query.productId === "string" ? Number.parseInt(route.query.productId) : 0,
     count: typeof route.query.count === "string" ? Number.parseInt(route.query.count) : 0,
     created: typeof route.query.created === "string" ? route.query.created : ''
   }
-  const {data: orderData, isError, isLoading} = useGetOrderByIdQuery({variables: {uuid: orderStautsData.orderId}})
-  if(isLoading) return <Text>주문 데이터 로딩중</Text>
-  if(isError) return <Text>주문 데이터 에러</Text>
-  if(orderData === undefined) return <Text>주문 데이터가 없습니다.</Text>
-  return <MypageOrderhistoryWritereviewPage orderStautsData={orderStautsData} orderData={orderData} />
+  const { data: orderdata, isError, isLoading } = useGetOrderByIdQuery({ variables: { uuid: orderstatusdata.orderId } })
+  if (isLoading) return <Text>주문 데이터 로딩중</Text>
+  if (isError) return <Text>주문 데이터 에러</Text>
+  if (orderdata === undefined) return <Text>주문 데이터가 없습니다.</Text>
+  return <MypageOrderhistoryWritereviewPage orderstatusdata={orderstatusdata} orderdata={orderdata} {...basisProps} />
 
 }
 function MypageOrderhistoryWritereviewPage({
 
   ...basisProps
 }: MypageOrderhistoryWritereviewPageProps) {
-  const {orderStautsData, orderData} = basisProps
-  const {productId, count, created} = orderStautsData
-  const { shippingStatus } = orderData
-  const [review, setReview] = useState("")
-  const [reviewPhotos, setReviewPhotos] = useState(["/images/review_img1.png","/images/review_img2.png"])
+  const toast = useToast()
+  const { orderstatusdata, orderdata } = basisProps
+  const { mutateAsync: postReviewMutate } = usePostReviewMutation()
+  const { productId, count, created } = orderstatusdata
+  const { shippingStatus } = orderdata
+  const [content, setContent] = useState("")
+  const [reviewimagePath, setReviewimageSet] = useState<string[]>([])
   const [ratioList, setRatioList] = useState(initRatioList)
-  const handleEnterKey = (key:string) => {
-      if(key === "Enter"){
-        console.log("엔터눌렀음")
-        setReview(prev => prev+"\n")
-      } 
-  }
-  const handleRatioOnclick = (index:number) => {
-    setRatioList((prev) => {
-    return prev.map((_, prevIndex) => {
-      if(prevIndex <= index) return 'full'
-      return 'empty'
-    }) 
+  const [rate, setRate] = useState(0)
+  const {mutateAsync:uploadFileMutate} = useUploadFileToS3Mutation()
+  const handelWriteReviewButton = () => {
+    postReviewMutate({
+      userId: 0,
+      productId: orderstatusdata.productId,
+      rate,
+      content,
+      orderItemId: 1,
+      reviewimagePath: reviewimagePath,
     })
   }
+
+
+  const onChangeFile: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (isOverSize(file, { maxSize: FILE_MAX_SIZE_MB })) {
+      toast({
+        status: 'info',
+        description:
+          '용량이 초과된 파일입니다. 용량처리는 onSubmit 시점이 아닌 onChange 시점이 더욱 좋습니다. 지금은 onSubmit 에서 하도록 패쓰~',
+      });
+      return;
+    }
+    uploadFileMutate({file}).then(res => {
+      console.log("#url: ",res.url)
+      setReviewimageSet(prev => prev.concat(res.url))
+    })
+  };
+  const handleRatioOnclick = useCallback((index: number) => {
+    setRatioList((prev) => {
+      return prev.map((_, prevIndex) => {
+        if (prevIndex <= index) return 'full'
+        return 'empty'
+      })
+    })
+    setRate(index+1) 
+  }, [])
+  const handleDeleteReviewImage = (index:number) => {
+    setReviewimageSet(prev => prev.filter((_, prevIndex) => prevIndex !== index))
+  }
   return (
-    <Flex pt={LAYOUT.HEADER.HEIGHT} pb="30px" w="375px" 
-    flexDir="column" bgColor="white" {...basisProps}>
+    <Flex pt={LAYOUT.HEADER.HEIGHT} pb="30px" w="375px"
+      flexDir="column" bgColor="white" {...basisProps}>
       <Text px="16px" mt="50px" textStyle="titleLarge" textColor="black">리뷰작성</Text>
       <DateText px="16px" mt="80px" date={created} />
-      <PriceCard px="16px" ispaymentcomplete={false} 
-      productid={productId} count={count} status={shippingStatus} />
-      <Box my="20px" h="20px" bgColor="gray.100"/>
+      <PriceCard px="16px" ispaymentcomplete={false}
+        productid={productId} count={count} status={shippingStatus} />
+      <Box my="20px" h="20px" bgColor="gray.100" />
       <Text px="16px" textStyle="text">별점</Text>
       <Flex h="80px" mt="20px" justifyContent="center" alignItems="center">
-        {ratioList.map((value, index)=>{
-          return <RatioStarIcon _hover={{cursor:"pointer"}} onClick={()=>{
+        {ratioList.map((value, index) => {
+          return <RatioStarIcon _hover={{ cursor: "pointer" }} onClick={() => {
             handleRatioOnclick(index)
-          }} ratio={value} size="36"/>
+          }} ratio={value} size="36" />
         })}
       </Flex>
-      <Divider mt="20px"/>
+      <Divider mt="20px" />
       <Text px="16px" mt="20px" textStyle="text" textColor="black" >
         내용
       </Text>
       <Flex mt="20px" px="16px">
         <Textarea resize="none" border="0"
-        boxSizing='border-box' h="174px" placeholder='내용을 작성하세요.'
-        value={review} onChange={(e) => setReview(e.target.value)} />
+          boxSizing='border-box' h="174px" placeholder='내용을 작성하세요.'
+          value={content} onChange={(e) => setContent(e.target.value)} />
       </Flex>
-      <Divider mt="20px"/>
+      <Divider mt="20px" />
       <Text px="16px" mt="20px" textStyle="text" textColor="black">{`사진첨부 (0/3)`}</Text>
       <Flex   // 리뷰사진들
-      px="16px" mt="30px" >
-        <IconButton 
-        border="1px dashed" borderColor="gray.400" borderRadius="5px"
-        w="80px" h="80px" mr="20px" aria-label='AddReviewPhoto' icon={<UploadIcon iconcolor='Gray'/>}/>
-        {reviewPhotos.map((value) => {
+        px="16px" mt="30px" >
+        <Button as="label" cursor="pointer"
+          border="1px dashed" borderColor="gray.400" borderRadius="5px"
+          w="80px" h="80px" mr="20px" aria-label='AddReviewPhoto'  >
+            <UploadIcon iconcolor='Gray' />
+            <input
+            style={{ display: 'none' }}
+            type="file"
+            onChange={onChangeFile}
+          />
+          </Button>
+        {reviewimagePath.map((value, index) => {
           return (<Flex>
             <Image w="80px" h="80px" borderRadius="5px" src={value} />
-            <XIcon position="relative" left="-10px" top="-10px" xsize='Circle' xcolor='White' fillcolor='Gray3'/>
+            <XIcon position="relative" left="-10px" top="-10px" xsize='Circle' xcolor='White' fillcolor='Gray3' 
+            onClick={() => handleDeleteReviewImage(index)}/>
           </Flex>)
         })}
       </Flex>
-      <PrimaryButton mt="100px" w="343px" h="50px" 
-      mx="16px"btntype='Solid' btnstate='Primary' btnshape='Round'>작성하기</PrimaryButton>
+      <PrimaryButton mt="100px" w="343px" h="50px"
+        mx="16px" btntype='Solid' btnstate='Primary' btnshape='Round' onClick={handelWriteReviewButton}>작성하기</PrimaryButton>
     </Flex>
   );
 }
