@@ -6,10 +6,10 @@ import DeliveryInfoText from '@components/PaymentPage/_fragment/DeliveryInfoText
 import PrimaryButton from '@components/common/New/PrimaryButton';
 import { useRouter } from 'next/router';
 import { useGetOrderByIdQuery, useGetOrderStatusByIdQuery } from '@apis/order/OrderApi.query';
-import { OrderDTOType, OrderStatusType } from '@apis/order/OrderApi.type';
+import { OrderDTOType, OrderGetByIdReturnType, OrderStatusType } from '@apis/order/OrderApi.type';
 import { formatCreatedTimeToDate } from '@utils/format';
 interface PaymentSuccessPageProps extends PaymentSuccessPageDataProps {
-  orderData: OrderDTOType,
+  orderData: OrderGetByIdReturnType,
   paymentTime: string,
   orderStatusData: OrderStatusType,
 }

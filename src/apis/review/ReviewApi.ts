@@ -36,10 +36,14 @@ export class ReviewApi {
   postReview = async (
     params?: ReviewPostParamType,
   ): Promise<ReviewPostReturnType> => {
+    const {data:userData} = await this.axios({
+      method: 'GET',
+      url: `/v1/user/me/`,
+    })
     const { data } = await this.axios({
       method: 'POST',
       url: `/v1/review/`,
-      data: params,
+      data: {...params, userId:userData.id},
     });
     return data;
   };

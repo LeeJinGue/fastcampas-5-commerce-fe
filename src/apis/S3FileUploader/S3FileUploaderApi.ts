@@ -24,6 +24,7 @@ export class S3FileUploaderApi {
 
   private _uploadFileToS3 = async (params: { url: string; file: File }) => {
     const { url, file } = params;
+    delete this.axios.defaults.headers.common['Authorization'];
     await this.axios({
       method: 'PUT',
       url,

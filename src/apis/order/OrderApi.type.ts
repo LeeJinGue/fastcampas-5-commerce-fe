@@ -70,7 +70,7 @@ export type OrderPostReturnType = OrderDTOType
 export type OrderGetByIdParamType = {
   uuid: string;
 }
-export type OrderGetByIdReturnType = OrderDTOType
+export type OrderGetByIdReturnType = Omit<OrderDTOType, "userId">
 
 // PUT /v1/order/{id}/
 export type OrderPutByIdParamType = {

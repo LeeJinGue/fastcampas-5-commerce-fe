@@ -33,9 +33,10 @@ export type ReviewGetAllReturnType = {
 export type ReviewPostParamType = {
   userId: number,
   productId: number,
+  orderItemId: number,
   rate: number,
   content: string,
-  reviewimageSet: Array<ReviewImageOnlyURLType>,
+  reviewimagePath: string[],
 };
 export type ReviewPostReturnType = {
   id: number,
