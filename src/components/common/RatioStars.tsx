@@ -8,11 +8,12 @@ interface RatioStarsProps extends FlexProps{
 function RatioStars({rate, size, ...props}:RatioStarsProps) {
   return (
     <Flex // 별점. rate에 따라 꽉 찬 별 몇 개를 할 지 결정한다.
-    >
-      {Array.from({length:5}, (_,index) => index).map((value)=>{
-        return <RatioStarIcon 
-        ratio={rate-value <=0 ? 'empty' : 
-        (rate-value>=1 ? 'full' : 'half')} size={'16'} key={value} />
+    {...props}>
+      {Array.from({length:5}, (_,index) => {
+        return <RatioStarIcon
+        key={index.toString()}
+        ratio={rate-index <=0 ? 'empty' : 
+        (rate-index>=1 ? 'full' : 'half')} size={'16'} />
       })}
     </Flex>
   )
