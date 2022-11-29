@@ -17,31 +17,43 @@ import DrawerBuy from './_fragments/DrawerBuy';
 import useOpenModalByQueryParams from 'hooks/useOpenModalByQueryParams';
 import { useGetCartQuery } from '@apis/cart/CartApi.query';
 import { usePostCartMutation } from '@apis/cart/CartApi.mutation';
-interface ProductsDetailByIdPageProps extends ChakraProps {
+import { CartDTOType } from '@apis/cart/CartApi.type';
+interface ProductsDetailByIdViewPageProps extends ProductsDetailByIdDataPageProps {
+  cart_data: CartDTOType,
+}
+interface ProductsDetailByIdDataPageProps extends ChakraProps {
   product_data: ProductDetailDTOTType,
   user_id: number,
 }
-function ProductsDetailByIdPage({
-  product_data,
+function ProductsDetailByIdDataPage({
   user_id,
   ...basisProps
-}: ProductsDetailByIdPageProps) {
-  const cartData = useGetCartQuery({
+}: ProductsDetailByIdDataPageProps) {
+  const { data: cartData, isError: isCartDataError, isLoading: isCartDataLoading } = useGetCartQuery({
     variables: {
       user_id
     }
   })
-  const { mutateAsync: postCartMutate } = usePostCartMutation()
-  let cartId = 0;
-  if (cartData.isError) {
-    postCartMutate({ userId: user_id }).then(res => { 
-      cartId = res.id 
-    }).catch(err => console.log("#err:", err))
-  }
-  if(cartData.isSuccess) {
-    cartId = cartData.data[0].id
-  }
+  if (isCartDataLoading) return <LoadingPage />
+  if (isCartDataError) <Text>카트 정보 갖고오기 에러</Text> 
+  if (!cartData) return <Text>카트 정보가 없습니다.</Text>
+
+  return <ProductsDetailByIdViewPage cart_data={cartData[0]} user_id={user_id} {...basisProps} />
+}
+
+function ProductsDetailByIdViewPage({
+  product_data,
+  user_id,
+  cart_data,
+  ...basisProps
+}: ProductsDetailByIdViewPageProps) {
+  
   const { photo, reviewList, avgRate } = product_data
+  const [page, setPage] = useState(1)
+  const startPage = (page-1)*5
+  const endPage = page*5
+  const nowPageReviewList = reviewList.slice(startPage,endPage)
+  const lastPage = Math.ceil(reviewList.length/5)
   const rate = avgRate === null ? 0 : avgRate
   // 상세정보 펼쳐보기/접기
   const [isDetailOpen, setIsDetailOpen] = useState(true)
@@ -84,7 +96,7 @@ function ProductsDetailByIdPage({
       <Flex {...basisProps} bgColor="white" w="375px" pt={LAYOUT.HEADER.HEIGHT} flexDir="column"
         pb="80px">
         <Image mt="36px" mx="16px" w="343px" h="300px" src={photo} />
-        <ProductDetail cart_id={cartId} user_id={user_id} productData={product_data} />
+        <ProductDetail cart_id={cart_data.id} user_id={user_id} productData={product_data} />
         <Stack // 상세정보, 구매정보, 리뷰 박스
           w="auto" h="80px"
           {...getRadioProps}
@@ -211,18 +223,18 @@ function ProductsDetailByIdPage({
             </Flex>
           </Flex>
           { // 실제 리뷰 리스트
-            reviewList.map((reviewData: ProductReviewType) => {
+            nowPageReviewList.map((reviewData: ProductReviewType) => {
               return <>
                 <Review reviewData={reviewData} iscomment={false} />
                 <Box alignSelf="center" w="343px" h="0" border="1px solid" borderColor="gray.200" />
               </>
             })}
         </Flex>
-        <Pagination />
+        <Pagination page={page} setPage={setPage} lastPage={lastPage} />
       </Flex>
     </>
   );
 }
 
 
-export default ProductsDetailByIdPage;
+export default ProductsDetailByIdDataPage;
