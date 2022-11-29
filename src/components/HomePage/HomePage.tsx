@@ -170,7 +170,7 @@ const HomePageView = ({ reviewList, ...basisProps }: HomePageViewProps) => {
         </Text>
         <Flex mt="20px" flexDir="row" alignItems="center" >
           <Text textStyle="text" textColor="black">{"이벤트 상세보기"}</Text>
-          <ListNumberArrowIcon _hover={{ cursor: "pointer" }} onClick={handleEventDetail} colortype='Default' />
+          <ListNumberArrowIcon direction='Right' _hover={{ cursor: "pointer" }} onClick={handleEventDetail} colortype='Default' />
         </Flex>
       </Box>
       <Flex // 소중한 우리 아이를 위해... 배경 박스
