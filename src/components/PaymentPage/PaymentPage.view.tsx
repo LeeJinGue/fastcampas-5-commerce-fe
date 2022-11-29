@@ -248,7 +248,7 @@ function PaymentPageView({
         <Checkbox
               {...register('privacyAgree')}
               isChecked={privacyAgree}
-              icon={<CheckLineIcon isChecked={privacyAgree} />}
+              icon={<CheckLineIcon checked={privacyAgree} />}
         ></Checkbox>
         <Text ml="10px" textColor="gray.600" textStyle="text">{"개인정보 수집 이용 동의(필수)"}</Text>
         </Flex>

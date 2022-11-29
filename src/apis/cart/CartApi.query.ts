@@ -19,13 +19,7 @@ export function useGetCartQuery(
   const queryKey = Cart_API_QUERY_KEY.GET(params?.variables);
   const query = useQuery(
     queryKey,
-    async () => {
-      const accessToken = getToken()!.access
-      const userData = await userApi.getUserMe({accessToken})
-      // return CartApi.getCart(params.variables)
-      const user_id = userData.id
-      return CartApi.getCart({user_id})
-    },
+    () => CartApi.getCart(params.variables),
     params?.options,
   );
   return { ...query, queryKey };

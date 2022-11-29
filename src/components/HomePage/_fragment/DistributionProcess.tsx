@@ -7,7 +7,7 @@ import DuotonePaymentIcon from "@components/common/New/@Icons/Duotone/Payment";
 
 type iconTypes = "Box" | "Delivery" | "Payment" | "Assign";
 interface DistributionProcessProps extends BoxProps {
-  isChecked: boolean,
+  checkIconShow: boolean,
   title: string,
   contents: JSX.Element,
   iconType: iconTypes,
@@ -30,14 +30,14 @@ const DuotoneIcon = ( {iconType, strokeColor} :DuotoneIcontProps) => {
       return  <></>
 }
 };
-const DistributionProcess = ({ iconType, ...props }: DistributionProcessProps) => {
-  const { isChecked, title, contents } = props
+const DistributionProcess = ({ iconType,checkIconShow, ...props }: DistributionProcessProps) => {
+  const { title, contents } = props
 
   let strokeColor = "white"
   let circleColor = "primary.500"
   let borderColor = "primary.500"
   let textColor = "gray.800"
-  if (!isChecked) {
+  if (!checkIconShow) {
     strokeColor = "#CBCED6"
     circleColor = "white"
     borderColor = "gray.400"
@@ -53,7 +53,7 @@ const DistributionProcess = ({ iconType, ...props }: DistributionProcessProps) =
     </Circle>
     <Box display="flex" flexDir="column" justifyContent="center" ml="10px">
       <Box display="flex" flexDir="row" >
-        {isChecked && <CheckLineIcon bg="transparent" isChecked={true} />}
+        {checkIconShow && <CheckLineIcon bg="transparent" checked={checkIconShow} />}
         <Text textStyle="title" textColor={textColor}>{title}</Text></Box>
       <Text textStyle="text" textAlign="center" textColor={textColor}>{contents}</Text>
     </Box>
