@@ -9,6 +9,7 @@ export const ORDER_API_QUERY_KEY = {
   GET: (param?: OrderGetAllParamType) => ['order-list', param],
   GET_BY_ID: (param?: OrderGetByIdParamType) => ['order-by-id', param],
   GET_STATUS: (param?: OrderGetStatusParamType) => ['order-status', param],
+  GET_STATUS_WITH_ORDER: (param?: OrderGetStatusParamType) => ['order-status-with-order', param],
   GET_STATUS_BY_ID: (param?: OrderStatusGetByIdParamType) => ['order-status-by-id', param],
   
 };
@@ -43,6 +44,17 @@ export function useGetOrderStatusQuery(
   const query = useQuery(
     queryKey,
     () => orderApi.getOrderStatus(params?.variables),
+    params?.options,
+  );
+  return { ...query, queryKey };
+}
+export function useGetOrderStatusWithOrderQuery(
+  params: QueryHookParams<typeof orderApi.getOrderStatusWithOrder>,
+) {
+  const queryKey = ORDER_API_QUERY_KEY.GET_STATUS_WITH_ORDER(params?.variables);
+  const query = useQuery(
+    queryKey,
+    () => orderApi.getOrderStatusWithOrder(params?.variables),
     params?.options,
   );
   return { ...query, queryKey };

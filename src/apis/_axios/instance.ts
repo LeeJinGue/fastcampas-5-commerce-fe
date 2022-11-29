@@ -6,6 +6,7 @@ import { getToken } from '@utils/localStorage/token';
 import styledConsole from '@utils/styledConsole';
 
 import { refresh } from './refresh';
+import { object } from 'yup';
 
 const isDev = CONFIG.ENV === 'development';
 
@@ -32,6 +33,12 @@ instance.interceptors.request.use(
     const token = await getToken();
     const isAccess = !!token && !!token.access;
     if (isAccess) {
+      if(config.url?.startsWith("https")) {
+        unsetAuthHeader()
+        return {
+          ...config,
+        }
+      }
       setAuthHeader(token.access as string);
       return {
         ...config,

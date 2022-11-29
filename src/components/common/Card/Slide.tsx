@@ -44,7 +44,7 @@ function SlideCard({ reviewData, ...props }: SlideCardProps) {
       <Divider my="20px" borderColor="gray.300" />
       <Flex // 이미지 박스
       >
-        {reviewimageSet.map((image) => <Image src={image.url} ml="10px" borderRadius="5px" w="80px" h="80px" />)}
+        {reviewimageSet.map((image) => <Image src={image.url} key={image.url} ml="10px" borderRadius="5px" w="80px" h="80px" />)}
       </Flex>
     </Flex>
 

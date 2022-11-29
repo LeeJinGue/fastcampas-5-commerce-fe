@@ -129,3 +129,10 @@ export const formatCreatedTimeToDate = (time:string):string => {
   const DD = date >= 10 ? date : "0"+date
   return `[${YYYY} - ${MM} - ${DD}]`
 }
+export const isSameDay: (date1: string, date2: string) => boolean = (date1, date2) => {
+  const Date1 = new Date(date1)
+  const Date2 = new Date(date2)
+  const Day1 = Date1.getDate()
+  const Day2 = Date2.getDate()
+  return Day1 === Day2
+}

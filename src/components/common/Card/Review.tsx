@@ -19,7 +19,7 @@ function Review({iscomment, reviewData,...props}: ReviewProps) {
     <Flex pl="16px" mt="23px" mb="25px" w="375px" {...props}>
       {iscomment && <ChatIcon mr="8px" iconTypes='line' />}
       <Flex   // card/Review
-        flexDir="column" >
+        flexDir="column" w="100%">
           <Flex // 리뷰어 아이디, 리뷰날짜, 별점
           justifyContent="space-between" pr="16px">
             <Flex // 리뷰어 아이디 및 리뷰날짜

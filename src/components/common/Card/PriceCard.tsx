@@ -25,9 +25,9 @@ function PriceCardData({ispaymentcomplete ,...props}: PirceDataProps){
   if(isError) return <Text>상품 정보 갖고오기 에러발생!</Text>
   return <PriceCardView productdata={data} ispaymentcomplete={ispaymentcomplete} {...props}/>
 }
-function PriceCardView({...props}: PriceViewCardProps) {
+function PriceCardView({ispaymentcomplete,...props}: PriceViewCardProps) {
   const {name, capacity, price } = props.productdata
-  const {count, status, ispaymentcomplete} = props
+  const {count, status } = props
   const del = price*count < 30000 ? 2500 : 0
   return (
     <Flex // Card/price card

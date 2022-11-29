@@ -39,7 +39,6 @@ const HomePageContent = ({}) => {
   })
   
   if (token) {
-    console.log("# token:", token)
     const accessToken = token.access
     useGetUserMeQuery({variables: {
       accessToken,
@@ -52,8 +51,7 @@ const HomePageContent = ({}) => {
   return <HomePageView reviewList={allReview!.results} />
 }
 
-const HomePageView = ({ ...basisProps }: HomePageViewProps) => {
-  const {reviewList} = basisProps
+const HomePageView = ({ reviewList, ...basisProps }: HomePageViewProps) => {
   const route = useRouter()
   const [badgeText, setBadgeText] = useState("")
   const handleBadgeText = (badge: string) => {        // Radio 버튼 onChange 이벤트
@@ -62,7 +60,7 @@ const HomePageView = ({ ...basisProps }: HomePageViewProps) => {
   const { value, getRadioProps, getRootProps } = useRadioGroup({
     defaultValue: "전체",
     onChange: handleBadgeText,
-    name: "탈퇴 사유"
+    name: "상품 종류"
   })
 
 
@@ -104,18 +102,18 @@ const HomePageView = ({ ...basisProps }: HomePageViewProps) => {
         {"인코스런만의 투명한 유통혁신"}
       </Text>
       <Box h="828px" mt="60px" w="375px" bg="white" >
-        <DistributionProcess iconType="Box" isChecked={true} title="STEP 1" contents={<>{"제조공장의"}<br />{"제조 및 개발비용"}</>} />
+        <DistributionProcess iconType="Box" checkIconShow={true} title="STEP 1" contents={<>{"제조공장의"}<br />{"제조 및 개발비용"}</>} />
         <VerticalLine />
-        <DistributionProcess iconType='Delivery' isChecked={false} title="STEP 2" contents={<>{"물류 및 운송비용"}</>} />
+        <DistributionProcess iconType='Delivery' checkIconShow={false} title="STEP 2" contents={<>{"물류 및 운송비용"}</>} />
         <VerticalLine />
-        <DistributionProcess iconType='Payment' isChecked={false} title="STEP 3" contents={<>{"결제 수수료"}</>} />
+        <DistributionProcess iconType='Payment' checkIconShow={false} title="STEP 3" contents={<>{"결제 수수료"}</>} />
         <VerticalLine />
-        <DistributionProcess iconType="Assign" isChecked={true} title="STEP 4" contents={<>{"소비자 가격"}</>} />
+        <DistributionProcess iconType="Assign" checkIconShow={true} title="STEP 4" contents={<>{"소비자 가격"}</>} />
         <ElipseIcon mt="23px" />
         <Text mt="20px" textAlign="center" textStyle="title" color="primary.500">{"SAVE MONEY"}</Text>
       </Box>
       <Text textAlign="center" textStyle="text" color="black" mt="30px">
-        <Text textStyle="title" color="primary.500">
+        <Text as="span" textStyle="title" color="primary.500">
           {"*온라인 직접판매"}<br />
         </Text>
         {"인코스런은 온라인으로만 직접 판매하여,"}<br />
@@ -172,7 +170,7 @@ const HomePageView = ({ ...basisProps }: HomePageViewProps) => {
         </Text>
         <Flex mt="20px" flexDir="row" alignItems="center" >
           <Text textStyle="text" textColor="black">{"이벤트 상세보기"}</Text>
-          <ListNumberArrowIcon _hover={{ cursor: "pointer" }} onClick={handleEventDetail} colortype='Default' />
+          <ListNumberArrowIcon direction='Right' _hover={{ cursor: "pointer" }} onClick={handleEventDetail} colortype='Default' />
         </Flex>
       </Box>
       <Flex // 소중한 우리 아이를 위해... 배경 박스
@@ -215,7 +213,6 @@ const HomePageView = ({ ...basisProps }: HomePageViewProps) => {
           {"인코스런을 "}<Text as="span" textStyle="extraLargeBold">{"직접 사용해본"}</Text> <br />
           {"고객님의 솔직한 리뷰"}
         </Text>
-   
           <Flex // Tab Component
             mt="50px" w="500px" {...getRadioProps} mb="30px" 
           >
@@ -225,7 +222,9 @@ const HomePageView = ({ ...basisProps }: HomePageViewProps) => {
 
         <Flex // Card/slide
           h="464px" w="375px" overflowX="scroll">
-            {reviewList.map((reviewData) => <SlideCard mt="76px" ml="10px" reviewData={reviewData} />)}
+            {reviewList.map((reviewData) => {
+              return <SlideCard mt="76px" ml="10px" key={reviewData.id.toString()} reviewData={reviewData} />
+            })}
         </Flex>
       </Flex>
       <Flex // 인코스런에 대해 더 궁금하신가요?

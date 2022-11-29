@@ -35,12 +35,10 @@ export type OrderParamPatchType = {
 export type OrderGetAllParamType = {
   limit?:number;
   offset?:number;
-  user_id: number;
 }
 export type OrderGetAllReturnType = {
   count: number,
-  next?: string,
-  previous?: string,
+  isNext?: boolean, // API에러로 true일 때 다음이 없고 false일 때 다음이 있다.
   results: OrderDTOType[],
 }
 
@@ -70,7 +68,7 @@ export type OrderPostReturnType = OrderDTOType
 export type OrderGetByIdParamType = {
   uuid: string;
 }
-export type OrderGetByIdReturnType = OrderDTOType
+export type OrderGetByIdReturnType = Omit<OrderDTOType, "userId">
 
 // PUT /v1/order/{id}/
 export type OrderPutByIdParamType = {
@@ -105,9 +103,15 @@ export type OrderPatchByIdReturnType = OrderDTOType
 export type OrderGetStatusParamType = {
   page?: number,
   page_size?: number,
-  user_id: number,
 }
 export type OrderGetStatusReturnType = {
+  count: number,
+  next?: string,
+  previous?: string,
+  results: OrderStatusType[]
+}
+export type OrderGetStatusWithOrderReturnType = {
+  orderResults: OrderGetByIdReturnType[],
   count: number,
   next?: string,
   previous?: string,
