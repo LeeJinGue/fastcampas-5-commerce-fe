@@ -1,14 +1,16 @@
-import { AxiosInstance } from 'axios';
+import { AxiosInstance, AxiosPromise } from 'axios';
 
 import instance from '@apis/_axios/instance';
 
 import {
+  OrderDTOType,
   OrderGetAllParamType,
   OrderGetAllReturnType,
   OrderGetByIdParamType,
   OrderGetByIdReturnType,
   OrderGetStatusParamType,
   OrderGetStatusReturnType,
+  OrderGetStatusWithOrderReturnType,
   OrderPatchByIdParamType,
   OrderPatchByIdReturnType,
   OrderPostParamType,
@@ -31,10 +33,10 @@ export class OrderApi {
   getOrderList = async (
     params?: OrderGetAllParamType,
   ): Promise<OrderGetAllReturnType> => {
+    const { data: userData } = await this.axios.get<UserDTOType>(`/v1/user/me/`)
     const { data } = await this.axios({
       method: 'GET',
-      url: `/v1/order/`,
-      data: params,
+      url: `/v1/order/?limit=${params?.limit}&offset=${params?.offset}&user_id=${userData.id}`,
     });
     return data;
   };
@@ -82,21 +84,34 @@ export class OrderApi {
     return data;
   };
   getOrderStatus = async (params: OrderGetStatusParamType): Promise<OrderGetStatusReturnType> => {
-    const userData = await this.axios({
-      method: 'GET',
-      url: `/v1/user/me/`,
-    })
-    const { user_id, ...paramWithoutId } = params
-    const orderStatusParam = {
-      user_id: userData.data.id,
-      ...paramWithoutId
-    }
+    const { data: userData } = await this.axios.get<UserDTOType>(`/v1/user/me/`)
     const { data } = await this.axios({
       method: 'GET',
-      url: `/v1/order/status/`,
-      data: orderStatusParam,
+      url: `/v1/order/status/?user_id=${userData.id}&page=${params.page}`,
+      data: params,
     });
     return data;
+  };
+  getOrderStatusWithOrder = async (params: OrderGetStatusParamType): Promise<OrderGetStatusWithOrderReturnType> => {
+    const { data: userData } = await this.axios.get<UserDTOType>(`/v1/user/me/`)
+    const { data: orderStatusData } = await this.axios.get<OrderGetStatusReturnType>(
+      `/v1/order/status/?user_id=${userData.id}&page=${params.page}`,
+      { data: params },
+    );
+    const orderData = await this.getOrderList({limit: orderStatusData.count+10, offset:1})
+    const orderDataList:OrderGetByIdReturnType[] = []
+    orderStatusData.results.forEach((orderStatus) => {
+      
+      const result = orderData.results.filter(order => {
+        return order.id === orderStatus.orderId
+      })
+      if(result.length === 0){
+        console.log("이상하다")
+        return
+      }
+      orderDataList.push(result[0])
+    })
+    return { orderResults:orderDataList, ...orderStatusData};
   };
   getOrderStatusById = async (params: OrderStatusGetByIdParamType): Promise<OrderStatusType | undefined> => {
     const userData = await this.axios.get<UserDTOType>(`/v1/user/me/`)
@@ -113,13 +128,13 @@ export class OrderApi {
     while (page < 5) {
       page++
       const { data } = await this.axios.get<OrderGetStatusReturnType>(`/v1/order/status/`, { data: orderStatusParam })
-      console.log(`# page ${page}의 orderStatus:`,data)
+      console.log(`# page ${page}의 orderStatus:`, data)
       nextPage = data.next
       const filterList = data.results.filter((orderStatusData) => orderStatusData.orderId === orderId)
-      if (filterList.length !== 0){
-        console.log("# OrderId에 해당하는 주문의 OrderStatus:",filterList)
+      if (filterList.length !== 0) {
+        console.log("# OrderId에 해당하는 주문의 OrderStatus:", filterList)
         return filterList[0]
-      } 
+      }
     }
     console.log("# OrderId에 해당하는 주문의 OrderStatus가 없습니다.")
     return undefined
