@@ -22,32 +22,37 @@ import { useGetReviewListQuery } from '@apis/review/ReviewApi.query';
 import BadgeRadio from './_fragment/BadgeRadio';
 import LoadingPage from '@components/common/New/LoadingPage';
 import { ReviewDTOType } from '@apis/review/ReviewApi.type';
+import CardSlider from '@components/common/CardSlider';
+import BadgeSlider from '@components/common/BadgeSlider';
 
-interface HomePageViewProps extends BoxProps { 
+
+interface HomePageViewProps extends BoxProps {
   reviewList: ReviewDTOType[],
 }
 const moveToTop = () => (document.documentElement.scrollTop = 0);
 
-const HomePageContent = ({}) => {
+const HomePageContent = ({ }) => {
   const route = useRouter()
   const dispatch = useDispatch()
   const token = getToken()
-  const {data:allReview, isError, isLoading, isSuccess} = useGetReviewListQuery({
+  const { data: allReview, isError, isLoading, isSuccess } = useGetReviewListQuery({
     options: {
       staleTime: Infinity,
     }
   })
-  
+
   if (token) {
     const accessToken = token.access
-    useGetUserMeQuery({variables: {
-      accessToken,
-    }, options: {
-      staleTime: Infinity,
-    }})
+    useGetUserMeQuery({
+      variables: {
+        accessToken,
+      }, options: {
+        staleTime: Infinity,
+      }
+    })
   }
-  if(isLoading) return <LoadingPage />
-  if(!isSuccess && isError) return <Text>에러발생!</Text>
+  if (isLoading) return <LoadingPage />
+  if (!isSuccess && isError) return <Text>에러발생!</Text>
   return <HomePageView reviewList={allReview!.results} />
 }
 
@@ -142,7 +147,7 @@ const HomePageView = ({ reviewList, ...basisProps }: HomePageViewProps) => {
             <Box w="150px" h="360px" bg="gray.400" // 시중 주요 브랜드 가격
               display="flex" justifyContent="center"
             >
-              <Badge mode="off" mt="20px" textColor="white" bgColor="gray.700" children="2~30,000원" />
+              <Badge w="fit-content" mode="off" mt="20px" textColor="white" bgColor="gray.700" children="2~30,000원" />
             </Box>
             <Text mt="10px" textAlign="center" textStyle="textLarge" color="gray.700">{"시중 주요 브랜드"}</Text>
           </Box>
@@ -151,8 +156,8 @@ const HomePageView = ({ reviewList, ...basisProps }: HomePageViewProps) => {
             <Box w="150px" h="120px" bg="secondary.100" // 인코스런 가격
               display="flex" flexDir="column" alignItems="center"
             >
-              <Badge mode="on" mt="20px" children="9,900원" />
-              <LogoPrimaryIcon mt="20px" w="104" h="14" />
+              <Badge w="fit-content" mode="on" mt="20px" children="9,900원" />
+              <LogoPrimaryIcon mt="20px" />
             </Box>
             <Text mt="10px" textAlign="center" textStyle="titleLarge" color="primary.500">{"인코스런"}</Text>
           </Box>
@@ -213,19 +218,10 @@ const HomePageView = ({ reviewList, ...basisProps }: HomePageViewProps) => {
           {"인코스런을 "}<Text as="span" textStyle="extraLargeBold">{"직접 사용해본"}</Text> <br />
           {"고객님의 솔직한 리뷰"}
         </Text>
-          <Flex // Tab Component
-            mt="50px" w="500px" {...getRadioProps} mb="30px" 
-          >
-            {BADGE_NAME_LIST.map((name) =>
-              <BadgeRadio key={name} ml="10px" badgeName={name} {...getRadioProps({ value: name })}></BadgeRadio>)}
-          </Flex>
-
-        <Flex // Card/slide
-          h="464px" w="375px" overflowX="scroll">
-            {reviewList.map((reviewData) => {
-              return <SlideCard mt="76px" ml="10px" key={reviewData.id.toString()} reviewData={reviewData} />
-            })}
-        </Flex>
+        <BadgeSlider children={BADGE_NAME_LIST.map((name) =>
+          <BadgeRadio key={name} ml="10px" badgeName={name} {...getRadioProps({ value: name })}></BadgeRadio>)} />
+        <CardSlider children={reviewList.map((reviewData) =>
+          <SlideCard mt="76px" mx="10px" key={reviewData.id.toString()} reviewData={reviewData} />)} />
       </Flex>
       <Flex // 인코스런에 대해 더 궁금하신가요?
         flexDir="column" alignItems="center"
@@ -250,6 +246,7 @@ const HomePageView = ({ reviewList, ...basisProps }: HomePageViewProps) => {
 const VerticalLine = ({ ...basisProps }) => {
   return <Box ml="152px" as="span" w={0} h="40px" border="2px solid" borderColor="gray.400" />
 }
+
 
 
 export default HomePageContent;
