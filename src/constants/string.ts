@@ -29,3 +29,11 @@ export const status_to_shipping_status = (status: string) =>{
     default: "이상함"
   }
 }
+
+// FOOTER
+export const footer_string = {
+  TEAM_NAME: "INCOURSE.RUN",
+  TEAM_MEMBER:"이진규",
+  TEAM_EMAIL: "hippo9851@gmail.com",
+  COPYRIGHTS: "ⓒINCOURSE.RUN All Right Reserved",
+}
