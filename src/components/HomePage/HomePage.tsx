@@ -230,7 +230,7 @@ const HomePageView = ({ reviewList, ...basisProps }: HomePageViewProps) => {
         position="relative"
       >
         <FloatingDefaultButton // 맨 위로 Floating 버튼
-          onClick={moveToTop}
+          onClick={moveToTop} backgroundColor="transparent"
           position="absolute" right="16px" bottom="20px" aria-label={'up'} />
         <Text mt="83px" textStyle="titleLarge" textAlign="center" textColor="white" >
           {"인코스런에 대해 더 궁금하신가요?"}
@@ -239,7 +239,7 @@ const HomePageView = ({ reviewList, ...basisProps }: HomePageViewProps) => {
           {"인스타그램을 방문하시면 더욱 다양한"}<br />
           {"인코스런의 이야기를 확인하실 수 있어요"}
         </Text>
-        <Button p="0" iconSpacing="5px" backgroundColor={"transparent"} mt="12px" leftIcon={<DefaultInstgramIcon iconColor='White' />} textColor="white" textStyle="button" onClick={handleInstagram}>{"INCOURSE.RUN"}</Button>
+        <Button iconSpacing="5px" backgroundColor="transparent" mt="12px" leftIcon={<DefaultInstgramIcon iconColor='White' />} textColor="white" textStyle="button" onClick={handleInstagram}>{"INCOURSE.RUN"}</Button>
       </Flex>
     </Flex>)
 }
