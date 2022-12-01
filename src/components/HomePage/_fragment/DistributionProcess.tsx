@@ -52,7 +52,7 @@ const DistributionProcess = ({ iconType,checkIconShow, ...props }: DistributionP
       <DuotoneIcon strokeColor={strokeColor} iconType={iconType} />
     </Circle>
     <Box display="flex" flexDir="column" justifyContent="center" ml="10px">
-      <Box display="flex" flexDir="row" >
+      <Box display="flex" justifyContent="center" flexDir="row" >
         {checkIconShow && <CheckLineIcon bg="transparent" checked={checkIconShow} />}
         <Text textStyle="title" textColor={textColor}>{title}</Text></Box>
       <Text textStyle="text" textAlign="center" textColor={textColor}>{contents}</Text>

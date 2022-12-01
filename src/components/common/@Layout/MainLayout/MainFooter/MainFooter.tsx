@@ -1,6 +1,7 @@
 import { useDisclosure, Flex, IconButton, MenuIcon, Text, ChakraProps } from "@chakra-ui/react";
 import CartIcon from "@components/common/@Icons/System/Cart";
 import { LAYOUT } from "@constants/layout";
+import { footer_string } from "@constants/string";
 import { MainHeaderVariantType, Main_HEADER_VARIANTS } from "./MainFooter.data";
 
 interface MainHeaderProps extends ChakraProps {
@@ -8,6 +9,7 @@ interface MainHeaderProps extends ChakraProps {
 }
 
 const MainFooter = ({ variant = 'light', ...basisProps }: MainHeaderProps) => {
+  const {TEAM_EMAIL, TEAM_MEMBER, TEAM_NAME, COPYRIGHTS} = footer_string
   return (
     <>
       <Flex // Footer 전체를 담음
@@ -25,11 +27,11 @@ const MainFooter = ({ variant = 'light', ...basisProps }: MainHeaderProps) => {
         color="white"
         {...basisProps}
       >
-        <Text textStyle="title" mb="30px">INCOURSE.RUN</Text>
-        <Text textStyle="textSmall" mb="10px">팀명 | 인코스런</Text>
-        <Text textStyle="textSmall" mb="10px">구성원 | 홍길동, 홍길동, 홍길동, 홍길동</Text>
-        <Text textStyle="textSmall" mb="40px">이메일 | incourse.run@gmail.com</Text>
-        <Text textStyle="textSmall" >ⓒINCOURSE.RUN All Right Reserved</Text>
+        <Text textStyle="title" mb="30px">{TEAM_NAME}</Text>
+        <Text textStyle="textSmall" mb="10px">{`팀명 | ${TEAM_NAME}`}</Text>
+        <Text textStyle="textSmall" mb="10px">{`구성원 | ${TEAM_MEMBER}`}</Text>
+        <Text textStyle="textSmall" mb="40px">{`이메일 | ${TEAM_EMAIL}`}</Text>
+        <Text textStyle="textSmall" >{COPYRIGHTS}</Text>
       </Flex>
     </>
   );

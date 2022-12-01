@@ -12,6 +12,7 @@ const Badge = ({ ...props }: BadgeProps) => {
     backgroundColor={bgColor ? bgColor : 
       (mode==="on" ? "primary.500" : "gray.200")}
     borderRadius="15px"
+    justifyContent="center"
       {...props}>
         {typeof children === 'string' ? 
         <Text textAlign="center" 
