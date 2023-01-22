@@ -8,7 +8,7 @@ interface PaginationProps extends FlexProps {
 }
 const firstPage = 1
 function Pagination({ ...props }: PaginationProps) {
-  const { page, setPage, lastPage } = { ...props }
+  const { page, setPage, lastPage } = props;
   const [startPage, setStartPage] = useState(1)
   const [endPage, setEndPage] = useState(5)
   const handlePageClick = (page: number) => {
