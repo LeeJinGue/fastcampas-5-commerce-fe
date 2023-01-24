@@ -75,7 +75,7 @@ const TermsOfServiceForm = ({
           <Checkbox
             {...register('tos.service')}
             isChecked={tosService}
-            icon={<CheckLineIcon checked={tosService} />}
+            icon={<CheckLineIcon isChecked={tosService} />}
           ></Checkbox>
         </Box>
         <Box mb="10px" w="343px" h="50px" display="flex" alignItems="center" justifyContent="space-between" >
@@ -87,7 +87,7 @@ const TermsOfServiceForm = ({
             isChecked={tosPrivacy}
             backdropBlur="white"
             backgroundColor="white"
-            icon={<CheckLineIcon checked={tosPrivacy} />}
+            icon={<CheckLineIcon isChecked={tosPrivacy} />}
           ></Checkbox>
         </Box>
         <Box w="343px" h="50px" display="flex" alignItems="center" justifyContent="space-between" >
@@ -98,7 +98,7 @@ const TermsOfServiceForm = ({
             {...register('tos.marketing')}
             bg="white"
             isChecked={tosMarketing}
-            icon={<CheckLineIcon checked={tosMarketing} />}
+            icon={<CheckLineIcon isChecked={tosMarketing} />}
           ></Checkbox>
         </Box>
       </FormHelper>
