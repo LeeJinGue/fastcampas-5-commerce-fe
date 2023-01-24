@@ -94,11 +94,9 @@ function MypageWithdrwalViewPage({ userData, ...basisProps }: MypageWithdrwalVie
         <Flex flexDir="column" px="16px" mt="15px">
           {WITHDRAWAL_REASONS.map((reasonText) => {
             return (
-              <>
               <ReasonRadio key={reasonText} reasonText={reasonText} additionalReason={additionalReason} 
               setAdditionalReason={setAdditionalReason} 
               isAdditional={isAdditional} {...getRadioProps({value:reasonText})}/>
-              </>
             )
           })}
         </Flex>

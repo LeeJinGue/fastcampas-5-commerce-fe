@@ -35,7 +35,7 @@ function ProductsDetailByIdDataPage({
     }
   })
   if (isCartDataLoading) return <LoadingPage />
-  if (isCartDataError) <Text>카트 정보 갖고오기 에러</Text> 
+  if (isCartDataError) return <Text>카트 정보 갖고오기 에러</Text> 
   if (!cartData) return <Text>카트 정보가 없습니다.</Text>
 
   return <ProductsDetailByIdViewPage cart_data={cartData[0]} user_id={user_id} {...basisProps} />
@@ -105,7 +105,11 @@ function ProductsDetailByIdViewPage({
             alignItems="center"
             justifyContent="space-around"
           >
-            {TAB_NAMES.map((tabName, index) => <TabRadio ml={index !== 0 ? "20px" : "0"} tabName={tabName} {...getRadioProps({ value: tabName })} />)}
+            {TAB_NAMES.map((tabName, index) => 
+              <TabRadio key={tabName} 
+              ml={index !== 0 ? "20px" : "0"} tabName={tabName} 
+              {...getRadioProps({ value: tabName })} />
+            )}
 
           </Flex>
         </Stack>
