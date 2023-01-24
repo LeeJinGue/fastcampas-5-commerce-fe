@@ -8,18 +8,19 @@ import { useRouter } from 'next/router';
 import { useGetOrderByIdQuery, useGetOrderStatusByIdQuery } from '@apis/order/OrderApi.query';
 import { OrderDTOType, OrderGetByIdReturnType, OrderStatusType } from '@apis/order/OrderApi.type';
 import { formatCreatedTimeToDate } from '@utils/format';
+import { ROUTES } from '@constants/routes';
 interface PaymentSuccessPageDataProps extends ChakraProps {
   resOrderId: string,
   paymentTime: string,
 }
+
 interface PaymentSuccessPageProps extends Omit<PaymentSuccessPageDataProps,"resOrderId"> {
   orderData: OrderGetByIdReturnType,
   paymentTime: string,
   orderStatusData: OrderStatusType,
 }
-
 function PaymentSuccessPageData({ ...basisProps }: PaymentSuccessPageDataProps) {
-  const route = useRouter()
+
   const {resOrderId, ...restProps} = basisProps
   const {data:orderData, isLoading:orderLoading, isError:orderError} = useGetOrderByIdQuery({variables: {uuid: resOrderId}})
   const {data:orderStatusData, isLoading:orderStatusLoading, isError:orderStatusError} = useGetOrderStatusByIdQuery({variables: {orderId:resOrderId}})
@@ -31,9 +32,16 @@ function PaymentSuccessPageData({ ...basisProps }: PaymentSuccessPageDataProps) 
 }
 
 function PaymentSuccessPage({  ...basisProps }: PaymentSuccessPageProps) {
+  const route = useRouter()
   const {paymentTime, orderData, orderStatusData, ...restProps} = basisProps
   const { shippingStatus,created, shipName, shipPhone, shipAddr, shipAddrDetail, shipAddrPost, orderMessage, price, shippingPrice, amount, method } = orderData
   const {productId, count} = orderStatusData
+  const moveToMain = () => {
+    route.push({pathname:ROUTES.HOME})
+  }
+  const moveToOrderHistory = () => {
+    route.push({pathname:ROUTES.MYPAGE.ORDER_HISTORY})
+  }
   return (
     <Flex {...restProps} pt={LAYOUT.HEADER.HEIGHT} pb="30px"
       flexDir="column" bgColor="white" w="375px">
@@ -92,8 +100,10 @@ function PaymentSuccessPage({  ...basisProps }: PaymentSuccessPageProps) {
       </Flex>
       <Flex   // 이동 버튼들
         justifyContent="space-between" mt="50px" px="16px">
-        <PrimaryButton w="165px" h="50px" btntype={'Line'} btnstate={'Primary'} btnshape={'Round'}>{"메인화면 이동"}</PrimaryButton>
-        <PrimaryButton w="165px" h="50px" btntype={'Solid'} btnstate={'Primary'} btnshape={'Round'}>{"주문내역 이동"}</PrimaryButton>
+        <PrimaryButton w="165px" h="50px" btntype={'Line'} btnstate={'Primary'} btnshape={'Round'}
+        onClick={moveToMain}>{"메인화면 이동"}</PrimaryButton>
+        <PrimaryButton w="165px" h="50px" btntype={'Solid'} btnstate={'Primary'} btnshape={'Round'}
+        onClick={moveToOrderHistory}>{"주문내역 이동"}</PrimaryButton>
       </Flex>
     </Flex>
   );
