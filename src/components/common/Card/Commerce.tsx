@@ -35,8 +35,8 @@ function Commerce({ itemdata,...props }: CommerceProps) {
 function CommerceView({...props}:CommerceViewProps){
   const dispatch = useDispatch()
   const orderData = useAppStore(state => state.ORDER_ITEM)
-  const { changeByIndex,ischeck, itemdata, settotalcost, settotaldeliverycost, cartindex, handledeleteitem } = props
-  const { price, photo, name, capacity } = props.productdata
+  const { changeByIndex,ischeck, itemdata, settotalcost, settotaldeliverycost, cartindex, handledeleteitem, productdata, ...restProps } = props
+  const { price, photo, name, capacity } = productdata
   const [count, setCount] = React.useState(itemdata.count)
   
   const delivery = count * price < 30000 ? 2500 : 0
@@ -78,7 +78,7 @@ function CommerceView({...props}:CommerceViewProps){
   return (
     <>
     <Flex   // Card/Commerce
-        px="16px" py="20px" bgColor="white" {...props}
+        px="16px" py="20px" bgColor="white" {...restProps}
       >
         <Checkbox
           alignItems="start"

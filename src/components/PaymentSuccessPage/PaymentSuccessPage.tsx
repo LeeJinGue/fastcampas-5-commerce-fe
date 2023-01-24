@@ -8,34 +8,34 @@ import { useRouter } from 'next/router';
 import { useGetOrderByIdQuery, useGetOrderStatusByIdQuery } from '@apis/order/OrderApi.query';
 import { OrderDTOType, OrderGetByIdReturnType, OrderStatusType } from '@apis/order/OrderApi.type';
 import { formatCreatedTimeToDate } from '@utils/format';
-interface PaymentSuccessPageProps extends PaymentSuccessPageDataProps {
+interface PaymentSuccessPageDataProps extends ChakraProps {
+  resOrderId: string,
+  paymentTime: string,
+}
+interface PaymentSuccessPageProps extends Omit<PaymentSuccessPageDataProps,"resOrderId"> {
   orderData: OrderGetByIdReturnType,
   paymentTime: string,
   orderStatusData: OrderStatusType,
 }
-interface PaymentSuccessPageDataProps extends ChakraProps {
-  resOrderId: string, 
-  paymentTime: string,
-}
 
 function PaymentSuccessPageData({ ...basisProps }: PaymentSuccessPageDataProps) {
   const route = useRouter()
-  const {resOrderId, paymentTime} = basisProps
+  const {resOrderId, ...restProps} = basisProps
   const {data:orderData, isLoading:orderLoading, isError:orderError} = useGetOrderByIdQuery({variables: {uuid: resOrderId}})
   const {data:orderStatusData, isLoading:orderStatusLoading, isError:orderStatusError} = useGetOrderStatusByIdQuery({variables: {orderId:resOrderId}})
 
   if (orderLoading || orderStatusLoading) return <Text>주문정보 로딩중</Text>
   if (orderError || orderStatusError) return <Text>주문정보 불러오기 에러</Text>
   if (orderData === undefined || orderStatusData === undefined) return <Text>주문정보 불러오기 에러2</Text>
-  return <PaymentSuccessPage  {...basisProps} paymentTime={paymentTime} orderData={orderData} orderStatusData={orderStatusData} />
+  return <PaymentSuccessPage {...restProps} orderData={orderData} orderStatusData={orderStatusData} />
 }
 
 function PaymentSuccessPage({  ...basisProps }: PaymentSuccessPageProps) {
-  const {paymentTime, orderData, orderStatusData} = basisProps
+  const {paymentTime, orderData, orderStatusData, ...restProps} = basisProps
   const { shippingStatus,created, shipName, shipPhone, shipAddr, shipAddrDetail, shipAddrPost, orderMessage, price, shippingPrice, amount, method } = orderData
   const {productId, count} = orderStatusData
   return (
-    <Flex {...basisProps} pt={LAYOUT.HEADER.HEIGHT} pb="30px"
+    <Flex {...restProps} pt={LAYOUT.HEADER.HEIGHT} pb="30px"
       flexDir="column" bgColor="white" w="375px">
       <Text mx="16px" mt="50px" textStyle="titleLarge">{"결제내역"}</Text>
       <Box mt="80px" w="375px" border="1px solid" borderColor="gray.100" />
