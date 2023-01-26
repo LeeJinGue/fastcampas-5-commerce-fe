@@ -1,12 +1,12 @@
 import { Icon, IconProps } from '@chakra-ui/react';
 interface CheckIconProps extends IconProps{
-  indeterminate?: boolean,
-  checked?: boolean,
+  isIndeterminate?: boolean,
+  isChecked?: boolean,
 }
-const CheckLineIcon = ({indeterminate, checked, ...props }:CheckIconProps) => {
+const CheckLineIcon = ({isIndeterminate, isChecked, ...props }:CheckIconProps) => {
   const w = props.w? props.w : "24"
   const h = props.h? props.h : "24"
-  if(checked) return <Icon
+  if(isChecked) return <Icon
   bg="white"
   {...props}
   width={w+"px"} height={h+"px"} viewBox={`0 0 ${w} ${h}`} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>

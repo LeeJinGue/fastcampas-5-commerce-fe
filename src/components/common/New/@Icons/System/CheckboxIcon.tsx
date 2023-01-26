@@ -4,8 +4,10 @@ type shapeType = 'Circle' | 'Rectangle'
 interface CheckboxIconProps extends IconProps {
   state: iconType,
   shape: shapeType,
+  isChecked?: boolean,
+  isIndeterminate?: boolean,
 }
-const CheckboxIcon = ({ state, shape, _hover, onClick, ...props }: CheckboxIconProps) => {
+const CheckboxIcon = ({ state, shape, _hover, onClick, isChecked=false, isIndeterminate=false, ...props }: CheckboxIconProps) => {
   const w = props.w ? props.w : "20"
   const h = props.h ? props.h : "20"
   let fillcolor = "", strokecolor = ""
@@ -36,10 +38,12 @@ const CheckboxIcon = ({ state, shape, _hover, onClick, ...props }: CheckboxIconP
       if(state==="Default") Path2=<path stroke={strokecolor} d="M16 0.5H4C2.067 0.5 0.5 2.067 0.5 4V16C0.5 17.933 2.067 19.5 4 19.5H16C17.933 19.5 19.5 17.933 19.5 16V4C19.5 2.067 17.933 0.5 16 0.5Z"></path>
       else Path2=<path strokeWidth="2.5" strokeLinecap="round" stroke={strokecolor} d="M4.38989 9.75208L8.7309 13.965L14.9989 6.61597"></path>
     }
+    
     return (
       <Icon
       _hover={{cursor:"pointer"}}
-        width={w + "px"} height={h + "px"} viewBox={`0 0 ${w} ${h}`} fill="none" xmlns="http://www.w3.org/2000/svg" onClick={onClick} {...props}>
+        width={w + "px"} height={h + "px"} viewBox={`0 0 ${w} ${h}`} fill="none" xmlns="http://www.w3.org/2000/svg" onClick={onClick} 
+        {...props}>
         <path d={d1} fill={fillcolor} />
         {Path2}
       </Icon>

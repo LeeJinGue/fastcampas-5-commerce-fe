@@ -53,7 +53,7 @@ const DistributionProcess = ({ iconType,checkIconShow, ...props }: DistributionP
     </Circle>
     <Box display="flex" flexDir="column" justifyContent="center" ml="10px">
       <Box display="flex" justifyContent="center" flexDir="row" >
-        {checkIconShow && <CheckLineIcon bg="transparent" checked={checkIconShow} />}
+        {checkIconShow && <CheckLineIcon bg="transparent" isChecked={checkIconShow} />}
         <Text textStyle="title" textColor={textColor}>{title}</Text></Box>
       <Text textStyle="text" textAlign="center" textColor={textColor}>{contents}</Text>
     </Box>

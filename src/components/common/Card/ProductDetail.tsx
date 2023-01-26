@@ -11,9 +11,8 @@ import PrimaryButton from '../New/PrimaryButton';
 interface ProductDetailProps extends FlexProps {
   productData: ProductDetailDTOTType,
   cart_id: number,
-  user_id: number,
 }
-function ProductDetail({ productData, cart_id, user_id, ...props }: ProductDetailProps) {
+function ProductDetail({ productData, cart_id, ...props }: ProductDetailProps) {
   const {name, capacity, price, description, reviewCount, avgRate} = productData
   const route = useRouter()
   const [isOpenBuyDrawer, setIsOpenBuyDrawer] = React.useState(false);
@@ -54,7 +53,7 @@ function ProductDetail({ productData, cart_id, user_id, ...props }: ProductDetai
         <PrimaryButton btntype='Solid' btnstate='Primary' btnshape='Round' mt="10px" w="343px" h="50px" onClick={()=>openModal('drawer')}>{"바로구매"}</PrimaryButton>
       </Flex>
     </Flex>
-    <DrawerBuy isOpen={isOpenBuyDrawer} cart_id={cart_id} user_id={user_id} productData={productData} onClose={() => closeModal('drawer')} />
+    <DrawerBuy isOpen={isOpenBuyDrawer} cart_id={cart_id} productData={productData} onClose={() => closeModal('drawer')} />
     </>
   )
 }

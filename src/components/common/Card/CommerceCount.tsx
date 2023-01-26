@@ -8,10 +8,10 @@ interface CommerceCountProps extends FlexProps{
   setcount: React.Dispatch<React.SetStateAction<number>>,
 }
 function CommerceCount({...basisProps}:CommerceCountProps) {
-  const { count, setcount, name, price } = basisProps
+  const { count, setcount, name, price, ...restProps } = basisProps
   return (
     <Flex   // 상품 개수 선택(Card/Commerce)
-    bgColor="gray.200" flexDir="column" p="10px" borderRadius="5px" {...basisProps}>
+    bgColor="gray.200" flexDir="column" p="10px" borderRadius="5px" {...restProps}>
         <Text // 옵션
         textStyle="text" textColor="gray.600">{name}</Text>
         <Flex // 수량가격

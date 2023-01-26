@@ -26,7 +26,7 @@ export type ProductSimpleDTOType = {
   price: number,
   capacity: number,
   thumbnail: string,
-  tags: Array<ProductTagType>,
+  tag: Array<ProductTagType>,
   reviewList?: Array<ProductReviewType>,
   avgRate: string,
   reviewCount: string,

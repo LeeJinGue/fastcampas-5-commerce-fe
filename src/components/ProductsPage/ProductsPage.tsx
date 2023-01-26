@@ -7,10 +7,27 @@ import Product from '@components/common/Card/Product';
 import { product_data } from '@constants/dummy';
 import { useGetProductInfiniteQuery, useGetProductListQuery } from '@apis/product/ProductApi.query';
 import { useIntersect } from 'hooks/useIntersect';
+import { CartDTOType } from '@apis/cart/CartApi.type';
+import LoadingPage from '@components/common/New/LoadingPage';
+import { useGetCartQuery } from '@apis/cart/CartApi.query';
 
-interface ProductsPageProps extends ChakraProps { }
-
-function ProductsPage({ ...basisProps }: ProductsPageProps) {
+interface ProductsPageViewProps extends ProductsPageDataProps { 
+  cart_data:CartDTOType
+}
+interface ProductsPageDataProps extends ChakraProps {
+}
+function ProductsPageData({...basisProps}:ProductsPageDataProps) {
+  const { data: cartData, isError: isCartDataError, isLoading: isCartDataLoading } = useGetCartQuery({
+    variables: {
+      user_id:0,
+    }
+  })
+  if (isCartDataLoading) return <LoadingPage />
+  if (isCartDataError) return <Text>카트 정보 갖고오기 에러</Text> 
+  if (!cartData) return <Text>카트 정보가 없습니다.</Text>
+  return <ProductsPageView cart_data={cartData[0]} {...basisProps} />
+}
+function ProductsPageView({ cart_data,...basisProps }: ProductsPageViewProps) {
   const {data,
     error,
     fetchNextPage,
@@ -24,6 +41,7 @@ function ProductsPage({ ...basisProps }: ProductsPageProps) {
       fetchNextPage()
     }
   })
+  const {id:cartId} = cart_data
   return (
     <Flex // 전체 페이지
       pt={LAYOUT.HEADER.HEIGHT} pb="80px" flexDir="column"
@@ -36,7 +54,7 @@ function ProductsPage({ ...basisProps }: ProductsPageProps) {
       data &&
         data.pages.map((value) => {
           return value.results.map((productData) => {
-            return <Product mt="30px" productData={productData} key={productData.name} />
+            return <Product mt="30px" cart_id={cartId} productData={productData} key={productData.name} />
         })
         })}
       <Button onClick={() => fetchNextPage()} 
@@ -50,4 +68,4 @@ function ProductsPage({ ...basisProps }: ProductsPageProps) {
   );
 }
 
-export default ProductsPage;
+export default ProductsPageData;

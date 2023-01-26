@@ -8,7 +8,7 @@ interface PaginationProps extends FlexProps {
 }
 const firstPage = 1
 function Pagination({ ...props }: PaginationProps) {
-  const { page, setPage, lastPage } = { ...props }
+  const { page, setPage, lastPage, ...restProps } = props;
   const [startPage, setStartPage] = useState(1)
   const [endPage, setEndPage] = useState(5)
   const handlePageClick = (page: number) => {
@@ -32,7 +32,7 @@ function Pagination({ ...props }: PaginationProps) {
   }
   return (
     <Flex // Pagination
-      mt="50px" textStyle="title" alignSelf="center" {...props}>
+      mt="50px" textStyle="title" alignSelf="center" {...restProps}>
 
       <ListNumberArrowIcon mr="30px" visibility={startPage === 1 ? "hidden" : "visible" } 
       direction='Left' _hover={{ cursor: "pointer" }} colortype={'Default'}
