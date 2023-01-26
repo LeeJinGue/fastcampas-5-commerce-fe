@@ -1,5 +1,5 @@
-import React from 'react';
-import { Box, ChakraProps, Flex, Text } from '@chakra-ui/react';
+import React, { useEffect } from 'react';
+import { Box, ChakraProps, Flex, Text, useDisclosure } from '@chakra-ui/react';
 import { LAYOUT } from '@constants/layout';
 import PriceCard from '@components/common/Card/PriceCard';
 import DeliveryInfoText from '@components/PaymentPage/_fragment/DeliveryInfoText';
@@ -9,6 +9,8 @@ import { useGetOrderByIdQuery, useGetOrderStatusByIdQuery } from '@apis/order/Or
 import { OrderDTOType, OrderGetByIdReturnType, OrderStatusType } from '@apis/order/OrderApi.type';
 import { formatCreatedTimeToDate } from '@utils/format';
 import { ROUTES } from '@constants/routes';
+import { complete_payment_popup_string } from '@constants/string';
+import Popup from '@components/common/New/Popup';
 interface PaymentSuccessPageDataProps extends ChakraProps {
   resOrderId: string,
   paymentTime: string,
@@ -28,9 +30,10 @@ function PaymentSuccessPageData({ ...basisProps }: PaymentSuccessPageDataProps) 
   if (orderLoading || orderStatusLoading) return <Text>주문정보 로딩중</Text>
   if (orderError || orderStatusError) return <Text>주문정보 불러오기 에러</Text>
   if (orderData === undefined || orderStatusData === undefined) return <Text>주문정보 불러오기 에러2</Text>
+  
   return <PaymentSuccessPage {...restProps} orderData={orderData} orderStatusData={orderStatusData} />
 }
-
+const {bodyText} = complete_payment_popup_string
 function PaymentSuccessPage({  ...basisProps }: PaymentSuccessPageProps) {
   const route = useRouter()
   const {paymentTime, orderData, orderStatusData, ...restProps} = basisProps
@@ -42,7 +45,12 @@ function PaymentSuccessPage({  ...basisProps }: PaymentSuccessPageProps) {
   const moveToOrderHistory = () => {
     route.push({pathname:ROUTES.MYPAGE.ORDER_HISTORY})
   }
+  const { isOpen:isPopupOpen = true, onClose:popupClose, onOpen:popupOpen} = useDisclosure()
+  useEffect(() => {
+    popupOpen()
+  }, [])
   return (
+    <>
     <Flex {...restProps} pt={LAYOUT.HEADER.HEIGHT} pb="30px"
       flexDir="column" bgColor="white" w="375px">
       <Text mx="16px" mt="50px" textStyle="titleLarge">{"결제내역"}</Text>
@@ -106,6 +114,9 @@ function PaymentSuccessPage({  ...basisProps }: PaymentSuccessPageProps) {
         onClick={moveToOrderHistory}>{"주문내역 이동"}</PrimaryButton>
       </Flex>
     </Flex>
+    <Popup isOpen={isPopupOpen} onClose={popupClose} bodyMsg={bodyText} 
+    children={undefined} />
+    </>
   );
 }
 
