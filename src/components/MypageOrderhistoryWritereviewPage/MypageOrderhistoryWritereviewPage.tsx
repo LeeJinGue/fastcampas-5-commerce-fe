@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Box, ChakraProps, Button, Flex, Image, Text, Divider, Input, IconButton, Textarea, useToast } from '@chakra-ui/react';
+import { Box, ChakraProps, Button, Flex, Image, Text, Divider, Input, IconButton, Textarea, useToast, useDisclosure } from '@chakra-ui/react';
 import { LAYOUT } from '@constants/layout';
 import DateText from '@components/common/New/DateText';
 import PriceCard from '@components/common/Card/PriceCard';
@@ -19,6 +19,8 @@ import { ReviewPostParamType } from '@apis/review/ReviewApi.type';
 import { isOverSize } from '@utils/file';
 import { useUploadFileToS3Mutation } from '@apis/S3FileUploader/S3FileUploaderApi.mutation';
 import { ROUTES } from '@constants/routes';
+import Popup from '@components/common/New/Popup';
+import { complete_review_popup_string } from '@constants/string';
 
 const FILE_MAX_SIZE_MB = 10;
 interface MypageOrderhistoryWritereviewPageDataProps extends ChakraProps {
@@ -44,15 +46,17 @@ function MypageOrderhistorywritereviewPageData({ ...basisProps }: MypageOrderhis
   return <MypageOrderhistoryWritereviewPage orderstatusdata={orderstatusdata} orderdata={orderdata} {...basisProps} />
 
 }
+const {okText, bodyText} = complete_review_popup_string
 function MypageOrderhistoryWritereviewPage({
 
   ...basisProps
 }: MypageOrderhistoryWritereviewPageProps) {
+  const { isOpen:isPopupOpen, onClose:popupClose, onOpen:popupOpen} = useDisclosure()
   const toast = useToast()
   const route = useRouter()
   const { orderstatusdata, orderdata } = basisProps
   const { mutateAsync: postReviewMutate } = usePostReviewMutation()
-  const { productId, count, created } = orderstatusdata
+  const { productId, count, created, id:orderItemId } = orderstatusdata
   const { shippingStatus } = orderdata
   const [content, setContent] = useState("")
   const [reviewimagePath, setReviewimageSet] = useState<string[]>([])
@@ -60,6 +64,7 @@ function MypageOrderhistoryWritereviewPage({
   const [rate, setRate] = useState(0)
   const {mutateAsync:uploadFileMutate} = useUploadFileToS3Mutation()
   const handelWriteReviewButton = () => {
+    // 작성하기 버튼
     postReviewMutate({
       userId: 0,
       productId: orderstatusdata.productId,
@@ -69,10 +74,13 @@ function MypageOrderhistoryWritereviewPage({
       reviewimagePath: reviewimagePath,
     }).then(res => {
       console.log("리뷰 작성 완료, 리뷰 정보:",res)
-      route.replace({pathname: ROUTES.MYPAGE.ORDER_HISTORY})
+      popupOpen()
     }).catch(err => {
       console.log("리뷰 작성 에러:",err)
     })
+  }
+  const handleCompleteReviewOkButton = () => {
+    route.replace({pathname: ROUTES.MYPAGE.ORDER_HISTORY})
   }
 
 
@@ -105,6 +113,7 @@ function MypageOrderhistoryWritereviewPage({
     setReviewimageSet(prev => prev.filter((_, prevIndex) => prevIndex !== index))
   }
   return (
+    <>
     <Flex pt={LAYOUT.HEADER.HEIGHT} pb="30px" w="375px"
       flexDir="column" bgColor="white" {...basisProps}>
       <Text px="16px" mt="50px" textStyle="titleLarge" textColor="black">리뷰작성</Text>
@@ -154,6 +163,8 @@ function MypageOrderhistoryWritereviewPage({
       <PrimaryButton mt="100px" w="343px" h="50px"
         mx="16px" btntype='Solid' btnstate='Primary' btnshape='Round' onClick={handelWriteReviewButton}>작성하기</PrimaryButton>
     </Flex>
+    <Popup isOpen={isPopupOpen} onClose={popupClose} bodyMsg={bodyText} okMsg={okText} okOnclick={handleCompleteReviewOkButton} children={undefined} />
+    </>
   );
 }
 
