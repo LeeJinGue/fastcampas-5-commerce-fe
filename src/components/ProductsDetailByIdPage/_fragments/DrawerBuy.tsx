@@ -23,6 +23,8 @@ import { ProductDetailDTOTType } from '@apis/product/ProductApi.type';
 import { usePostCartItemMutation } from '@apis/cart/CartApi.mutation';
 import { useGetUserMeQuery } from '@apis/user/UserApi.query';
 import { getToken } from '@utils/localStorage/token';
+import { useDispatch } from 'react-redux';
+import { addOrderItemType, orderItemSliceActions, orderItemType, setTotalType } from '@features/orderItem/orderItemSlice';
 // 필요한 데이터: 상품, 유저, 장바구니
 interface DrawerBuyProps extends DrawerProps {
   productData: ProductDetailDTOTType,
@@ -31,12 +33,15 @@ interface DrawerBuyProps extends DrawerProps {
 }
 
 function DrawerBuy(props: Omit<DrawerBuyProps, 'children'>) {
+  const dispatch =  useDispatch()
   const {productData, cart_id, user_id} = props
   const {name, price} = productData
   const route = useRouter()
   const {mutateAsync: cartItemMutate} = usePostCartItemMutation()
+  const [count, setCount] = React.useState(1)
 
   const handleCartOnclick = () => {
+    // 장바구니 버튼 onClick 이벤트 함수
     cartItemMutate({
       productId: productData.id,
       cartId: cart_id,
@@ -52,9 +57,20 @@ function DrawerBuy(props: Omit<DrawerBuyProps, 'children'>) {
     })
   }
   const handleBuynowOnclick = () => {
+    // 바로구매 버튼 onClick 이벤트 함수
+    const {id:productId, name, capacity, price} = productData
+    const buyNowTotalCost = count * price
+    const buyNowTotalDeliveryCost = (buyNowTotalCost <= 30000 ? 2500 : 0) 
+    const tempCartItemId = -1
+    const buyNowOrderItem:orderItemType = {
+      cartItemId: tempCartItemId,
+      count,productId, name, capacity, price
+    }
+    dispatch(orderItemSliceActions.delAllOrderItem())
+    dispatch(orderItemSliceActions.addOrderItem({cartItemId:tempCartItemId, orderItem:buyNowOrderItem}))
+    dispatch(orderItemSliceActions.setTotal({totalCost:buyNowTotalCost, totalDeliveryCost:buyNowTotalDeliveryCost}))
     route.push({pathname:ROUTES.PAYMENT.MAIN})
   }
-  const [count, setCount] = React.useState(1)
   return (
     <Drawer placement="bottom" {...props}>
       <DrawerOverlay  />
