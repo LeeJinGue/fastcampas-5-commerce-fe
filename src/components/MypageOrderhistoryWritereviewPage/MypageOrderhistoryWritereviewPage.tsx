@@ -163,7 +163,7 @@ function MypageOrderhistoryWritereviewPage({
       <PrimaryButton mt="100px" w="343px" h="50px"
         mx="16px" btntype='Solid' btnstate='Primary' btnshape='Round' onClick={handelWriteReviewButton}>작성하기</PrimaryButton>
     </Flex>
-    <Popup isOpen={isPopupOpen} onClose={popupClose} bodyMsg={bodyText} okMsg={okText} okOnclick={handleCompleteReviewOkButton} children={undefined} />
+    <Popup isOpen={isPopupOpen} onClose={handleCompleteReviewOkButton} bodyMsg={bodyText} okMsg={okText} okOnclick={handleCompleteReviewOkButton} children={undefined} />
     </>
   );
 }

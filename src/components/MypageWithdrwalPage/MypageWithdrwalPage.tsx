@@ -121,7 +121,7 @@ function MypageWithdrwalViewPage({ userData, ...basisProps }: MypageWithdrwalVie
         <PrimaryButton w="165px" h="50px" btntype={'Solid'} btnstate={'Primary'} btnshape={'Round'} onClick={handleWithdrawal}>탈퇴하기</PrimaryButton>
       </Flex>
     </Flex>
-    <Popup isOpen={isPopupOpen} onClose={popupClose} bodyMsg={bodyText} okMsg={okText} okOnclick={handleCompleteWithdrawal} children={undefined} />
+    <Popup isOpen={isPopupOpen} onClose={handleCompleteWithdrawal} bodyMsg={bodyText} okMsg={okText} okOnclick={handleCompleteWithdrawal} children={undefined} />
     </>
   );
 }

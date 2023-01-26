@@ -101,8 +101,8 @@ function DrawerBuy(props: Omit<DrawerBuyProps, 'children'>) {
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
-    <Popup isOpen={isPopupOpen} onClose={popupClose} 
-    okMsg={okText} okOnclick={handleContinueShopping} 
+    <Popup isOpen={isPopupOpen} onClose={handleContinueShopping} 
+    okMsg={okText} okOnclick={handleContinueShopping}
     bodyMsg={bodyText} 
     cancelMsg={cancelText} cancelOnclick={moveToCartPage} 
     children={''} />
