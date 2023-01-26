@@ -67,7 +67,7 @@ export const check_order_cancel_popup_string = {
   okText : '확인',
   cancelText : '취소'
 }
-export const complete_profile_modify_popup_string = {
+export const complete_edit_info_popup_string = {
   // 회원정보 수정 완료 후 팝업
   bodyText : '회원정보 수정이 완료되었습니다.',
   okText : '확인',
