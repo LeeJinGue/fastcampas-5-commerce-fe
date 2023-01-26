@@ -67,10 +67,10 @@ function MypageOrderhistoryWritereviewPage({
     // 작성하기 버튼
     postReviewMutate({
       userId: 0,
-      productId: orderstatusdata.productId,
+      productId,
       rate,
       content,
-      orderItemId: 1,
+      orderItemId,
       reviewimagePath: reviewimagePath,
     }).then(res => {
       console.log("리뷰 작성 완료, 리뷰 정보:",res)
