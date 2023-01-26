@@ -8,21 +8,24 @@ import {
 } from '@chakra-ui/react';
 import ExitIcon from '@components/common/@Icons/System/Exit';
 import DrawerMenuList, { menuItemType } from '@components/common/DrawerMenuList';
-import { DRAWER_MENU_ITEM_LIST } from '@constants/string';
+import { check_logout_popup_string, DRAWER_MENU_ITEM_LIST } from '@constants/string';
 import { LAYOUT } from '@constants/layout';
 import { useRouter } from 'next/router';
 import { deleteToken } from '@utils/localStorage/token';
 import { ROUTES } from '@constants/routes';
 import { useCallback } from 'react';
+import Popup from '@components/common/New/Popup';
 
 interface MainHeaderDrawerProps extends Omit<DrawerProps, 'children'> {
   bodyProps?: ChakraProps;
 }
+const {bodyText, okText, cancelText} = check_logout_popup_string
 const MainHeaderDrawer = ({
   bodyProps,
   ...basisProps
 }: MainHeaderDrawerProps) => {
   const route = useRouter()
+  const { isOpen:isPopupOpen, onClose:popupClose, onOpen:popupOpen} = useDisclosure()
   const replaceOrPush = useCallback((nowPath: string, goalPath: string) => nowPath === goalPath ? route.replace({pathname:goalPath}) : route.push({pathname:goalPath}), []) 
   const handleLogout = () => {
     // token을 삭제하고 login화면으로 이동합니다.
@@ -49,6 +52,7 @@ const MainHeaderDrawer = ({
   for(let i=0; i<DRAWER_MENU_ITEM_LIST.length;i++) menuItemList.push({name: DRAWER_MENU_ITEM_LIST[i], event: FUNCTION_LIST[i]})
 
   return (
+    <>
   <Drawer placement="left" {...basisProps}>
     <DrawerOverlay />
     <DrawerContent w="313px" maxW="313px">
@@ -66,10 +70,15 @@ const MainHeaderDrawer = ({
         <DrawerMenuList menuItems={menuItemList} />
       </DrawerBody>
       <DrawerFooter px="16px" py="25px" display="flex" justifyContent="start">
-      <Button bg="white" textStyle="titleLarge" onClick={handleLogout} leftIcon={<ExitIcon/>}>로그아웃</Button>
+      <Button bg="white" textStyle="titleLarge" onClick={popupOpen} leftIcon={<ExitIcon/>}>로그아웃</Button>
       </DrawerFooter>
     </DrawerContent>
   </Drawer>
+  <Popup isOpen={isPopupOpen} onClose={popupClose} bodyMsg={bodyText} 
+    okMsg={okText} okOnclick={handleLogout}
+    cancelMsg={cancelText} cancelOnclick={popupClose}
+    children={undefined} />
+  </>
 );
   }
 

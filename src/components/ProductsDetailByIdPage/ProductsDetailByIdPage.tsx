@@ -35,7 +35,7 @@ function ProductsDetailByIdDataPage({
     }
   })
   if (isCartDataLoading) return <LoadingPage />
-  if (isCartDataError) <Text>카트 정보 갖고오기 에러</Text> 
+  if (isCartDataError) return <Text>카트 정보 갖고오기 에러</Text> 
   if (!cartData) return <Text>카트 정보가 없습니다.</Text>
 
   return <ProductsDetailByIdViewPage cart_data={cartData[0]} user_id={user_id} {...basisProps} />
@@ -96,7 +96,7 @@ function ProductsDetailByIdViewPage({
       <Flex {...basisProps} bgColor="white" w="375px" pt={LAYOUT.HEADER.HEIGHT} flexDir="column"
         pb="80px">
         <Image mt="36px" mx="16px" w="343px" h="300px" src={photo} />
-        <ProductDetail cart_id={cart_data.id} user_id={user_id} productData={product_data} />
+        <ProductDetail cart_id={cart_data.id} productData={product_data} />
         <Stack // 상세정보, 구매정보, 리뷰 박스
           w="auto" h="80px"
           {...getRadioProps}
@@ -105,7 +105,11 @@ function ProductsDetailByIdViewPage({
             alignItems="center"
             justifyContent="space-around"
           >
-            {TAB_NAMES.map((tabName, index) => <TabRadio ml={index !== 0 ? "20px" : "0"} tabName={tabName} {...getRadioProps({ value: tabName })} />)}
+            {TAB_NAMES.map((tabName, index) => 
+              <TabRadio key={tabName} 
+              ml={index !== 0 ? "20px" : "0"} tabName={tabName} 
+              {...getRadioProps({ value: tabName })} />
+            )}
 
           </Flex>
         </Stack>

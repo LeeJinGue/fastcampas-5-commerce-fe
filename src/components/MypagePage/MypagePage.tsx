@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Box, ChakraProps, Button, Flex, Image, Text, IconButton, ButtonGroup } from '@chakra-ui/react';
+import { Box, ChakraProps, Button, Flex, Image, Text, IconButton, ButtonGroup, useDisclosure } from '@chakra-ui/react';
 import { LAYOUT } from '@constants/layout';
 import EstimateIcon from '@components/common/New/@Icons/Line/Estimate';
 import OrderHistoryIcon from '@components/common/New/@Icons/Line/OrderHistory';
@@ -11,6 +11,8 @@ import { deleteToken, setToken } from '@utils/localStorage/token';
 import store from '@features/store';
 import { useGetUserMeQuery } from '@apis/user/UserApi.query';
 import { UserDTOType } from '@apis/user/UserApi.type';
+import { check_logout_popup_string } from '@constants/string';
+import Popup from '@components/common/New/Popup';
 
 interface MypageDataPageProps extends ChakraProps { 
 }
@@ -26,7 +28,9 @@ function MyPageDataPage({...basisProps}:MypageDataPageProps){
   {data && <MypageViewPage userdata={data} />}
   </>
 }
+const {bodyText, okText, cancelText} = check_logout_popup_string
 function MypageViewPage({ userdata, ...basisProps }: MypagePageViewProps) {
+  const { isOpen:isPopupOpen, onClose:popupClose, onOpen:popupOpen} = useDisclosure()
   const route = useRouter()
   const goEditInfo = useCallback(() => {route.push({ pathname: ROUTES.MYPAGE.EDIT_INFO })},[],)
   const goMyreviews = useCallback(() => {route.push({ pathname: ROUTES.MYPAGE.MY_REVIEWS })},[],)
@@ -38,6 +42,7 @@ function MypageViewPage({ userdata, ...basisProps }: MypagePageViewProps) {
   },[],)
   const {name, email} = userdata
   return (
+    <>
     <Flex {...basisProps} pt={LAYOUT.HEADER.HEIGHT} flexDir="column" bgColor="white">
       <Flex mt="70px" flexDir="column" px="16px">
         <Text textStyle="titleLarge" textColor='black'>{name}</Text>
@@ -62,9 +67,14 @@ function MypageViewPage({ userdata, ...basisProps }: MypagePageViewProps) {
       <Box h="10px" bgColor="gray.100" />
       <MenuText event={goWithdrawal} title="회원탈퇴"  />
       <Box border="1px solid" borderColor="gray.100" />
-      <MenuText event={goLogout} title="로그아웃" />
+      <MenuText event={popupOpen} title="로그아웃" />
       <Box h="30px" bgColor="gray.100" />
     </Flex>
+    <Popup isOpen={isPopupOpen} onClose={popupClose} bodyMsg={bodyText} 
+    okMsg={okText} okOnclick={goLogout}
+    cancelMsg={cancelText} cancelOnclick={popupClose}
+    children={undefined} />
+    </>
   );
 }
 
