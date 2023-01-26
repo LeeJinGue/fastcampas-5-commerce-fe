@@ -96,7 +96,7 @@ function ProductsDetailByIdViewPage({
       <Flex {...basisProps} bgColor="white" w="375px" pt={LAYOUT.HEADER.HEIGHT} flexDir="column"
         pb="80px">
         <Image mt="36px" mx="16px" w="343px" h="300px" src={photo} />
-        <ProductDetail cart_id={cart_data.id} user_id={user_id} productData={product_data} />
+        <ProductDetail cart_id={cart_data.id} productData={product_data} />
         <Stack // 상세정보, 구매정보, 리뷰 박스
           w="auto" h="80px"
           {...getRadioProps}
