@@ -37,3 +37,47 @@ export const footer_string = {
   TEAM_EMAIL: "hippo9851@gmail.com",
   COPYRIGHTS: "ⓒINCOURSE.RUN All Right Reserved",
 }
+
+// POPUP
+export const cart_popup_string = {
+  // 장바구니 담기 후 팝업
+  bodyText : '장바구니에 상품이 담겼습니다.',
+  okText : '쇼핑 게속하기',
+  cancelText : '장바구니 이동'
+}
+export const complete_review_popup_string = {
+  // 리뷰 작성 완료 후 팝업
+  bodyText : '리뷰작성이 완료되었습니다.',
+  okText : '확인',
+}
+export const complete_withdrwal_popup_string = {
+  // 탈퇴완료 후 팝업
+  bodyText : '탈퇴가 완료되었습니다.',
+  okText : '확인',
+}
+export const check_logout_popup_string = {
+  // 로그아웃 확인 팝업
+  bodyText : '로그아웃 하시겠습니까?',
+  okText : '확인',
+  cancelText : '취소'
+}
+export const check_order_cancel_popup_string = {
+  // 주문취소 확인 팝업
+  bodyText : '주문취소 하시겠습니까?',
+  okText : '확인',
+  cancelText : '취소'
+}
+export const complete_profile_modify_popup_string = {
+  // 회원정보 수정 완료 후 팝업
+  bodyText : '회원정보 수정이 완료되었습니다.',
+  okText : '확인',
+}
+export const complete_order_cancel_popup_string = {
+  // 주문취소 완료 후 팝업
+  bodyText : '주문취소가 완료되었습니다.',
+  okText : '확인',
+}
+export const complete_payment_popup_string = {
+  // 결제 완료 후 팝업
+  bodyText : '결제가 완료되었습니다.',
+}
