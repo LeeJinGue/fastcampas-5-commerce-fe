@@ -8,7 +8,6 @@ type SocialLoginCallbackQueryData = {
   state?: string,
 }
 const SocialloginCallback: React.FC<SocialLoginCallbackQueryData> = ({code, state}) => {
-  console.log("code: ",code, ", state:", state)
   if(code === "" || state === "") {
     return <>잘못된 접근입니다.</>
   }

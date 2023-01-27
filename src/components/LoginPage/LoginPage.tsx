@@ -13,7 +13,6 @@ const SOCIAL_DATA: { social: SocialType; link: string } =
 interface LoginPageProps extends ChakraProps {}
 
 const LoginPage = ({ ...basisProps }: LoginPageProps) => {
-  console.log("# CONFIG:",CONFIG)
   return (
     <>
       <LogoWhiteIcon w="262" h="36" mt="340px"/>
