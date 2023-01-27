@@ -35,7 +35,7 @@ function Review({iscomment, reviewData,...props}: ReviewProps) {
           <Flex // 리뷰사진
           mt="9px">
             {reviewimageSet.map((reviewImage) => {
-              return <Image src={reviewImage.url} w="80px" h="80px" mr="10px"/>
+              return <Image key={reviewImage.url} src={reviewImage.url} w="80px" h="80px" mr="10px"/>
             })}
           </Flex>
       </Flex>

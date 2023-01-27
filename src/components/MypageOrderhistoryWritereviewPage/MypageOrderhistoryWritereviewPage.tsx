@@ -124,7 +124,7 @@ function MypageOrderhistoryWritereviewPage({
       <Text px="16px" textStyle="text">별점</Text>
       <Flex h="80px" mt="20px" justifyContent="center" alignItems="center">
         {ratioList.map((value, index) => {
-          return <RatioStarIcon _hover={{ cursor: "pointer" }} onClick={() => {
+          return <RatioStarIcon key={index} _hover={{ cursor: "pointer" }} onClick={() => {
             handleRatioOnclick(index)
           }} ratio={value} size="36" />
         })}
@@ -153,7 +153,7 @@ function MypageOrderhistoryWritereviewPage({
           />
           </Button>
         {reviewimagePath.map((value, index) => {
-          return (<Flex>
+          return (<Flex key={value}>
             <Image w="80px" h="80px" borderRadius="5px" src={value} />
             <XIcon position="relative" left="-10px" top="-10px" xsize='Circle' xcolor='White' fillcolor='Gray3' 
             onClick={() => handleDeleteReviewImage(index)}/>
