@@ -24,6 +24,7 @@ import LoadingPage from '@components/common/New/LoadingPage';
 import { ReviewDTOType } from '@apis/review/ReviewApi.type';
 import CardSlider from '@components/common/CardSlider';
 import BadgeSlider from '@components/common/BadgeSlider';
+import { CONFIG } from '@config';
 
 
 interface HomePageViewProps extends BoxProps {
@@ -58,6 +59,7 @@ const HomePageContent = ({ }) => {
 
 const HomePageView = ({ reviewList, ...basisProps }: HomePageViewProps) => {
   const route = useRouter()
+  console.log("# CONFIG:", CONFIG)
   const [badgeText, setBadgeText] = useState("")
   const handleBadgeText = (badge: string) => {        // Radio 버튼 onChange 이벤트
     setBadgeText(badge)
