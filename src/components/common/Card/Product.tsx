@@ -66,7 +66,7 @@ function Product({ productData, cart_id, ...props }: productProps) {
           ml="30px" mt="25px">
           {tag && tag.map((tags) => {
             return (
-              <Text ml={tags.id === 0 ? "0px" : "5px"} textStyle="text" textColor="gray.700">{`# ${tags.name}`}</Text>
+              <Text key={tags.id} ml={tags.id === 0 ? "0px" : "5px"} textStyle="text" textColor="gray.700">{`# ${tags.name}`}</Text>
             )
           })}
         </Flex>
