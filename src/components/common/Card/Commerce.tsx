@@ -98,7 +98,7 @@ function CommerceView({...props}:CommerceViewProps){
               <Image // 상품 이미지
                 src={photo} w="90px" h="90px" />
               <Flex // 상품 텍스트
-                flexDir="column"
+                flexDir="column" ml="10px"
               >
                 <Text textStyle="title" textColor="black">{name}</Text>
                 <Text textStyle="text" textColor="gray.600">{`${name} | ${capacity}ml`}</Text>
@@ -111,7 +111,7 @@ function CommerceView({...props}:CommerceViewProps){
           <Flex   // 배송비
             mt="15px" justifyContent="space-between"
           >
-            <Text textColor="black" textStyle="text">{`배송비 ${delivery === 0 ? "무료" : delivery}`}</Text>
+            <Text textColor="black" textStyle="text">{`배송비 ${delivery === 0 ? "무료" : delivery+"원"}`}</Text>
             <Text textColor="black" textStyle="titleLarge">{total}{"원"}</Text>
           </Flex>
         </Flex>

@@ -20,6 +20,8 @@ import {
   OrderPutByIdParamType,
   OrderPutByIdReturnType,
   OrderStatusGetByIdParamType,
+  OrderStatusIdGetParamType,
+  OrderStatusIdGetReturnType,
   OrderStatusType,
 } from './OrderApi.type';
 import { UserDTOType } from '@apis/user/UserApi.type';
@@ -113,31 +115,16 @@ export class OrderApi {
     })
     return { orderResults:orderDataList, ...orderStatusData};
   };
-  getOrderStatusById = async (params: OrderStatusGetByIdParamType): Promise<OrderStatusType | undefined> => {
-    const userData = await this.axios.get<UserDTOType>(`/v1/user/me/`)
+  getOrderStatusById = async (params: OrderStatusGetByIdParamType): Promise<OrderStatusType[]> => {
     const { orderId } = params
     let page = 1
-    const orderStatusParam = {
-      user_id: userData.data.id,
+    const orderStatusIdParam = {
+      order_id: orderId,
       page,
     }
-    const { data } = await this.axios.get<OrderGetStatusReturnType>(`/v1/order/status/`, { data: orderStatusParam })
-    const filterList = data.results.filter((orderStatusData) => orderStatusData.orderId === orderId)
-    if (filterList.length !== 0) return filterList[0]
-    let nextPage = data.next
-    while (page < 5) {
-      page++
-      const { data } = await this.axios.get<OrderGetStatusReturnType>(`/v1/order/status/`, { data: orderStatusParam })
-      console.log(`# page ${page}의 orderStatus:`, data)
-      nextPage = data.next
-      const filterList = data.results.filter((orderStatusData) => orderStatusData.orderId === orderId)
-      if (filterList.length !== 0) {
-        console.log("# OrderId에 해당하는 주문의 OrderStatus:", filterList)
-        return filterList[0]
-      }
-    }
-    console.log("# OrderId에 해당하는 주문의 OrderStatus가 없습니다.")
-    return undefined
+    const { data } = await this.axios.get<OrderStatusIdGetReturnType>(`/v1/order/status/id/`, {data: orderStatusIdParam})
+    if(data.results.length === 0) return []
+    return data.results
   };
   postOrderStatus = async (params: OrderPostStatusParamType): Promise<OrderPostStatusReturnType> => {
     const { data } = await this.axios({
