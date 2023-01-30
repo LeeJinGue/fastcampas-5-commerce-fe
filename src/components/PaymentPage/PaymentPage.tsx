@@ -60,8 +60,8 @@ function PaymentPage({ ...basisProps }: PaymentPageProps) {
           tossPayments.requestPayment('카드', {
             amount: orderData.totalDeliveryCost+orderData.totalCost,
             orderId,
-            orderName: '토스 티셔츠 외 2건',
-            customerName: '인코스런커머스',
+            orderName: `${orderData.orderName}`,
+            customerName: order.name,
             successUrl: TOSS_PAYMENT_CALL_BACK_URL,
             failUrl: TOSS_PAYMENT_CALL_BACK_URL,
             // windowTarget: "self",
