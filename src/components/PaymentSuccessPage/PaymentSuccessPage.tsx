@@ -19,26 +19,25 @@ interface PaymentSuccessPageDataProps extends ChakraProps {
 interface PaymentSuccessPageProps extends Omit<PaymentSuccessPageDataProps,"resOrderId"> {
   orderData: OrderGetByIdReturnType,
   paymentTime: string,
-  orderStatusData: OrderStatusType,
+  orderStatusList: OrderStatusType[],
 }
 function PaymentSuccessPageData({ ...basisProps }: PaymentSuccessPageDataProps) {
 
   const {resOrderId, ...restProps} = basisProps
   const {data:orderData, isLoading:orderLoading, isError:orderError} = useGetOrderByIdQuery({variables: {uuid: resOrderId}})
-  const {data:orderStatusData, isLoading:orderStatusLoading, isError:orderStatusError} = useGetOrderStatusByIdQuery({variables: {orderId:resOrderId}})
+  const {data:orderStatusList, isLoading:orderStatusLoading, isError:orderStatusError} = useGetOrderStatusByIdQuery({variables: {orderId:resOrderId}})
 
   if (orderLoading || orderStatusLoading) return <Text>주문정보 로딩중</Text>
   if (orderError || orderStatusError) return <Text>주문정보 불러오기 에러</Text>
-  if (orderData === undefined || orderStatusData === undefined) return <Text>주문정보 불러오기 에러2</Text>
+  if (orderData === undefined || orderStatusList === undefined) return <Text>주문정보 불러오기 에러2</Text>
   
-  return <PaymentSuccessPage {...restProps} orderData={orderData} orderStatusData={orderStatusData} />
+  return <PaymentSuccessPage {...restProps} orderData={orderData} orderStatusList={orderStatusList} />
 }
 const {bodyText} = complete_payment_popup_string
 function PaymentSuccessPage({  ...basisProps }: PaymentSuccessPageProps) {
   const route = useRouter()
-  const {paymentTime, orderData, orderStatusData, ...restProps} = basisProps
+  const {paymentTime, orderData, orderStatusList, ...restProps} = basisProps
   const { shippingStatus,created, shipName, shipPhone, shipAddr, shipAddrDetail, shipAddrPost, orderMessage, price, shippingPrice, amount, method } = orderData
-  const {productId, count} = orderStatusData
   const moveToMain = () => {
     route.push({pathname:ROUTES.HOME})
   }
@@ -59,7 +58,9 @@ function PaymentSuccessPage({  ...basisProps }: PaymentSuccessPageProps) {
         px="16px" h="55px" justifyContent="start" alignItems="center">
         <Text textStyle="titleSmall" textColor="black">{formatCreatedTimeToDate(created)}</Text>
       </Flex>
-      <PriceCard px="16px" ispaymentcomplete={true} productid={productId} count={count} status={shippingStatus} />
+      {orderStatusList.map((orderStatus) => 
+      <PriceCard key={orderStatus.id} px="16px" ispaymentcomplete={true} productid={orderStatus.productId} count={orderStatus.count} status={shippingStatus} />
+      )}
       <Box bgColor="gray.100" h="10px" />
       <Flex   // 배송지 정보
         h="55px" alignItems="center" px="16px">
