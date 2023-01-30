@@ -8,7 +8,8 @@ import useAppStore from '@features/useAppStore';
 import { CONFIG } from '@config';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
 import { TOSS_PAYMENT_CALL_BACK_URL } from '@constants/toss';
-
+const defaultOrderMethod = "CARD"
+const defaultTossPaymentMethod = "카드"
 interface PaymentPageProps extends ChakraProps { }
 function PaymentPage({ ...basisProps }: PaymentPageProps) {
   const orderData = useAppStore(state => state.ORDER_ITEM)
@@ -30,9 +31,7 @@ function PaymentPage({ ...basisProps }: PaymentPageProps) {
       `# submitted 배송요청사항: ${deliveryrequest}`,
     );
     const orderParam: OrderPostParamType = {
-      // userId: 0,
-      // paymentKey: '',
-      method: "CARD",
+      method: defaultOrderMethod,
       userName: order.name,
       userPhone: order.phone.replaceAll("-", ""),
       userAddr: order.address.base,
@@ -50,28 +49,32 @@ function PaymentPage({ ...basisProps }: PaymentPageProps) {
     }
     orderPostMutate(orderParam).then(async(res) =>{
       console.log("# order response:", res)
-      // orderStatus를 post 합니다.
       const orderId = res.id
-      orderStatusPostMutate({orderId, productId:orderDataList[0].productId, count:orderDataList[0].count,}).then(statusRes => {
-        console.log("# statusRes:",statusRes)
-        loadTossPayments(CONFIG.TOSS_CLIENT_KEY!)
-        .then(tossPayments => {
-          console.log("# tossPayment 테스트:",tossPayments)
-          tossPayments.requestPayment('카드', {
-            amount: orderData.totalDeliveryCost+orderData.totalCost,
-            orderId,
-            orderName: `${orderData.orderName}`,
-            customerName: order.name,
-            successUrl: TOSS_PAYMENT_CALL_BACK_URL,
-            failUrl: TOSS_PAYMENT_CALL_BACK_URL,
-            // windowTarget: "self",
-          })
+      orderDataList.forEach((postedOrderData) => {
+        // 주문 상품 개수만큼 POST orderStatus 합니다.
+        const productId = postedOrderData.productId
+        const count = postedOrderData.count
+        orderStatusPostMutate({orderId, productId, count,}).then(statusRes => {
+          console.log("# statusRes:",statusRes)
+        }).catch(orderStatusErr => {
+          console.log("# orderStatusError:",orderStatusErr)
         })
-        .catch(err => console.log("# tosPayment 에러:",err))
-
-      }).catch(orderStatusErr => {
-        console.log("# orderStatusError:",orderStatusErr)
       })
+      if(!CONFIG.TOSS_CLIENT_KEY) alert("토스 결제 에러입니다.")
+      loadTossPayments(CONFIG.TOSS_CLIENT_KEY!)
+      .then(tossPayments => {
+        console.log("# tossPayment 테스트:",tossPayments)
+        const orderName = `${orderData.orderItemList[0].name}외 ${orderData.orderItemList.length-1}건`
+        const customerName = order.name
+        tossPayments.requestPayment(defaultTossPaymentMethod, {
+          amount: orderData.totalDeliveryCost+orderData.totalCost,
+          successUrl: TOSS_PAYMENT_CALL_BACK_URL,
+          failUrl: TOSS_PAYMENT_CALL_BACK_URL,
+          // windowTarget: "self",
+          orderId,orderName,customerName,
+        })
+      })
+      .catch(err => console.log("# tosPayment 에러:",err))
       
     }).catch((errror) => {
       console.log("# order error:", errror)
@@ -83,7 +86,7 @@ function PaymentPage({ ...basisProps }: PaymentPageProps) {
   return (
     <PaymentPageView 
     isagree={isagree} setisagree={setisagree}
-    orderData={orderData} formData={formData} onSubmit={onSubmit} />
+    orderData={orderData} formData={formData} onSubmit={onSubmit} {...basisProps} />
   );
 }
 
