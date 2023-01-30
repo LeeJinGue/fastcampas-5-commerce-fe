@@ -127,6 +127,18 @@ export type OrderStatusType = {
   count: number,
   created: string,
 }
+// GET /v1/order/status/id/ order id로 주문 내역 받아오기
+export type OrderStatusIdGetParamType = {
+  page?: number,
+  page_size?: number,
+  order_id: string,
+}
+export type OrderStatusIdGetReturnType = {
+  count: number,
+  next?: string,
+  previous?: string,
+  results: OrderStatusType[]
+}
 // POST /v1/order/status/
 export type OrderPostStatusParamType = {
   orderId: string,
