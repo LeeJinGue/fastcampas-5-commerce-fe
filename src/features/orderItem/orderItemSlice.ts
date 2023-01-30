@@ -12,7 +12,7 @@ export type orderItemType = {
 }
 export interface OrderItemStateType {
   orderItemList: orderItemType[],
-  orderName: string,
+  // orderName: string,
   totalCost: number,
   totalDeliveryCost: number,
 }
@@ -27,7 +27,7 @@ export type addOrderItemType = {
 const noOrderName = "없음"
 const initialState: OrderItemStateType = {
   orderItemList: [],
-  orderName: noOrderName,
+  // orderName: noOrderName,
   totalDeliveryCost: 0, // 총 배달 금액
   totalCost: 0, // 총 금액
 };
@@ -47,20 +47,6 @@ export const orderItemSlice = createSlice({
       })
       if(isNewOrder){
         state.orderItemList.push(action.payload.orderItem)
-        const orginName = state.orderName
-        // 주문이 없던, 새로운 주문이라면 새 주문 아이템 이름만 추가하고 
-        if(orginName === noOrderName){
-          state.orderName = action.payload.orderItem.name
-        }
-        if(orginName !== noOrderName){
-          if(state.orderItemList.length === 2){
-            // 이번에 2개가 되었다면 " 외 1건"만 붙이고
-            state.orderName += `외 ${state.orderItemList.length-1}건`
-          }else{
-            // 아니라면 뒤에 " 외 n건"의 n에 1을 더해줍니다.
-            orginName.replace(`외 ${state.orderItemList.length-2}건`,`외 ${state.orderItemList.length-1}건` )
-          }
-        }
       }
       console.log("아이템 추가 결과:",state.orderItemList)
     },
