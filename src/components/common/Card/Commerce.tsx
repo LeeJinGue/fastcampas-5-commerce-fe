@@ -98,7 +98,7 @@ function CommerceView({...props}:CommerceViewProps){
               <Image // 상품 이미지
                 src={photo} w="90px" h="90px" />
               <Flex // 상품 텍스트
-                flexDir="column"
+                flexDir="column" ml="10px"
               >
                 <Text textStyle="title" textColor="black">{name}</Text>
                 <Text textStyle="text" textColor="gray.600">{`${name} | ${capacity}ml`}</Text>
