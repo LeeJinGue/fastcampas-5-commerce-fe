@@ -111,7 +111,7 @@ function CommerceView({...props}:CommerceViewProps){
           <Flex   // 배송비
             mt="15px" justifyContent="space-between"
           >
-            <Text textColor="black" textStyle="text">{`배송비 ${delivery === 0 ? "무료" : delivery}`}</Text>
+            <Text textColor="black" textStyle="text">{`배송비 ${delivery === 0 ? "무료" : delivery+"원"}`}</Text>
             <Text textColor="black" textStyle="titleLarge">{total}{"원"}</Text>
           </Flex>
         </Flex>
