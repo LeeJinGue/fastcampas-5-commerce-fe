@@ -67,7 +67,8 @@ function PaymentPage({ ...basisProps }: PaymentPageProps) {
       loadTossPayments(CONFIG.TOSS_CLIENT_KEY!)
       .then(tossPayments => {
         console.log("# tossPayment 테스트:",tossPayments)
-        const orderName = `${orderData.orderItemList[0].name}외 ${orderData.orderItemList.length-1}건`
+        const howManyOrderItem = orderData.orderItemList.length === 1 ? "" : `외 ${orderData.orderItemList.length-1}건`
+        const orderName = `${orderData.orderItemList[0].name+howManyOrderItem}`
         const customerName = order.name
         tossPayments.requestPayment(defaultTossPaymentMethod, {
           amount: orderData.totalDeliveryCost+orderData.totalCost,
