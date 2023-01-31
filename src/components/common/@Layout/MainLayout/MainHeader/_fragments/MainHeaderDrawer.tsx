@@ -53,7 +53,7 @@ const MainHeaderDrawer = ({
 
   return (
     <>
-  <Drawer placement="left" {...basisProps}>
+  <Drawer blockScrollOnMount={false} placement="left" {...basisProps}>
     <DrawerOverlay />
     <DrawerContent w="313px" maxW="313px">
       <DrawerBody // 
