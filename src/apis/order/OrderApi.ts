@@ -117,14 +117,17 @@ export class OrderApi {
   };
   getOrderStatusById = async (params: OrderStatusGetByIdParamType): Promise<OrderStatusType[]> => {
     const { orderId } = params
-    let page = 1
-    const orderStatusIdParam = {
-      order_id: orderId,
-      page,
+    let resultArray: OrderStatusType[] = []
+    let page = 1, page_size = 5
+    const { data } = await this.axios.get<OrderStatusIdGetReturnType>(`/v1/order/status/id/?order_id=${orderId}&page=${page}&page_size=${page_size}`)
+    resultArray = resultArray.concat(data.results)
+    while(data.next !== null){
+      page++
+      const { data } = await this.axios.get<OrderStatusIdGetReturnType>(`/v1/order/status/id/?order_id=${orderId}&page=${page}&page_size=${page_size}`)
+      resultArray = resultArray.concat(data.results)    
     }
-    const { data } = await this.axios.get<OrderStatusIdGetReturnType>(`/v1/order/status/id/`, {data: orderStatusIdParam})
-    if(data.results.length === 0) return []
-    return data.results
+    // if(data.results.length === 0) return resultArray
+    return resultArray
   };
   postOrderStatus = async (params: OrderPostStatusParamType): Promise<OrderPostStatusReturnType> => {
     const { data } = await this.axios({

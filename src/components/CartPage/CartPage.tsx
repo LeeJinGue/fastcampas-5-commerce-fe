@@ -21,36 +21,15 @@ import { ROUTES } from '@constants/routes';
 import useCheckList from './_hook/useCheckList';
 import { useDispatch, useSelector } from 'react-redux';
 import { orderItemSliceActions } from '@features/orderItem/orderItemSlice';
+import EmptyCartPage from './EmptyCartPage';
 
-export type cartItem = {
-  count: number,
-  productData: ProductDetailDTOTType,
-}
 interface CartPageViewProps extends ChakraProps {
   cartData: CartDTOType,
   refetch: (options?: (RefetchOptions & RefetchQueryFilters)) => Promise<UseQueryResult>
 }
-interface EmptyCartPageProps extends ChakraProps {
-}
-function EmptyCartPage({ ...basisProps }: EmptyCartPageProps) {
-  const route = useRouter()
-  const handleGoProducts = () => route.push({pathname: ROUTES.PRODUCTS})
-  return (
-    <Flex
-      flexDir="column" pt={LAYOUT.HEADER.HEIGHT} w="375px"
-      alignItems="center" pb="80px" bgColor="white" {...basisProps}>
-      <Text textStyle="title" textColor="black" textAlign="center" mt="100px">
-        {"장바구니가 비어있습니다."}<br />
-        {"상품을 추가해보세요!"}
-      </Text> 
-      <PrimaryButton onClick={handleGoProducts} mt="30px" w="180px" h="50px" btntype={'Solid'} btnstate={'Primary'} btnshape={'Round'}>{"상품보러가기"}</PrimaryButton>
-    </Flex>
-  )
-}
+
 function CartPageData({...basisProps}){
   const {mutateAsync: postCartMutation} = usePostCartMutation()
-  // const { userData } =  useAppStore(state => state.USER)
-  // const {id:user_id} = userData
   const {refetch, data:cartData, isError, isLoading} = useGetCartQuery({variables: {user_id:0}, options: {
     notifyOnChangeProps: ["data"],
   }})
@@ -60,7 +39,6 @@ function CartPageData({...basisProps}){
   }
   if(cartData && cartData.length === 0){
     // cartData가 없다면, 장바구니를 새로 생성합니다.
-    
     postCartMutation({userId: cartData[0].userId}).then(res => {
       console.log("새 장바구니를 생성했습니다:",res)
       return <EmptyCartPage />
@@ -132,8 +110,6 @@ function CartPageView({ refetch,cartData,...basisProps }: CartPageViewProps) {
         {cartData.cartitem.map((cart, cartIndex) => {
           return <Commerce mt="10px" handledeleteitem={handleDeleteItem} 
           ischeck={checkList[cartIndex]} changeByIndex={changeByIndex}
-          
-          // setischeck={setCheckList[cartIndex]}
           cartindex={cartIndex} itemdata={cart} key={cart.id} 
           settotalcost={setTotalCost} settotaldeliverycost={setTotalDeliveryCost} />
         })}

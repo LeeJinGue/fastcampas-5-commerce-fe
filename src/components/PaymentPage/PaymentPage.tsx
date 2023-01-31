@@ -8,6 +8,7 @@ import useAppStore from '@features/useAppStore';
 import { CONFIG } from '@config';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
 import { TOSS_PAYMENT_CALL_BACK_URL } from '@constants/toss';
+import { useDeleteCartItemByCartItemIdMutation } from '@apis/cart/CartApi.mutation';
 const defaultOrderMethod = "CARD"
 const defaultTossPaymentMethod = "카드"
 interface PaymentPageProps extends ChakraProps { }
@@ -19,6 +20,7 @@ function PaymentPage({ ...basisProps }: PaymentPageProps) {
   const { handleSubmit } = formData;
   const { data:postOrderData, isSuccess:postOrderSuccess ,mutateAsync: orderPostMutate } = usePostOrderMutation()
   const { data:postOrderStatusData, isSuccess:postOrderStatusSuccess ,mutateAsync: orderStatusPostMutate } = usePosthOrderStatus()
+  const { mutateAsync: deleteCartItemMutation } = useDeleteCartItemByCartItemIdMutation()
   const onSubmit = handleSubmit(({ order, delivery, deliveryrequest }) => {
     // 주문결제 성공!
     console.log(
@@ -52,10 +54,11 @@ function PaymentPage({ ...basisProps }: PaymentPageProps) {
       const orderId = res.id
       orderDataList.forEach((postedOrderData) => {
         // 주문 상품 개수만큼 POST orderStatus 합니다.
-        const productId = postedOrderData.productId
-        const count = postedOrderData.count
+        const { productId, cartItemId, count} = postedOrderData
         orderStatusPostMutate({orderId, productId, count,}).then(statusRes => {
           console.log("# statusRes:",statusRes)
+          // 주문이 완료된 장바구니 아이템은 삭제합니다.
+          deleteCartItemMutation({cartItemId})
         }).catch(orderStatusErr => {
           console.log("# orderStatusError:",orderStatusErr)
         })
@@ -64,7 +67,8 @@ function PaymentPage({ ...basisProps }: PaymentPageProps) {
       loadTossPayments(CONFIG.TOSS_CLIENT_KEY!)
       .then(tossPayments => {
         console.log("# tossPayment 테스트:",tossPayments)
-        const orderName = `${orderData.orderItemList[0].name}외 ${orderData.orderItemList.length-1}건`
+        const howManyOrderItem = orderData.orderItemList.length === 1 ? "" : `외 ${orderData.orderItemList.length-1}건`
+        const orderName = `${orderData.orderItemList[0].name+howManyOrderItem}`
         const customerName = order.name
         tossPayments.requestPayment(defaultTossPaymentMethod, {
           amount: orderData.totalDeliveryCost+orderData.totalCost,
