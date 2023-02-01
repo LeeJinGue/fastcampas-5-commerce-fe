@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Box, ChakraProps, Button, Flex, Image, Text, BoxProps, FlexProps, useToast, useDisclosure } from '@chakra-ui/react';
+import { Box, ChakraProps, Button, Flex, Image, Text, BoxProps, FlexProps, useToast, useDisclosure, ButtonProps } from '@chakra-ui/react';
 import { LAYOUT } from '@constants/layout';
 import PriceCard from '@components/common/Card/PriceCard';
 import PrimaryButton from '@components/common/New/PrimaryButton';
@@ -20,11 +20,16 @@ interface MypageOrderhistoryPageProps extends MypageOrderhistoryPageDataProps {
 }
 interface MypageOrderhistoryPageDataProps extends ChakraProps {
 }
+interface WriteReviewButtonProps {
+  orderStatus: OrderStatusType,
+}
+interface CancelOrderButtonProps {
+  onClick: () => void,
+}
 const { bodyText, okText, cancelText } = check_order_cancel_popup_string
 function MypageOrderhistoryPageData({ ...basisProps }: MypageOrderhistoryPageDataProps) {
   const [orderPage, setOrderPage] = React.useState(1)
   const { data: orderStatusList, isError: isOrderStatusError, isLoading: isOrderStatusLoading } = useGetOrderStatusWithOrderQuery({ variables: { page: orderPage } })
-  // const { data: allOrderDataList, isError: isOrderDataError, isLoading: isOrderDataLoading } = useGetOrderListQuery({variables: {offset:orderPage}})
   if (isOrderStatusError) return <Text>데이터 불러오기 에러</Text>
   if (isOrderStatusLoading) return <Text>로딩중</Text>
   if (!orderStatusList) return <Text>주문상태 데이터 불러오기 에러2</Text>
@@ -63,8 +68,21 @@ function MypageOrderhistoryPage({
     })
     popupClose()
   }
+  const WriteReviewButton = ({ orderStatus }: WriteReviewButtonProps) => <PrimaryButton
+    mt="10px" mb="20px" mr="16px"
+    alignSelf="end" w="140px" h="40px"
+    onClick={() => handleWriteReview(orderStatus)}
+    btntype={'Line'} btnstate={'Primary'} btnshape={'Rectangle'}>
+    리뷰작성
+  </PrimaryButton>
+  const CancelOrderButton = ({onClick}: CancelOrderButtonProps) => <PrimaryButton
+    mt="10px" mb="20px" mr="16px"
+    alignSelf="end" w="140px" h="40px"
+    btntype={'Solid'} btnstate={'Primary'} btnshape={'Rectangle'} onClick={onClick}>
+    주문취소
+  </PrimaryButton>
   return (
-    <Flex flexDir="column">
+    <Flex flexDir="column" {...basisProps}>
       <Text ml="16px" mt="50px" textStyle="titleLarge" textColor="black">주문내역</Text>
       {orderStatusList && orderStatusList.map((orderStatus, ordeStatusIndex, list) => {
         const orderData = orderDataList[ordeStatusIndex]
@@ -84,24 +102,11 @@ function MypageOrderhistoryPage({
         return (
           <Flex flexDir="column" key={orderStatus.id}>
             {showDateText && <DateText mt={dateTextMarginTop} ml="16px" date={orderStatus.created} />}
-            <PriceCard px="16px" ispaymentcomplete={true} productid={orderStatus.productId}
+            <PriceCard px="16px" isshippingfeevisible={true} productid={orderStatus.productId}
               count={orderStatus.count} status={shippingStatus} />
             {shippingStatus && shippingStatus === "PAID" ?
-              <PrimaryButton
-                mt="10px" mb="20px" mr="16px"
-                alignSelf="end" w="140px" h="40px"
-                onClick={() => handleWriteReview(orderStatus)}
-                btntype={'Line'} btnstate={'Primary'} btnshape={'Rectangle'}>
-                리뷰작성
-              </PrimaryButton>
-              :
-              <PrimaryButton
-                mt="10px" mb="20px" mr="16px"
-                alignSelf="end" w="140px" h="40px"
-                btntype={'Solid'} btnstate={'Primary'} btnshape={'Rectangle'} onClick={popupOpen}>
-                주문취소
-              </PrimaryButton>
-            }
+              <CancelOrderButton onClick={popupOpen} /> : shippingStatus === "DONE" ? 
+              <WriteReviewButton orderStatus={orderStatus} /> : <></>}
           </Flex>
         )
       })}
@@ -116,4 +121,5 @@ function MypageOrderhistoryPage({
 const Divider = ({ ...props }: BoxProps) => {
   return <Box border="1px solid" borderColor="gray.100" {...props} />
 }
+
 export default MypageOrderhistoryPageData;
