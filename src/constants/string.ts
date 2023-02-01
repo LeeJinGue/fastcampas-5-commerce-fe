@@ -26,7 +26,7 @@ export const status_to_shipping_status = (status: string) =>{
     case "INPROGRESS": return "배송중 "
     case "DONE": return "배송 완료"
     case "CANCELED": return "배송 취소"
-    default: "이상함"
+    default: return "배송 오류"
   }
 }
 
