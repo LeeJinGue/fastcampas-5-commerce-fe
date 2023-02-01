@@ -28,7 +28,7 @@ function MypageOrderhistoryPageData({ ...basisProps }: MypageOrderhistoryPageDat
   if (isOrderStatusError) return <Text>데이터 불러오기 에러</Text>
   if (isOrderStatusLoading) return <Text>로딩중</Text>
   if (!orderStatusList) return <Text>주문상태 데이터 불러오기 에러2</Text>
-  const lastPage = orderStatusList.count / 5
+  const lastPage = Math.floor(orderStatusList.count / 5) + 1
   return (
     <>
       <Flex pt={LAYOUT.HEADER.HEIGHT} pb="80px"
@@ -36,7 +36,7 @@ function MypageOrderhistoryPageData({ ...basisProps }: MypageOrderhistoryPageDat
         {...basisProps}>
         <MypageOrderhistoryPage orderStatusList={orderStatusList.results} orderDataList={orderStatusList.orderResults} />
         <Divider />
-        <Pagination mt="50px" page={orderPage} setPage={setOrderPage} lastPage={orderStatusList.count} />
+        <Pagination mt="50px" page={orderPage} setPage={setOrderPage} lastPage={lastPage} />
       </Flex>
     </>
   )
@@ -63,50 +63,53 @@ function MypageOrderhistoryPage({
     })
     popupClose()
   }
-
   return (
-    <>
+    <Flex flexDir="column">
       <Text ml="16px" mt="50px" textStyle="titleLarge" textColor="black">주문내역</Text>
       {orderStatusList && orderStatusList.map((orderStatus, ordeStatusIndex, list) => {
         const orderData = orderDataList[ordeStatusIndex]
         let shippingStatus = ""
+        let dateTextMarginTop = "0px"
         if (orderData === undefined) shippingStatus = "배송상태 없음"
         else shippingStatus = orderData.shippingStatus
         let showDateText
         if (ordeStatusIndex === 0) {
           showDateText = true
+          dateTextMarginTop = "80px"
         } else {
           const nowCreated = orderStatus.created
           const beforeCreated = list[ordeStatusIndex - 1].created
           showDateText = !isSameDay(nowCreated, beforeCreated)
         }
-        return <Flex flexDir="column" key={orderStatus.id}>
-          {showDateText && <DateText mt="80px" ml="16px" date={orderStatus.created} />}
-          <PriceCard px="16px" ispaymentcomplete={true} productid={orderStatus.productId}
-            count={orderStatus.count} status={shippingStatus} />
-          {shippingStatus && shippingStatus === "PAID" ?
-            <PrimaryButton
-              mt="10px" mb="20px" mr="16px"
-              alignSelf="end" w="140px" h="40px"
-              onClick={() => handleWriteReview(orderStatus)}
-              btntype={'Line'} btnstate={'Primary'} btnshape={'Rectangle'}>
-              리뷰작성
-            </PrimaryButton>
-            :
-            <PrimaryButton
-              mt="10px" mb="20px" mr="16px"
-              alignSelf="end" w="140px" h="40px"
-              btntype={'Solid'} btnstate={'Primary'} btnshape={'Rectangle'} onClick={popupOpen}>
-              주문취소
-            </PrimaryButton>
-          }
-        </Flex>
+        return (
+          <Flex flexDir="column" key={orderStatus.id}>
+            {showDateText && <DateText mt={dateTextMarginTop} ml="16px" date={orderStatus.created} />}
+            <PriceCard px="16px" ispaymentcomplete={true} productid={orderStatus.productId}
+              count={orderStatus.count} status={shippingStatus} />
+            {shippingStatus && shippingStatus === "PAID" ?
+              <PrimaryButton
+                mt="10px" mb="20px" mr="16px"
+                alignSelf="end" w="140px" h="40px"
+                onClick={() => handleWriteReview(orderStatus)}
+                btntype={'Line'} btnstate={'Primary'} btnshape={'Rectangle'}>
+                리뷰작성
+              </PrimaryButton>
+              :
+              <PrimaryButton
+                mt="10px" mb="20px" mr="16px"
+                alignSelf="end" w="140px" h="40px"
+                btntype={'Solid'} btnstate={'Primary'} btnshape={'Rectangle'} onClick={popupOpen}>
+                주문취소
+              </PrimaryButton>
+            }
+          </Flex>
+        )
       })}
       <Popup isOpen={isPopupOpen} onClose={popupClose} bodyMsg={bodyText}
         cancelMsg={cancelText} cancelOnclick={popupClose}
         okMsg={okText} okOnclick={handleCancelOrder}
         children={undefined} />
-    </>
+    </Flex>
   );
 }
 
