@@ -21,12 +21,12 @@ export const ORDER_STATUS = {
 }
 export const status_to_shipping_status = (status: string) =>{
   switch(status){
-    case "PAID": return "결제 완료"
-    case "WAIT": return "배송 준비중 "
+    case "PAID": return "결제완료"
+    case "WAIT": return "상품준비중 "
     case "INPROGRESS": return "배송중 "
-    case "DONE": return "배송 완료"
-    case "CANCELED": return "배송 취소"
-    default: "이상함"
+    case "DONE": return "배송완료"
+    case "CANCELED": return "결제취소"
+    default: return "배송오류"
   }
 }
 

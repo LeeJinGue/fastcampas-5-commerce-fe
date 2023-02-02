@@ -59,7 +59,7 @@ function PaymentSuccessPage({  ...basisProps }: PaymentSuccessPageProps) {
         <Text textStyle="titleSmall" textColor="black">{formatCreatedTimeToDate(created)}</Text>
       </Flex>
       {orderStatusList.map((orderStatus) => 
-      <PriceCard key={orderStatus.id} px="16px" ispaymentcomplete={true} productid={orderStatus.productId} count={orderStatus.count} status={shippingStatus} />
+      <PriceCard key={orderStatus.id} px="16px" isshippingfeevisible={true} productid={orderStatus.productId} count={orderStatus.count} status={shippingStatus} />
       )}
       <Box bgColor="gray.100" h="10px" />
       <Flex   // 배송지 정보

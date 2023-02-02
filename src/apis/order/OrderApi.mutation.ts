@@ -27,7 +27,13 @@ export const usePatchOrderByIdMutation = (
     ...params?.options,
   });
 };
-
+export const usePatchShippingStatusByIdMutation = (
+  params?: MutationHookParams<typeof orderApi.patchOrderStatusById>,
+) => {
+  return useMutation(orderApi.patchOrderStatusById, {
+    ...params?.options,
+  });
+};
 export const usePosthOrderStatus = (
   params?: MutationHookParams<typeof orderApi.postOrderStatus>,
 ) => {

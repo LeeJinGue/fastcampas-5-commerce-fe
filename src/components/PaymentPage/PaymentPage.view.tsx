@@ -117,7 +117,7 @@ function PaymentPageView({
       {...basisProps} onSubmit={onSubmit} bgColor="white" w="375px" px="16px" pt={LAYOUT.HEADER.HEIGHT} pb="80px" flexDir="column">
       <Text mt="50px" textStyle="titleLarge" textColor="black">{"주문결제"}</Text>
       <Text mt="80px" textStyle="title" textColor="black">{"주문상품"}</Text>
-      {orderItemList.map((orderItem) => <PriceCard key={orderItem.cartItemId} ispaymentcomplete={false} productid={orderItem.productId} count={orderItem.count} status={''} />)}
+      {orderItemList.map((orderItem) => <PriceCard key={orderItem.cartItemId} isshippingfeevisible={false} productid={orderItem.productId} count={orderItem.count} status={''} />)}
       <Text mt="45px" textStyle="title" textColor="black">{"주문자 정보"}</Text>
       <Flex   // 주문 Form
         flexDir="column" mt="40px">

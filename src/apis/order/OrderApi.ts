@@ -22,6 +22,7 @@ import {
   OrderStatusGetByIdParamType,
   OrderStatusIdGetParamType,
   OrderStatusIdGetReturnType,
+  OrderStatusPatchByIdParamType,
   OrderStatusType,
 } from './OrderApi.type';
 import { UserDTOType } from '@apis/user/UserApi.type';
@@ -85,6 +86,15 @@ export class OrderApi {
     });
     return data;
   };
+  patchOrderStatusById = async (params: OrderStatusPatchByIdParamType): Promise<OrderPatchByIdReturnType> => {
+    const { id, ...etc } = params
+    const { data } = await this.axios({
+      method: 'PATCH',
+      url: `/v1/order/status/${id}/`,
+      data: etc,
+    });
+    return data;
+  };
   getOrderStatus = async (params: OrderGetStatusParamType): Promise<OrderGetStatusReturnType> => {
     const { data: userData } = await this.axios.get<UserDTOType>(`/v1/user/me/`)
     const { data } = await this.axios({
@@ -100,18 +110,25 @@ export class OrderApi {
       `/v1/order/status/?user_id=${userData.id}&page=${params.page}`,
       { data: params },
     );
-    const orderData = await this.getOrderList({limit: orderStatusData.count+10, offset:1})
+    let offset = 0, limit = 1
+    // 첫 GET을 통해 주문이 총 몇개인지 count와 첫 주문을 가져옵니다.
+    const {results:allOrderResult, count} = await this.getOrderList({limit, offset})
+    offset++, limit+=count
+    if(count !== 1){
+      // 주문 개수가 1개였다면 첫 GET 때 가져온 주문이 전체이므로 넘어가고 
+      // 주문 개수가 1이 아니라면 2번째 주문부터 마지막 주문까지 가져옵니다.
+      const {results: remainResults} = await this.getOrderList({limit, offset}) 
+      allOrderResult.push(...remainResults)
+    }
     const orderDataList:OrderGetByIdReturnType[] = []
     orderStatusData.results.forEach((orderStatus) => {
-      
-      const result = orderData.results.filter(order => {
+      const result = allOrderResult.filter(order => {
         return order.id === orderStatus.orderId
       })
       if(result.length === 0){
-        console.log("이상하다")
         return
       }
-      orderDataList.push(result[0])
+      orderDataList.push(...result)
     })
     return { orderResults:orderDataList, ...orderStatusData};
   };

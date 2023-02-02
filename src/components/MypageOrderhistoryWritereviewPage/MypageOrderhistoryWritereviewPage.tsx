@@ -118,7 +118,7 @@ function MypageOrderhistoryWritereviewPage({
       flexDir="column" bgColor="white" {...basisProps}>
       <Text px="16px" mt="50px" textStyle="titleLarge" textColor="black">리뷰작성</Text>
       <DateText px="16px" mt="80px" date={created} />
-      <PriceCard px="16px" ispaymentcomplete={false}
+      <PriceCard px="16px" isshippingfeevisible={false}
         productid={productId} count={count} status={shippingStatus} />
       <Box my="20px" h="20px" bgColor="gray.100" />
       <Text px="16px" textStyle="text">별점</Text>
