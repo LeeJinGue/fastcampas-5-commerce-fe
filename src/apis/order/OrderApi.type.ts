@@ -99,6 +99,23 @@ export type OrderPatchByIdParamType = {
   orderMessage: string
 }
 export type OrderPatchByIdReturnType = OrderDTOType
+// PATCH /v1/order/status/{id}/
+export type OrderStatusPatchByIdParamType = {
+  id: string,
+  shippingStatus: string,
+}
+export type OrderStatusPatchByIdReturnType = {
+  id: string,
+  shippingStatus: string,
+}
+export type OrderStatusPutByIdParamType = {
+  id: string,
+  shippingStatus: string,
+}
+export type OrderStatusPutByIdReturnType = {
+  id: string,
+  shippingStatus: string,
+}
 // GET /v1/order/status/ 주문 내역
 export type OrderGetStatusParamType = {
   page?: number,
