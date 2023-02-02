@@ -16,7 +16,7 @@ const Popup = ({ ...props }: PrimaryButtonProps) => {
   const { isOpen, onClose, cancelMsg,cancelOnclick, okMsg,okOnclick, bodyMsg } = props
   const isPaymentClear = !cancelMsg && !okMsg
   return (
-    <Modal isCentered isOpen={isOpen} onClose={onClose}>
+    <Modal blockScrollOnMount={false} isCentered isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent w="343px" h={isPaymentClear ? "180px": "300px"} py="30px" m="0">
         <ModalCloseButton color="gray" />
