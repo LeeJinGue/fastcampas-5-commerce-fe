@@ -22,6 +22,7 @@ import {
   OrderStatusGetByIdParamType,
   OrderStatusIdGetParamType,
   OrderStatusIdGetReturnType,
+  OrderStatusPatchByIdParamType,
   OrderStatusType,
 } from './OrderApi.type';
 import { UserDTOType } from '@apis/user/UserApi.type';
@@ -85,6 +86,15 @@ export class OrderApi {
     });
     return data;
   };
+  patchOrderStatusById = async (params: OrderStatusPatchByIdParamType): Promise<OrderPatchByIdReturnType> => {
+    const { id, ...etc } = params
+    const { data } = await this.axios({
+      method: 'PATCH',
+      url: `/v1/order/status/${id}/`,
+      data: etc,
+    });
+    return data;
+  };
   getOrderStatus = async (params: OrderGetStatusParamType): Promise<OrderGetStatusReturnType> => {
     const { data: userData } = await this.axios.get<UserDTOType>(`/v1/user/me/`)
     const { data } = await this.axios({
@@ -100,7 +110,7 @@ export class OrderApi {
       `/v1/order/status/?user_id=${userData.id}&page=${params.page}`,
       { data: params },
     );
-    let offset = 1, limit = 1
+    let offset = 0, limit = 1
     // 첫 GET을 통해 주문이 총 몇개인지 count와 첫 주문을 가져옵니다.
     const {results:allOrderResult, count} = await this.getOrderList({limit, offset})
     offset++, limit+=count
