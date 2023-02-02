@@ -14,6 +14,7 @@ import { check_order_cancel_popup_string } from '@constants/string';
 import Popup from '@components/common/New/Popup';
 import { usePatchShippingStatusByIdMutation } from '@apis/order/OrderApi.mutation';
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query';
+import LoadingPage from '@components/common/New/LoadingPage';
 
 interface MypageOrderhistoryPageProps extends MypageOrderhistoryPageDataProps {
   orderStatusList: OrderStatusType[],
@@ -33,7 +34,7 @@ function MypageOrderhistoryPageData({ ...basisProps }: MypageOrderhistoryPageDat
   const [orderPage, setOrderPage] = React.useState(1)
   const { data: orderStatusList, isError: isOrderStatusError, isLoading: isOrderStatusLoading, refetch } = useGetOrderStatusWithOrderQuery({ variables: { page: orderPage } })
   if (isOrderStatusError) return <Text>데이터 불러오기 에러</Text>
-  if (isOrderStatusLoading) return <Text>로딩중</Text>
+  if (isOrderStatusLoading) return <LoadingPage />
   if (!orderStatusList) return <Text>주문상태 데이터 불러오기 에러2</Text>
   const lastPage = Math.floor(orderStatusList.count / 5) + 1
   return (
