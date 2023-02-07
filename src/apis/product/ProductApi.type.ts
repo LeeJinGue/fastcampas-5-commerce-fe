@@ -1,4 +1,4 @@
-import { ReviewImageSetType } from "@apis/review/ReviewApi.type";
+import { ReviewDTOType, ReviewImageSetType } from "@apis/review/ReviewApi.type";
 
 // /v1/product/{id}/ API의 리턴타입
 export type ProductDetailDTOTType = {
@@ -42,6 +42,50 @@ export type ProductParamGetType = {
   page_size?: string,
 };
 
+// GET /v1/product/tag/의 파라메터 타입
+export type ReviewByTagParamGetType = {
+  tag_name: string,
+}
+
+// GET /v1/product/tag/의 리턴 타입
+export type ReviewByTagReturnGetType = {
+  count: number,
+  isNext: boolean,
+  results: TagReviewResultsType[],
+}
+
+// 태그별 리뷰의 results 타입
+export type TagReviewResultsType = {
+  id:number,
+  name: string,
+  reviewList: TagReviewDTOTType[]
+}
+// 태그별 리뷰의 리뷰 DTOT 타입
+export type TagReviewDTOTType = {
+  id: number,
+  userId: number,
+  nickname: string,
+  rate: number,
+  content: string,
+  reviewimageSet: TagReviewImageSetType[],
+  created: string,
+  reviewreplySet: TagReviewReplyType[]
+}
+// 태그별 리뷰의 리뷰 이미지 세트 타입
+export type TagReviewImageSetType = {
+  id: number,
+  reviewId: number,
+  url: string,
+}
+// 리뷰에 대한 관리자 댓글 DTOT 타입
+export type TagReviewReplyType = {
+  id: number,
+  created: string,
+  updated: string,
+  content: string,
+  reply_user_id: number,
+  review_id: number,
+}
 // 상품 정보와 함께 오는 리뷰 데이터 타입
 export type ProductReviewType = {
   id: number,
@@ -51,4 +95,10 @@ export type ProductReviewType = {
   content: string,
   reviewimageSet: Array<ReviewImageSetType>,
   created: string,
+}
+
+// 상품 태그 타입
+export type TagDTOTType = {
+  id: number,
+  name: string,
 }
