@@ -25,10 +25,12 @@ import { ReviewDTOType } from '@apis/review/ReviewApi.type';
 import CardSlider from '@components/common/CardSlider';
 import BadgeSlider from '@components/common/BadgeSlider';
 import { CONFIG } from '@config';
+import { useGetReviewListByTagQuery, useGetTagListQuery } from '@apis/product/ProductApi.query';
+import { TagDTOTType, TagReviewDTOTType, TagReviewResultsType } from '@apis/product/ProductApi.type';
+import BadgeReviewSliderData from './_fragment/BadgeReviewSlider';
 
 
 interface HomePageViewProps extends BoxProps {
-  reviewList: ReviewDTOType[],
 }
 const moveToTop = () => (document.documentElement.scrollTop = 0);
 
@@ -36,15 +38,10 @@ const HomePageContent = ({ }) => {
   const route = useRouter()
   const dispatch = useDispatch()
   const token = getToken()
-  const { data: allReview, isError, isLoading, isSuccess } = useGetReviewListQuery({
-    options: {
-      staleTime: Infinity,
-    }
-  })
 
   if (token) {
     const accessToken = token.access
-    useGetUserMeQuery({
+    const {data} = useGetUserMeQuery({
       variables: {
         accessToken,
       }, options: {
@@ -52,24 +49,14 @@ const HomePageContent = ({ }) => {
       }
     })
   }
-  if (isLoading) return <LoadingPage />
-  if (!isSuccess && isError) return <Text>에러발생!</Text>
-  return <HomePageView reviewList={allReview!.results} />
+
+  return <HomePageView 
+  />
 }
 
-const HomePageView = ({ reviewList, ...basisProps }: HomePageViewProps) => {
+const HomePageView = ({ ...basisProps }: HomePageViewProps) => {
   const route = useRouter()
-  console.log("# CONFIG:", CONFIG)
-  const [badgeText, setBadgeText] = useState("")
-  const handleBadgeText = (badge: string) => {        // Radio 버튼 onChange 이벤트
-    setBadgeText(badge)
-  }
-  const { value, getRadioProps, getRootProps } = useRadioGroup({
-    defaultValue: "전체",
-    onChange: handleBadgeText,
-    name: "상품 종류"
-  })
-
+  console.log("# CONFIG:", CONFIG)  
 
   const handleProductAll = () => route.push({ pathname: ROUTES.PRODUCTS })
   const handleEventDetail = () => route.push({ pathname: ROUTES.EVENTINFO })
@@ -220,10 +207,7 @@ const HomePageView = ({ reviewList, ...basisProps }: HomePageViewProps) => {
           {"인코스런을 "}<Text as="span" textStyle="extraLargeBold">{"직접 사용해본"}</Text> <br />
           {"고객님의 솔직한 리뷰"}
         </Text>
-        <BadgeSlider children={BADGE_NAME_LIST.map((name) =>
-          <BadgeRadio key={name} ml="10px" badgeName={name} {...getRadioProps({ value: name })}></BadgeRadio>)} />
-        <CardSlider children={reviewList.map((reviewData) =>
-          <SlideCard mt="76px" mx="10px" key={reviewData.id.toString()} reviewData={reviewData} />)} />
+        <BadgeReviewSliderData />
       </Flex>
       <Flex // 인코스런에 대해 더 궁금하신가요?
         flexDir="column" alignItems="center"

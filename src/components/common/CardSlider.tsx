@@ -5,7 +5,7 @@ import ListNumberArrowIcon from './New/@Icons/System/ListNumberArrow';
 import styled, { keyframes, css} from 'styled-components'
 import { Text } from '@chakra-ui/react';
 interface CardSliderProps {
-  children: JSX.Element[],
+  children: JSX.Element[] | JSX.Element,
 }
 
 const CardSlider = ({ children }: CardSliderProps) => {
