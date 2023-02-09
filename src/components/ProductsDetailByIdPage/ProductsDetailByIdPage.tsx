@@ -25,6 +25,13 @@ interface ProductsDetailByIdDataPageProps extends ChakraProps {
   product_data: ProductDetailDTOTType,
   user_id: number,
 }
+function NoReviewList({
+}) {
+  return (
+    <Text textStyle="title" textColor="black" textAlign="center" mt="100px">
+      {"리뷰가 없습니다."}<br />
+    </Text>)
+}
 function ProductsDetailByIdDataPage({
   user_id,
   ...basisProps
@@ -32,10 +39,14 @@ function ProductsDetailByIdDataPage({
   const { data: cartData, isError: isCartDataError, isLoading: isCartDataLoading } = useGetCartQuery({
     variables: {
       user_id
-    }
+    },
+    options: {
+      refetchOnWindowFocus: false,
+      refetchIntervalInBackground: false,
+    },
   })
   if (isCartDataLoading) return <LoadingPage />
-  if (isCartDataError) return <Text>카트 정보 갖고오기 에러</Text> 
+  if (isCartDataError) return <Text>카트 정보 갖고오기 에러</Text>
   if (!cartData) return <Text>카트 정보가 없습니다.</Text>
 
   return <ProductsDetailByIdViewPage cart_data={cartData[0]} user_id={user_id} {...basisProps} />
@@ -47,14 +58,44 @@ function ProductsDetailByIdViewPage({
   cart_data,
   ...basisProps
 }: ProductsDetailByIdViewPageProps) {
-  
+
   const { photo, reviewList, avgRate } = product_data
+  const [nowFilteredReviewList, setNowFilteredReviewList] = useState(reviewList)
+  const filterReviewList = (reviewOrder: string) => {
+    switch (reviewOrder) {
+      case "전체보기":
+        setNowFilteredReviewList(reviewList)
+        break
+      case "포토리뷰":
+        setNowFilteredReviewList(reviewList.filter((reviewData) => reviewData.reviewimageSet.length !== 0))
+        break
+    }
+  }
   const [page, setPage] = useState(1)
-  const startPage = (page-1)*5
-  const endPage = page*5
-  const nowPageReviewList = reviewList.slice(startPage,endPage)
-  const lastPage = Math.ceil(reviewList.length/5)
+  const startIndex = (page - 1) * 5
+  const endIndex = page * 5
+  const [nowPageReviewList, setNowPageReviewList] = useState(nowFilteredReviewList.slice((page - 1) * 5, page * 5))
+  const lastPage = Math.ceil(nowFilteredReviewList.length / 5)
   const rate = avgRate === null ? 0 : avgRate
+  const sortReviewList = (reviewOrder: string) => {
+    //['최신순', '평점 높은순', '평점 낮은순']
+    switch (reviewOrder) {
+      case "최신순":
+        nowFilteredReviewList.sort((afterReview, beforeReview) =>
+          afterReview.created < beforeReview.created ? -1
+            : afterReview.created > beforeReview.created ? 1
+              : 0)
+        break
+      case "평점 낮은순":
+        nowFilteredReviewList.sort((afterReview, beforeReview) => afterReview.rate - beforeReview.rate)
+        break
+      case "평점 높은순":
+        nowFilteredReviewList.sort((afterReview, beforeReview) => beforeReview.rate - afterReview.rate)
+        break
+    }
+    setNowPageReviewList(nowFilteredReviewList.slice(startIndex, endIndex))
+  }
+
   // 상세정보 펼쳐보기/접기
   const [isDetailOpen, setIsDetailOpen] = useState(true)
   const handelOpenDetail = () => {
@@ -88,9 +129,27 @@ function ProductsDetailByIdViewPage({
     onChange: handleTabText,
     name: "탭"
   })
-  const TAB_NAMES = ["상세정보", "구매정보", `리뷰(${reviewList.length})`]
+  const TAB_NAMES = ["상세정보", "구매정보", `리뷰(${nowFilteredReviewList.length})`]
+  const isNoReview = nowFilteredReviewList.length === 0
+  useEffect(() => {
+    // page가 변경되면 reviewList도 변경되어야 합니다.
+    setNowPageReviewList(nowFilteredReviewList.slice(startIndex, endIndex))
+  }, [page])
+  useEffect(() => {
+    // filtering된 리뷰 리스트가 변경되면 현재 페이지의 리뷰 리스트도 변경되어야 합니다.
+    if (page > lastPage) {
+      // 현재페이지가 마지막 페이지보다 크다면 마지막페이지로 이동합니다.
+      // 페이지가 변경될 때 nowPage도 변경하기 때문에 nowPage를 변경하지 않습니다.
+      setPage(lastPage)
+    }else{
+      setNowPageReviewList(nowFilteredReviewList.slice(startIndex, endIndex))
+    }
 
-
+  }, [nowFilteredReviewList])
+  const detailRef = useRef<HTMLDivElement>(null)
+  const buyDataRef = useRef<HTMLDivElement>(null)
+  const reviewListRef = useRef<HTMLDivElement>(null)
+  const refListForMove = [detailRef, buyDataRef, reviewListRef]
   return (
     <>
       <Flex {...basisProps} bgColor="white" w="375px" pt={LAYOUT.HEADER.HEIGHT} flexDir="column"
@@ -105,10 +164,11 @@ function ProductsDetailByIdViewPage({
             alignItems="center"
             justifyContent="space-around"
           >
-            {TAB_NAMES.map((tabName, index) => 
-              <TabRadio key={tabName} 
-              ml={index !== 0 ? "20px" : "0"} tabName={tabName} 
-              {...getRadioProps({ value: tabName })} />
+            {TAB_NAMES.map((tabName, index) =>
+              <TabRadio key={tabName} onClick={() => {
+                refListForMove[index].current?.scrollIntoView({behavior: "smooth", block: "center"})}} 
+                ml={index !== 0 ? "20px" : "0"} tabName={tabName}
+                {...getRadioProps({ value: tabName })} />
             )}
 
           </Flex>
@@ -118,7 +178,7 @@ function ProductsDetailByIdViewPage({
           w="375px" h={detailHeight}
           mt="50px" flexDir="column" alignItems="center"
           textAlign="center">
-          <Text textColor="primary.500" textStyle="titleSmall">{"KEY POINT"}</Text>
+          <Text textColor="primary.500" ref={detailRef} textStyle="titleSmall">{"KEY POINT"}</Text>
           <Text textColor="black" textStyle="extraLarge">
             {"순하고 마일드한 안심 처방으로"}<br />
             {"피부가 민감하고 연약한"}<br />
@@ -147,6 +207,7 @@ function ProductsDetailByIdViewPage({
           flexDir="column"
           px="16px">
           <Flex     // 주문 및 배송 안내 menu text
+            ref={buyDataRef}
             w="343px" h="60px" justifyContent="space-between" alignItems="center" mt="30px">
             <Text textStyle="title" textColor="black">{"주문 및 배송 안내"}</Text>
             <ListVerticalArrowIcon _hover={{ cursor: "pointer" }} state={isOrderDeliveryInfoClose} onClick={handelCloseOrderDeliveryInfoClose} colortype={'Black'} />
@@ -175,13 +236,14 @@ function ProductsDetailByIdViewPage({
           pt="50px">
           <Flex   // 리뷰개수, 정렬순서, 필터링
             alignItems="center" justifyContent="space-between" px="16px"
+            ref={reviewListRef}
           >
-            <Text textStyle="title" textColor="black">{"리뷰"}<Text as="span" textColor="primary.500">{reviewList.length}</Text>{"건"}</Text>
-            <Flex>
-              <Dropdown defaultmenu={'최신순'} children={['최신순', '평점 높은순', '평점 낮은순']} />
+            <Text textStyle="title" textColor="black">{"리뷰"}<Text as="span" textColor="primary.500">{nowFilteredReviewList.length}</Text>{"건"}</Text>
+            {!isNoReview && <Flex>
+              <Dropdown defaultmenu={'최신순'} children={['최신순', '평점 높은순', '평점 낮은순']} sortFunction={sortReviewList} />
               <Container as="span" w="10px" p="0" />
-              <Dropdown defaultmenu={'전체보기'} children={['전체보기', '포토리뷰']} />
-            </Flex>
+              <Dropdown defaultmenu={'전체보기'} children={['전체보기', '포토리뷰']} sortFunction={filterReviewList} />
+            </Flex>}
           </Flex>
           <Flex   // 평균 평점 및 평점 개수 
             h="70px" w="331px" alignSelf="center" justifyContent="space-between"
@@ -205,7 +267,7 @@ function ProductsDetailByIdViewPage({
                 {Array.from({ length: 5 }, (_, i) => (i * 10)).map((value) => {
                   return (
                     // padding top, height값으로 점수바 크기 설정
-                    <Box w="10px" h="50px" bgColor="secondary.100" borderRadius="5px" pt={value + "px"}>
+                    <Box key={value} w="10px" h="50px" bgColor="secondary.100" borderRadius="5px" pt={value + "px"}>
                       <Box w="10px" h={(50 - value) + "px"} bgColor="primary.500" borderRadius="5px" />
                     </Box>
                   )
@@ -227,14 +289,14 @@ function ProductsDetailByIdViewPage({
             </Flex>
           </Flex>
           { // 실제 리뷰 리스트
-            nowPageReviewList.map((reviewData: ProductReviewType) => {
+            isNoReview ? <NoReviewList /> : nowPageReviewList.map((reviewData: ProductReviewType) => {
               return <>
-                <Review reviewData={reviewData} iscomment={false} />
+                <Review key={reviewData.id} reviewData={reviewData} iscomment={false} />
                 <Box alignSelf="center" w="343px" h="0" border="1px solid" borderColor="gray.200" />
               </>
             })}
         </Flex>
-        <Pagination page={page} setPage={setPage} lastPage={lastPage} />
+        {!isNoReview && <Pagination page={page} setPage={setPage} lastPage={lastPage} />}
       </Flex>
     </>
   );
