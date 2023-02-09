@@ -12,10 +12,10 @@ import PrimaryButton from '../New/PrimaryButton';
 interface productProps extends FlexProps {
   productData: ProductSimpleDTOType,
   cart_id: number,
-
+  openCartDrawer: () => void,
 }
 
-function Product({ productData, cart_id, ...props }: productProps) {
+function Product({ productData, openCartDrawer, cart_id, ...props }: productProps) {
   const { id, name, thumbnail, tag, price, capacity, avgRate, reviewCount } = productData
   const route = useRouter()
   const moveDetailPage = () => {
@@ -26,10 +26,6 @@ function Product({ productData, cart_id, ...props }: productProps) {
       }
     })
   }
-  const [isOpenBuyDrawer, setIsOpenBuyDrawer] = React.useState(false);
-  const { closeModal, openModal } = useOpenModalByQueryParams({
-    drawer: setIsOpenBuyDrawer,
-  });
   return (
     <Flex // Card/product
       w="343px" h="528px" flexDir="column"
@@ -73,10 +69,9 @@ function Product({ productData, cart_id, ...props }: productProps) {
       </Flex>
       <Flex // 버튼들
         mt="20px" justifyContent="space-around">
-        <PrimaryButton btntype='Line' btnstate='Primary' btnshape='Round' mt="10px" w="150px" h="50px" onClick={() => openModal('drawer')} variant="outline">{"장바구니"}</PrimaryButton>
-        <PrimaryButton btntype='Solid' btnstate='Primary' btnshape='Round' mt="10px" w="150px" h="50px" onClick={() => openModal('drawer')}>{"바로구매"}</PrimaryButton>
+        <PrimaryButton btntype='Line' btnstate='Primary' btnshape='Round' mt="10px" w="150px" h="50px" onClick={openCartDrawer} variant="outline">{"장바구니"}</PrimaryButton>
+        <PrimaryButton btntype='Solid' btnstate='Primary' btnshape='Round' mt="10px" w="150px" h="50px" onClick={openCartDrawer}>{"바로구매"}</PrimaryButton>
       </Flex>
-      <DrawerBuy isOpen={isOpenBuyDrawer} cart_id={cart_id} productData={productData} onClose={() => closeModal('drawer')} />
     </Flex>
   )
 }

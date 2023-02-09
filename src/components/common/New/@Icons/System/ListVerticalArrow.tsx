@@ -7,8 +7,7 @@ interface ListVerticalArrowIconProps extends IconProps{
   colortype: colorType,
 }
 
-const ListVerticalArrowIcon = ({ ...props }: ListVerticalArrowIconProps) => {
-  const { state, colortype} = props
+const ListVerticalArrowIcon = ({ state, colortype, ...props }: ListVerticalArrowIconProps) => {
   let lineColor, d = ""
   switch(colortype){
     case "Disabled":
