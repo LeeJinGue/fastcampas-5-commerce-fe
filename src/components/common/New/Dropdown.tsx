@@ -4,8 +4,9 @@ import ListVerticalArrowIcon from './@Icons/System/ListVerticalArrow';
 interface DropdownProps extends MenuProps {
   defaultmenu: string,
   children: string[],
+  sortFunction: (reviewOrder:string) => void,
 }
-function Dropdown({ defaultmenu, children, ...props }: DropdownProps) {
+function Dropdown({ defaultmenu, children, sortFunction, ...props }: DropdownProps) {
   const [title, setTitle] = useState(defaultmenu)
   return (
     <Menu {...props}>
@@ -16,7 +17,10 @@ function Dropdown({ defaultmenu, children, ...props }: DropdownProps) {
       </MenuButton>
       <MenuList>
         {children.map((menu) => {
-          return <MenuItem onClick={() => setTitle(menu)} key={menu}>{menu}</MenuItem>
+          return <MenuItem onClick={() => {
+            setTitle(menu)
+            sortFunction(menu)
+          }} key={menu}>{menu}</MenuItem>
         })}
       </MenuList>
       </>

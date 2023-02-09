@@ -25,6 +25,13 @@ interface ProductsDetailByIdDataPageProps extends ChakraProps {
   product_data: ProductDetailDTOTType,
   user_id: number,
 }
+function NoReviewList({
+}) {
+  return (
+    <Text textStyle="title" textColor="black" textAlign="center" mt="100px">
+      {"리뷰가 없습니다."}<br />
+    </Text>)
+}
 function ProductsDetailByIdDataPage({
   user_id,
   ...basisProps
@@ -32,10 +39,14 @@ function ProductsDetailByIdDataPage({
   const { data: cartData, isError: isCartDataError, isLoading: isCartDataLoading } = useGetCartQuery({
     variables: {
       user_id
-    }
+    },
+    options: {
+      refetchOnWindowFocus: false,
+      refetchIntervalInBackground: false,
+    },
   })
   if (isCartDataLoading) return <LoadingPage />
-  if (isCartDataError) return <Text>카트 정보 갖고오기 에러</Text> 
+  if (isCartDataError) return <Text>카트 정보 갖고오기 에러</Text>
   if (!cartData) return <Text>카트 정보가 없습니다.</Text>
 
   return <ProductsDetailByIdViewPage cart_data={cartData[0]} user_id={user_id} {...basisProps} />
@@ -47,14 +58,33 @@ function ProductsDetailByIdViewPage({
   cart_data,
   ...basisProps
 }: ProductsDetailByIdViewPageProps) {
-  
+
   const { photo, reviewList, avgRate } = product_data
   const [page, setPage] = useState(1)
-  const startPage = (page-1)*5
-  const endPage = page*5
-  const nowPageReviewList = reviewList.slice(startPage,endPage)
-  const lastPage = Math.ceil(reviewList.length/5)
+  const startIndex = (page - 1) * 5
+  const endIndex = page * 5
+  const [nowPageReviewList, setNowPageReviewList] = useState(reviewList.slice((page - 1) * 5, page * 5))
+  const lastPage = Math.ceil(reviewList.length / 5)
   const rate = avgRate === null ? 0 : avgRate
+  const sortReviewList = (reviewOrder: string) => {
+    //['최신순', '평점 높은순', '평점 낮은순']
+    switch (reviewOrder) {
+      case "최신순":
+        reviewList.sort((afterReview, beforeReview) => 
+        afterReview.created < beforeReview.created ? -1 
+        : afterReview.created > beforeReview.created ? 1
+        : 0)
+        break
+      case "평점 낮은순":
+        reviewList.sort((afterReview, beforeReview) => afterReview.rate - beforeReview.rate)
+        break
+      case "평점 높은순":
+        reviewList.sort((afterReview, beforeReview) => beforeReview.rate - afterReview.rate)
+        break
+    }
+    setNowPageReviewList(reviewList.slice(startIndex, endIndex))
+  }
+
   // 상세정보 펼쳐보기/접기
   const [isDetailOpen, setIsDetailOpen] = useState(true)
   const handelOpenDetail = () => {
@@ -89,8 +119,11 @@ function ProductsDetailByIdViewPage({
     name: "탭"
   })
   const TAB_NAMES = ["상세정보", "구매정보", `리뷰(${reviewList.length})`]
-
-
+  const isNoReview = reviewList.length === 0
+  useEffect(() => {
+    // page가 변경되면 reviewList도 변경되어야 합니다.
+    setNowPageReviewList(reviewList.slice(startIndex, endIndex))
+  }, [page])
   return (
     <>
       <Flex {...basisProps} bgColor="white" w="375px" pt={LAYOUT.HEADER.HEIGHT} flexDir="column"
@@ -105,10 +138,10 @@ function ProductsDetailByIdViewPage({
             alignItems="center"
             justifyContent="space-around"
           >
-            {TAB_NAMES.map((tabName, index) => 
-              <TabRadio key={tabName} 
-              ml={index !== 0 ? "20px" : "0"} tabName={tabName} 
-              {...getRadioProps({ value: tabName })} />
+            {TAB_NAMES.map((tabName, index) =>
+              <TabRadio key={tabName}
+                ml={index !== 0 ? "20px" : "0"} tabName={tabName}
+                {...getRadioProps({ value: tabName })} />
             )}
 
           </Flex>
@@ -177,11 +210,11 @@ function ProductsDetailByIdViewPage({
             alignItems="center" justifyContent="space-between" px="16px"
           >
             <Text textStyle="title" textColor="black">{"리뷰"}<Text as="span" textColor="primary.500">{reviewList.length}</Text>{"건"}</Text>
-            <Flex>
-              <Dropdown defaultmenu={'최신순'} children={['최신순', '평점 높은순', '평점 낮은순']} />
+            {!isNoReview && <Flex>
+              <Dropdown defaultmenu={'최신순'} children={['최신순', '평점 높은순', '평점 낮은순']} sortFunction={sortReviewList} />
               <Container as="span" w="10px" p="0" />
-              <Dropdown defaultmenu={'전체보기'} children={['전체보기', '포토리뷰']} />
-            </Flex>
+              <Dropdown defaultmenu={'전체보기'} children={['전체보기', '포토리뷰']} sortFunction={(reviewOrder: string) => { }} />
+            </Flex>}
           </Flex>
           <Flex   // 평균 평점 및 평점 개수 
             h="70px" w="331px" alignSelf="center" justifyContent="space-between"
@@ -205,7 +238,7 @@ function ProductsDetailByIdViewPage({
                 {Array.from({ length: 5 }, (_, i) => (i * 10)).map((value) => {
                   return (
                     // padding top, height값으로 점수바 크기 설정
-                    <Box w="10px" h="50px" bgColor="secondary.100" borderRadius="5px" pt={value + "px"}>
+                    <Box key={value} w="10px" h="50px" bgColor="secondary.100" borderRadius="5px" pt={value + "px"}>
                       <Box w="10px" h={(50 - value) + "px"} bgColor="primary.500" borderRadius="5px" />
                     </Box>
                   )
@@ -227,14 +260,14 @@ function ProductsDetailByIdViewPage({
             </Flex>
           </Flex>
           { // 실제 리뷰 리스트
-            nowPageReviewList.map((reviewData: ProductReviewType) => {
+            isNoReview ? <NoReviewList /> : nowPageReviewList.map((reviewData: ProductReviewType) => {
               return <>
-                <Review reviewData={reviewData} iscomment={false} />
+                <Review key={reviewData.id} reviewData={reviewData} iscomment={false} />
                 <Box alignSelf="center" w="343px" h="0" border="1px solid" borderColor="gray.200" />
               </>
             })}
         </Flex>
-        <Pagination page={page} setPage={setPage} lastPage={lastPage} />
+        {!isNoReview && <Pagination page={page} setPage={setPage} lastPage={lastPage} />}
       </Flex>
     </>
   );
