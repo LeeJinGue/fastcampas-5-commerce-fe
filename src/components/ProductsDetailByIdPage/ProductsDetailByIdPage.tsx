@@ -146,6 +146,10 @@ function ProductsDetailByIdViewPage({
     }
 
   }, [nowFilteredReviewList])
+  const detailRef = useRef<HTMLDivElement>(null)
+  const buyDataRef = useRef<HTMLDivElement>(null)
+  const reviewListRef = useRef<HTMLDivElement>(null)
+  const refListForMove = [detailRef, buyDataRef, reviewListRef]
   return (
     <>
       <Flex {...basisProps} bgColor="white" w="375px" pt={LAYOUT.HEADER.HEIGHT} flexDir="column"
@@ -161,7 +165,8 @@ function ProductsDetailByIdViewPage({
             justifyContent="space-around"
           >
             {TAB_NAMES.map((tabName, index) =>
-              <TabRadio key={tabName}
+              <TabRadio key={tabName} onClick={() => {
+                refListForMove[index].current?.scrollIntoView({behavior: "smooth", block: "center"})}} 
                 ml={index !== 0 ? "20px" : "0"} tabName={tabName}
                 {...getRadioProps({ value: tabName })} />
             )}
@@ -173,7 +178,7 @@ function ProductsDetailByIdViewPage({
           w="375px" h={detailHeight}
           mt="50px" flexDir="column" alignItems="center"
           textAlign="center">
-          <Text textColor="primary.500" textStyle="titleSmall">{"KEY POINT"}</Text>
+          <Text textColor="primary.500" ref={detailRef} textStyle="titleSmall">{"KEY POINT"}</Text>
           <Text textColor="black" textStyle="extraLarge">
             {"순하고 마일드한 안심 처방으로"}<br />
             {"피부가 민감하고 연약한"}<br />
@@ -202,6 +207,7 @@ function ProductsDetailByIdViewPage({
           flexDir="column"
           px="16px">
           <Flex     // 주문 및 배송 안내 menu text
+            ref={buyDataRef}
             w="343px" h="60px" justifyContent="space-between" alignItems="center" mt="30px">
             <Text textStyle="title" textColor="black">{"주문 및 배송 안내"}</Text>
             <ListVerticalArrowIcon _hover={{ cursor: "pointer" }} state={isOrderDeliveryInfoClose} onClick={handelCloseOrderDeliveryInfoClose} colortype={'Black'} />
@@ -230,6 +236,7 @@ function ProductsDetailByIdViewPage({
           pt="50px">
           <Flex   // 리뷰개수, 정렬순서, 필터링
             alignItems="center" justifyContent="space-between" px="16px"
+            ref={reviewListRef}
           >
             <Text textStyle="title" textColor="black">{"리뷰"}<Text as="span" textColor="primary.500">{nowFilteredReviewList.length}</Text>{"건"}</Text>
             {!isNoReview && <Flex>
