@@ -60,29 +60,40 @@ function ProductsDetailByIdViewPage({
 }: ProductsDetailByIdViewPageProps) {
 
   const { photo, reviewList, avgRate } = product_data
+  const [nowFilteredReviewList, setNowFilteredReviewList] = useState(reviewList)
+  const filterReviewList = (reviewOrder: string) => {
+    switch (reviewOrder) {
+      case "전체보기":
+        setNowFilteredReviewList(reviewList)
+        break
+      case "포토리뷰":
+        setNowFilteredReviewList(reviewList.filter((reviewData) => reviewData.reviewimageSet.length !== 0))
+        break
+    }
+  }
   const [page, setPage] = useState(1)
   const startIndex = (page - 1) * 5
   const endIndex = page * 5
-  const [nowPageReviewList, setNowPageReviewList] = useState(reviewList.slice((page - 1) * 5, page * 5))
-  const lastPage = Math.ceil(reviewList.length / 5)
+  const [nowPageReviewList, setNowPageReviewList] = useState(nowFilteredReviewList.slice((page - 1) * 5, page * 5))
+  const lastPage = Math.ceil(nowFilteredReviewList.length / 5)
   const rate = avgRate === null ? 0 : avgRate
   const sortReviewList = (reviewOrder: string) => {
     //['최신순', '평점 높은순', '평점 낮은순']
     switch (reviewOrder) {
       case "최신순":
-        reviewList.sort((afterReview, beforeReview) => 
-        afterReview.created < beforeReview.created ? -1 
-        : afterReview.created > beforeReview.created ? 1
-        : 0)
+        nowFilteredReviewList.sort((afterReview, beforeReview) =>
+          afterReview.created < beforeReview.created ? -1
+            : afterReview.created > beforeReview.created ? 1
+              : 0)
         break
       case "평점 낮은순":
-        reviewList.sort((afterReview, beforeReview) => afterReview.rate - beforeReview.rate)
+        nowFilteredReviewList.sort((afterReview, beforeReview) => afterReview.rate - beforeReview.rate)
         break
       case "평점 높은순":
-        reviewList.sort((afterReview, beforeReview) => beforeReview.rate - afterReview.rate)
+        nowFilteredReviewList.sort((afterReview, beforeReview) => beforeReview.rate - afterReview.rate)
         break
     }
-    setNowPageReviewList(reviewList.slice(startIndex, endIndex))
+    setNowPageReviewList(nowFilteredReviewList.slice(startIndex, endIndex))
   }
 
   // 상세정보 펼쳐보기/접기
@@ -118,12 +129,23 @@ function ProductsDetailByIdViewPage({
     onChange: handleTabText,
     name: "탭"
   })
-  const TAB_NAMES = ["상세정보", "구매정보", `리뷰(${reviewList.length})`]
-  const isNoReview = reviewList.length === 0
+  const TAB_NAMES = ["상세정보", "구매정보", `리뷰(${nowFilteredReviewList.length})`]
+  const isNoReview = nowFilteredReviewList.length === 0
   useEffect(() => {
     // page가 변경되면 reviewList도 변경되어야 합니다.
-    setNowPageReviewList(reviewList.slice(startIndex, endIndex))
+    setNowPageReviewList(nowFilteredReviewList.slice(startIndex, endIndex))
   }, [page])
+  useEffect(() => {
+    // filtering된 리뷰 리스트가 변경되면 현재 페이지의 리뷰 리스트도 변경되어야 합니다.
+    if (page > lastPage) {
+      // 현재페이지가 마지막 페이지보다 크다면 마지막페이지로 이동합니다.
+      // 페이지가 변경될 때 nowPage도 변경하기 때문에 nowPage를 변경하지 않습니다.
+      setPage(lastPage)
+    }else{
+      setNowPageReviewList(nowFilteredReviewList.slice(startIndex, endIndex))
+    }
+
+  }, [nowFilteredReviewList])
   return (
     <>
       <Flex {...basisProps} bgColor="white" w="375px" pt={LAYOUT.HEADER.HEIGHT} flexDir="column"
@@ -209,11 +231,11 @@ function ProductsDetailByIdViewPage({
           <Flex   // 리뷰개수, 정렬순서, 필터링
             alignItems="center" justifyContent="space-between" px="16px"
           >
-            <Text textStyle="title" textColor="black">{"리뷰"}<Text as="span" textColor="primary.500">{reviewList.length}</Text>{"건"}</Text>
+            <Text textStyle="title" textColor="black">{"리뷰"}<Text as="span" textColor="primary.500">{nowFilteredReviewList.length}</Text>{"건"}</Text>
             {!isNoReview && <Flex>
               <Dropdown defaultmenu={'최신순'} children={['최신순', '평점 높은순', '평점 낮은순']} sortFunction={sortReviewList} />
               <Container as="span" w="10px" p="0" />
-              <Dropdown defaultmenu={'전체보기'} children={['전체보기', '포토리뷰']} sortFunction={(reviewOrder: string) => { }} />
+              <Dropdown defaultmenu={'전체보기'} children={['전체보기', '포토리뷰']} sortFunction={filterReviewList} />
             </Flex>}
           </Flex>
           <Flex   // 평균 평점 및 평점 개수 
