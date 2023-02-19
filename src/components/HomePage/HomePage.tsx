@@ -56,8 +56,6 @@ const HomePageContent = ({ }) => {
 
 const HomePageView = ({ ...basisProps }: HomePageViewProps) => {
   const route = useRouter()
-  console.log("# CONFIG:", CONFIG)  
-
   const handleProductAll = () => route.push({ pathname: ROUTES.PRODUCTS })
   const handleEventDetail = () => route.push({ pathname: ROUTES.EVENTINFO })
   const handleInquiry = () => route.push({ pathname: ROUTES.INQUIRY })

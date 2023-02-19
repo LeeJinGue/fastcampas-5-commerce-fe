@@ -32,18 +32,15 @@ const SignupPage = () => {
         marketingAdAgree: tos.marketing
       }, {
         onSuccess: (data, variables) => {
-          // console.log("# data:", data, ", #variables:", variables)
           const {access, refresh } = data
           setToken({access, refresh, isRegister: true})
           route.replace({pathname: ROUTES.SIGNUP.SUCCESS})
           // 받은 Token을 저장합니다. access, refresh
         },
         onError: (error, variables) => {
-          console.log("# error:", error, ", #variables:", variables)
         }
       })
       res.catch((err) => {
-        console.log("# catch error:", err)
       })
 
     }
