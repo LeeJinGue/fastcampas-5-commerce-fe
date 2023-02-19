@@ -23,15 +23,6 @@ function PaymentPage({ ...basisProps }: PaymentPageProps) {
   const { mutateAsync: deleteCartItemMutation } = useDeleteCartItemByCartItemIdMutation()
   const onSubmit = handleSubmit(({ order, delivery, deliveryrequest }) => {
     // 주문결제 성공!
-    console.log(
-      `# submitted 주문자: 이름-${order.name}, 핸드폰 번호-${order.phone}, 주소-${order.address.base}, 상세주소-${order.address.detail}, 우편번호-${order.address.post} `,
-    );
-    console.log(
-      `# submitted 배송지: 이름-${delivery.name}, 핸드폰 번호-${delivery.phone}, 주소-${delivery.address.base}, 상세주소-${delivery.address.detail}, 우편번호-${delivery.address.post} `,
-    );
-    console.log(
-      `# submitted 배송요청사항: ${deliveryrequest}`,
-    );
     const orderParam: OrderPostParamType = {
       method: defaultOrderMethod,
       userName: order.name,
@@ -50,23 +41,19 @@ function PaymentPage({ ...basisProps }: PaymentPageProps) {
       amount: orderData.totalDeliveryCost+orderData.totalCost,
     }
     orderPostMutate(orderParam).then(async(res) =>{
-      console.log("# order response:", res)
       const orderId = res.id
       orderDataList.forEach((postedOrderData) => {
         // 주문 상품 개수만큼 POST orderStatus 합니다.
         const { productId, cartItemId, count} = postedOrderData
         orderStatusPostMutate({orderId, productId, count,}).then(statusRes => {
-          console.log("# statusRes:",statusRes)
           // 주문이 완료된 장바구니 아이템은 삭제합니다.
           deleteCartItemMutation({cartItemId})
         }).catch(orderStatusErr => {
-          console.log("# orderStatusError:",orderStatusErr)
         })
       })
       if(!CONFIG.TOSS_CLIENT_KEY) alert("토스 결제 에러입니다.")
       loadTossPayments(CONFIG.TOSS_CLIENT_KEY!)
       .then(tossPayments => {
-        console.log("# tossPayment 테스트:",tossPayments)
         const howManyOrderItem = orderData.orderItemList.length === 1 ? "" : `외 ${orderData.orderItemList.length-1}건`
         const orderName = `${orderData.orderItemList[0].name+howManyOrderItem}`
         const customerName = order.name
@@ -78,10 +65,8 @@ function PaymentPage({ ...basisProps }: PaymentPageProps) {
           orderId,orderName,customerName,
         })
       })
-      .catch(err => console.log("# tosPayment 에러:",err))
       
     }).catch((errror) => {
-      console.log("# order error:", errror)
     })
 
     // route.replace('/payment/success')

@@ -49,10 +49,8 @@ function DrawerBuy(props: Omit<DrawerBuyProps, 'children'>) {
   const handleCartOnclick = () => {
     // 장바구니 버튼 onClick 이벤트 함수
     cartItemMutate({productId,cartId, count,}).then(res => {      
-      console.log("# cartItemMutate success:",res)
       popupOpen()
     }).catch(error => {
-      console.log("# cartItemMutate error:",error)
     })
   }
   const handleBuynowOnclick = () => {
