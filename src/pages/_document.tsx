@@ -10,13 +10,14 @@ import Document, {
 import { ColorModeScript } from '@chakra-ui/color-mode';
 
 import config from '@theme/foundations/config';
+import { CONFIG } from '@config';
 
 const SITE_NAME = 'INCOURESE.RUN';
 const SITE_TITLE = 'COMMERCE';
 const SITE_DESCRIPTION = '화장품 커머스 서비스';
 const SITE_IMAGE = '/images/og.png';
 
-const GOOGLE_ANALYTICS_ID = 'G-입력해주세요';
+const GOOGLE_ANALYTICS_ID = CONFIG.GOOGLE_ANALYTICS_KEY;
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
