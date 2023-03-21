@@ -1,5 +1,4 @@
 # INCOURSERUN COMMERCE TRACK
-<br>
 
 ## Introduction
 - 패스트캠퍼스에서 진행했던 웹 e커머스 서비스 개발 프로젝트입니다.
@@ -21,16 +20,20 @@
 
 ## Skills
 
-- 라이브러리관리 
+### 라이브러리관리 
 <img alt="npm" src ="https://img.shields.io/badge/npm-CB3837.svg?&style=for-the-badge&logo=npm&logoColor=black"/>
-- 상태관리 
+
+### 상태관리 
 <img alt="Redux" src ="https://img.shields.io/badge/Redux-764ABC.svg?&style=for-the-badge&logo=Redux&logoColor=black"/>
 <img alt="ReactQuery" src="https://img.shields.io/badge/ReactQuery-FF4154.svg?&style=for-the-badge&logo=ReactQuery&logoColor=black"/>
-- Form 관리 
+
+### Form 관리 
 <img alt="ReactHookForm" src="https://img.shields.io/badge/ReactHookForm-EC5990.svg?&style=for-the-badge&logo=ReactHookForm&logoColor=black"/>
-- 통신 
+
+### API 통신
 <img alt="Axios" src ="https://img.shields.io/badge/Axios-5A29E4.svg?&style=for-the-badge&logo=Axios&logoColor=black"/>
-- UI 
+
+### UI
 <img alt="StyledComponents" src ="https://img.shields.io/badge/StyledComponents-DB7093.svg?&style=for-the-badge&logo=StyledComponents&logoColor=black"/>
 <img alt="Chakra-UI" src="https://img.shields.io/badge/ChakraUI-319795.svg?&style=for-the-badge&logo=ChakraUI&logoColor=black"/>
 
@@ -45,9 +48,7 @@
 ## 📁 Folder Structure
 Next 프레임워크를 사용한 폴더구조입니다.
 
-<br>
-
-## Root directory layout
+### Root directory layout
 
     ├── public                  #
     ├── src                     #
