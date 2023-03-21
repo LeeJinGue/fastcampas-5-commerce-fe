@@ -6,7 +6,6 @@
 - 똑똑한 개발자에서 디자인, 기획과 백엔드 API를 제공해주고 이를 제외한 퍼블리싱부터 프론트엔드 개발, 배포까지의 과정을 경험할 수 있는 프로젝트입니다.
 
 ## Language
-<hr>
 <img alt="HTML" src="https://img.shields.io/badge/HTML5-E34F26.svg?&style=for-the-badge&logo=HTML5&logoColor=black"/> 
 <img alt="CSS" src="https://img.shields.io/badge/CSS-1572B6.svg?&style=for-the-badge&logo=CSS3&logoColor=black"/> 
 <img alt="Javascript" src="https://img.shields.io/badge/Javascript-F7DF1E.svg?&style=for-the-badge&logo=Javascript&logoColor=black"/>
@@ -15,14 +14,12 @@
 <br>
 
 ## Framework
-<hr>
 <img alt="React.js" src="https://img.shields.io/badge/React.js-61DAFB.svg?&style=for-the-badge&logo=React&logoColor=white" />
 <img alt="Next.js" src="https://img.shields.io/badge/Next.js-000000.svg?&style=for-the-badge&logo=Next.js&logoColor=white" />
 
 <br>
 
 ## Skills
-<hr>
 
 - 라이브러리관리 
 <img alt="npm" src ="https://img.shields.io/badge/npm-CB3837.svg?&style=for-the-badge&logo=npm&logoColor=black"/>
@@ -38,7 +35,6 @@
 <img alt="Chakra-UI" src="https://img.shields.io/badge/ChakraUI-319795.svg?&style=for-the-badge&logo=ChakraUI&logoColor=black"/>
 
 ## Developer
-<hr>
 
 |<img src="https://avatars.githubusercontent.com/u/33407139?v=4" width="80">|
 |:---:|
@@ -47,7 +43,6 @@
 <br>
 
 ## 📁 Folder Structure
-<hr>
 Next 프레임워크를 사용한 폴더구조입니다.
 
 <br>
