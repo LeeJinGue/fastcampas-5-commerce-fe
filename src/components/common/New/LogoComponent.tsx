@@ -1,10 +1,8 @@
-import { Flex, FlexProps, IconButton, IconButtonProps } from '@chakra-ui/react'
+import { IconButton, IconButtonProps } from '@chakra-ui/react'
 import { ROUTES } from '@constants/routes'
 import { useRouter } from 'next/router'
 import React from 'react'
-import ExitIcon from '../@Icons/System/Exit'
-import LogoPrimaryIcon from './@Icons/LogoPrimary'
-import LogoWhiteIcon from './@Icons/LogoWhite'
+import LogoSpacingIcon from './@Icons/LogoSpacingIcon'
 
 const COMPONENT_WIDTH = "215px"
 const COMPONENT_HEIGHT = "80px"
@@ -21,7 +19,7 @@ const LogoComponent = ({ align, ...props}:LogoComponentProps) => {
   }
   return (
     <IconButton
-    icon={<LogoPrimaryIcon />}
+    icon={<LogoSpacingIcon logoColor='#FF710B' />}
     onClick={handleLogoClick}
     bgColor="transparent"
     flexDir="column" w={COMPONENT_WIDTH} h={COMPONENT_HEIGHT} justifyContent="center"

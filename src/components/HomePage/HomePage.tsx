@@ -4,7 +4,7 @@ import { LAYOUT } from '@constants/layout';
 import DistributionProcess from './_fragment/DistributionProcess';
 import ElipseIcon from '@components/common/New/@Icons/Elipse';
 import Badge from '@components/common/New/Badge';
-import LogoPrimaryIcon from '@components/common/New/@Icons/LogoPrimary';
+import LogoSpacingIcon from '@components/common/New/@Icons/LogoSpacingIcon';
 import ListNumberArrowIcon from '@components/common/New/@Icons/System/ListNumberArrow';
 import PrimaryButton from '@components/common/New/PrimaryButton';
 import FloatingCallButton from '@components/common/New/FloatingActionButtons/Call';
@@ -144,7 +144,7 @@ const HomePageView = ({ ...basisProps }: HomePageViewProps) => {
               display="flex" flexDir="column" alignItems="center"
             >
               <Badge w="fit-content" mode="on" mt="20px" children="9,900원" />
-              <LogoPrimaryIcon mt="20px" />
+              <LogoSpacingIcon logoColor='#FF710B' mt="20px" />
             </Box>
             <Text mt="10px" textAlign="center" textStyle="titleLarge" color="primary.500">{"인코스런"}</Text>
           </Box>
