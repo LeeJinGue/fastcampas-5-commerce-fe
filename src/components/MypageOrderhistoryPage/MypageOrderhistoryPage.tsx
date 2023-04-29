@@ -15,6 +15,7 @@ import Popup from '@components/common/New/Popup';
 import { usePatchShippingStatusByIdMutation } from '@apis/order/OrderApi.mutation';
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query';
 import LoadingPage from '@components/common/New/LoadingPage';
+import { usePrevDupClick } from 'hooks/usePrevDupClick';
 
 interface MypageOrderhistoryPageProps extends MypageOrderhistoryPageDataProps {
   orderStatusList: OrderStatusType[],
@@ -71,6 +72,7 @@ function MypageOrderhistoryPage({
     })
     popupClose()
   }
+  const {oneOnclick:handleCancelOrderOneClick} = usePrevDupClick({callBack: handleCancelOrder})
   const handleCancelPopupOpen = (selectedOrderStatus: OrderStatusType) => {
     setOrderStatusState(() => selectedOrderStatus)
     popupOpen()
@@ -119,7 +121,7 @@ function MypageOrderhistoryPage({
       })}
       <Popup isOpen={isPopupOpen} onClose={popupClose} bodyMsg={bodyText}
         cancelMsg={cancelText} cancelOnclick={popupClose}
-        okMsg={okText} okOnclick={handleCancelOrder}
+        okMsg={okText} okOnclick={handleCancelOrderOneClick}
         children={undefined} />
     </Flex>
   );

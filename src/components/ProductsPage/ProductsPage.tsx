@@ -1,11 +1,8 @@
-import React, { useEffect } from 'react';
-import { Box, ChakraProps, Button, Flex, Image, Text } from '@chakra-ui/react';
+import React from 'react';
+import { Box, ChakraProps, Flex, Text } from '@chakra-ui/react';
 import { LAYOUT } from '@constants/layout';
-import RatioStarIcon from '@components/common/New/@Icons/System/RatioStar';
-import PrimaryButton from '@components/common/New/PrimaryButton';
 import Product from '@components/common/Card/Product';
-import { product_data } from '@constants/dummy';
-import { useGetProductInfiniteQuery, useGetProductListQuery } from '@apis/product/ProductApi.query';
+import { useGetProductInfiniteQuery } from '@apis/product/ProductApi.query';
 import { useIntersect } from 'hooks/useIntersect';
 import { CartDTOType } from '@apis/cart/CartApi.type';
 import LoadingPage from '@components/common/New/LoadingPage';
@@ -76,6 +73,10 @@ function ProductsPageView({ cart_data,
     drawer: setIsOpenBuyDrawer,
   });
   const [selectedProductData, setSelectedProductData] = React.useState(firstProductData)
+  const handleOpenProductDrawer = (productData:ProductSimpleDTOType) => {
+    setSelectedProductData(productData)
+    openModal('drawer')
+  }
   return (
     <Flex // 전체 페이지
       pt={LAYOUT.HEADER.HEIGHT} pb="80px" flexDir="column"
@@ -84,10 +85,7 @@ function ProductsPageView({ cart_data,
       w="375px" alignItems="center"
       backgroundColor="white">
       {productList.map((productData) => {
-        return <Product openCartDrawer={() => {
-          setSelectedProductData(productData)
-          openModal('drawer')
-        }} mt="30px" cart_id={cartId} productData={productData} key={productData.name} />
+        return <Product openCartDrawer={() => handleOpenProductDrawer(productData)} mt="30px" cart_id={cartId} productData={productData} key={productData.name} />
       })
       }
       {(!hasNextProduct || isProductFetching) &&
