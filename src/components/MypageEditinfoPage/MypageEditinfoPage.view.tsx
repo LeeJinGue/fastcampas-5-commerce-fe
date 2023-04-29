@@ -37,7 +37,7 @@ const EditInfoPageView = ({
       e.preventDefault()
       oneOnSubmit()
     }} px="16px" pb="30px" bgColor="white" w="375px" pt={LAYOUT.HEADER.HEIGHT} {...basisProps}>
-      <ProfileForm mt="50px" errors={errors} register={register} onSubmit={onSubmit}  />
+      <ProfileForm mt="50px" errors={errors} register={register} />
       <AdditionalInfoForm mt="80px" getValues={getValues} control={control} errors={errors} />
       <Flex
       justifyContent="space-between">
