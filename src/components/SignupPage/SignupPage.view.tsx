@@ -44,7 +44,7 @@ const SignupPageView = ({
       oneOnSubmit()
     }} bgColor="white" px="16px" {...basisProps}>
       <Text textStyle="extraLargeBold" mt="10px">회원가입</Text>
-      <ProfileForm mt="60px" errors={errors} register={register} onSubmit={onSubmit} />
+      <ProfileForm mt="60px" errors={errors} register={register} />
       <AdditionalInfoForm control={control} errors={errors} />
       <TermsOfServiceForm watch={watch} control={control} errors={errors} register={register} setValue={setValue}/>
       <PrimaryButton btntype='Solid' btnshape='Round' btnstate='Primary' 
