@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Box, ChakraProps, Button, Flex, Image, Text, Divider, Input, IconButton, Textarea, useToast, useDisclosure } from '@chakra-ui/react';
+import { Box, ChakraProps, Button, Flex, Image, Text, Divider, Textarea, useToast, useDisclosure } from '@chakra-ui/react';
 import { LAYOUT } from '@constants/layout';
 import DateText from '@components/common/New/DateText';
 import PriceCard from '@components/common/Card/PriceCard';
@@ -7,20 +7,16 @@ import RatioStarIcon, { ratioType } from '@components/common/New/@Icons/System/R
 import UploadIcon from '@components/common/New/@Icons/System/Button/Upload';
 import XIcon from '@components/common/New/@Icons/System/XIcon';
 import PrimaryButton from '@components/common/New/PrimaryButton';
-import { useGetOrderByIdQuery, useGetOrderListQuery, useGetOrderStatusQuery } from '@apis/order/OrderApi.query';
-import { useGetUserMeQuery } from '@apis/user/UserApi.query';
-import { getToken } from '@utils/localStorage/token';
-import LoadingPage from '@components/common/New/LoadingPage';
-import { OrderDTOType, OrderGetByIdReturnType, OrderStatusType } from '@apis/order/OrderApi.type';
-import { orderItemType } from '@features/orderItem/orderItemSlice';
+import { useGetOrderByIdQuery } from '@apis/order/OrderApi.query';
+import { OrderGetByIdReturnType, OrderStatusType } from '@apis/order/OrderApi.type';
 import { useRouter } from 'next/router';
 import { usePostReviewMutation } from '@apis/review/ReviewApi.mutation';
-import { ReviewPostParamType } from '@apis/review/ReviewApi.type';
 import { isOverSize } from '@utils/file';
 import { useUploadFileToS3Mutation } from '@apis/S3FileUploader/S3FileUploaderApi.mutation';
 import { ROUTES } from '@constants/routes';
 import Popup from '@components/common/New/Popup';
 import { complete_review_popup_string } from '@constants/string';
+import { usePrevDupClick } from 'hooks/usePrevDupClick';
 
 const FILE_MAX_SIZE_MB = 10;
 interface MypageOrderhistoryWritereviewPageDataProps extends ChakraProps {
@@ -79,6 +75,7 @@ function MypageOrderhistoryWritereviewPage({
       console.log("리뷰 작성 에러:",err)
     })
   }
+  const {oneOnclick: handleWriteReviewOneOnclick} = usePrevDupClick({callBack: handelWriteReviewButton})
   const handleCompleteReviewOkButton = () => {
     route.replace({pathname: ROUTES.MYPAGE.ORDER_HISTORY})
   }
@@ -161,7 +158,7 @@ function MypageOrderhistoryWritereviewPage({
         })}
       </Flex>
       <PrimaryButton mt="100px" w="343px" h="50px"
-        mx="16px" btntype='Solid' btnstate='Primary' btnshape='Round' onClick={handelWriteReviewButton}>작성하기</PrimaryButton>
+        mx="16px" btntype='Solid' btnstate='Primary' btnshape='Round' onClick={handleWriteReviewOneOnclick}>작성하기</PrimaryButton>
     </Flex>
     <Popup isOpen={isPopupOpen} onClose={handleCompleteReviewOkButton} bodyMsg={bodyText} okMsg={okText} okOnclick={handleCompleteReviewOkButton} children={undefined} />
     </>
