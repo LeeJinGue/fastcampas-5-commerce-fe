@@ -26,7 +26,17 @@ const SignupPageView = ({
   onSubmit,
   ...basisProps
 }: SignupPageProps) => {
-  
+  React.useEffect(() => {
+    if(CONFIG.ENV === "development"){
+      setValue("username", "테스트이름")
+      setValue("nickname", "테스트닉")
+      setValue("phone", "010-1234-1234")
+      setValue("email", "test@test.com")
+      setValue("age", {value:10, label:"10대"})
+      setValue("gender", {value: "male", label: "남자"})
+      setValue("tos", {service: true, privacy: true, marketing: true})
+    }
+  }, [])
   const {oneOnSubmit} = usePrevDupSubmit({callBack:onSubmit})
   return (
     <Box as="form" onSubmit={(e) => {
