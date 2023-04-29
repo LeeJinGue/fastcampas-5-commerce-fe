@@ -12,7 +12,6 @@ interface ProfileFormProps extends BoxProps {
 const ProfileForm = ({
   register,
   errors,
-  onSubmit,
   ...basisProps
 }: ProfileFormProps) => {
   return <>

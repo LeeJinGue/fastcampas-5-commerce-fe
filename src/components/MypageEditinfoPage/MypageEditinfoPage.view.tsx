@@ -13,6 +13,7 @@ import { EditInfoFormDataType } from './_hooks/useEditInfoForm';
 import { LAYOUT } from '@constants/layout';
 import { useRouter } from 'next/router';
 import { ROUTES } from '@constants/routes';
+import { usePrevDupSubmit } from 'hooks/usePrevDupClick';
 interface EditInfoPageProps extends BoxProps {
   formData: UseFormReturn<EditInfoFormDataType>;
 }
@@ -30,9 +31,13 @@ const EditInfoPageView = ({
   const handleCancel = () => {
     route.replace({pathname:ROUTES.MYPAGE.MAIN})
   }
+  const {oneOnSubmit} = usePrevDupSubmit({callBack: onSubmit})
   return (
-    <Box as="form" onSubmit={onSubmit} px="16px" pb="30px" bgColor="white" w="375px" pt={LAYOUT.HEADER.HEIGHT} {...basisProps}>
-      <ProfileForm mt="50px" errors={errors} register={register}  onSubmit={onSubmit} />
+    <Box as="form" onSubmit={(e) => {
+      e.preventDefault()
+      oneOnSubmit()
+    }} px="16px" pb="30px" bgColor="white" w="375px" pt={LAYOUT.HEADER.HEIGHT} {...basisProps}>
+      <ProfileForm mt="50px" errors={errors} register={register} />
       <AdditionalInfoForm mt="80px" getValues={getValues} control={control} errors={errors} />
       <Flex
       justifyContent="space-between">

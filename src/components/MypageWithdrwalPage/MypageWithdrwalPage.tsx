@@ -16,6 +16,7 @@ import { deleteToken } from '@utils/localStorage/token';
 import { useGetUserMeQuery } from '@apis/user/UserApi.query';
 import LoadingPage from '@components/common/New/LoadingPage';
 import Popup from '@components/common/New/Popup';
+import { usePrevDupClick } from 'hooks/usePrevDupClick';
 const DEFAULT_REASON = WITHDRAWAL_REASONS[0]
 interface MypageWithdrwalDataPageProps extends ChakraProps { }
 interface MypageWithdrwalViewPageProps extends MypageWithdrwalDataPageProps {
@@ -66,6 +67,7 @@ function MypageWithdrwalViewPage({ userData, ...basisProps }: MypageWithdrwalVie
     route.push({pathname:ROUTES.LOGIN})
   }
   const handleCancel = () => route.push({pathname: ROUTES.MYPAGE.MAIN})
+  const {oneOnclick: handleWithdrawlOneOnclick} = usePrevDupClick({callBack: handleWithdrawal})
   return (
     <>
     <Flex pt={LAYOUT.HEADER.HEIGHT} w="375px" pb="30px" flexDir="column" bgColor="white" {...basisProps}>
@@ -118,7 +120,7 @@ function MypageWithdrwalViewPage({ userData, ...basisProps }: MypageWithdrwalVie
           value={vfstring} onChange={(e)=>setVfstring(e.target.value)} autoComplete="off" />
       <Flex mt="80px" px="16px" justifyContent="space-between">
         <PrimaryButton w="165px" h="50px" btntype={'Line'} btnstate={'Primary'} btnshape={'Round'} onClick={handleCancel}>취소</PrimaryButton>
-        <PrimaryButton w="165px" h="50px" btntype={'Solid'} btnstate={'Primary'} btnshape={'Round'} onClick={handleWithdrawal}>탈퇴하기</PrimaryButton>
+        <PrimaryButton w="165px" h="50px" btntype={'Solid'} btnstate={'Primary'} btnshape={'Round'} onClick={handleWithdrawlOneOnclick}>탈퇴하기</PrimaryButton>
       </Flex>
     </Flex>
     <Popup isOpen={isPopupOpen} onClose={handleCompleteWithdrawal} bodyMsg={bodyText} okMsg={okText} okOnclick={handleCompleteWithdrawal} children={undefined} />

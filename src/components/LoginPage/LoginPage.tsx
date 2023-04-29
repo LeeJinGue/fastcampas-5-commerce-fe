@@ -15,7 +15,7 @@ interface LoginPageProps extends ChakraProps {}
 const LoginPage = ({ ...basisProps }: LoginPageProps) => {
   return (
     <>
-      <LogoWhiteIcon logoColor='#FF710B' w="262" h="36" mt="340px"/>
+      <LogoWhiteIcon logoColor='#FFFFFF' w="262" h="36" mt="340px"/>
       <KakaoButton mt="340px" data={SOCIAL_DATA}></KakaoButton>
       </>
   );

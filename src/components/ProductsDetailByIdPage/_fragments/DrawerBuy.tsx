@@ -20,6 +20,7 @@ import { useDispatch } from 'react-redux';
 import { orderItemSliceActions, orderItemType } from '@features/orderItem/orderItemSlice';
 import Popup from '@components/common/New/Popup';
 import { cart_popup_string } from '@constants/string';
+import { usePrevDupClick } from 'hooks/usePrevDupClick';
 // 필요한 데이터: 상품, 유저, 장바구니
 interface DrawerBuyProductData {
   id: number;
@@ -43,7 +44,8 @@ function DrawerBuy(props: Omit<DrawerBuyProps, 'children'>) {
   const { isOpen:isPopupOpen, onClose:popupClose, onOpen:popupOpen} = useDisclosure()
   const handleCartOnclick = () => {
     // 장바구니 버튼 onClick 이벤트 함수
-    cartItemMutate({productId,cartId, count,}).then(res => {      
+    cartItemMutate({productId,cartId, count,})
+    .then(res => {      
       popupOpen()
     }).catch(error => {
     })
@@ -63,6 +65,8 @@ function DrawerBuy(props: Omit<DrawerBuyProps, 'children'>) {
     dispatch(orderItemSliceActions.setTotal({totalCost:buyNowTotalCost, totalDeliveryCost:buyNowTotalDeliveryCost}))
     route.push({pathname:ROUTES.PAYMENT.MAIN})
   }
+  const {oneOnclick: handelCartClickOne} = usePrevDupClick({callBack: handleCartOnclick})
+  const {oneOnclick: handleBuyNowClickOne} = usePrevDupClick({callBack: handleBuynowOnclick})
   const handleContinueShopping = () => {
     // 쇼핑 계속하기 onClick 이벤트 함수
     popupClose()
@@ -85,10 +89,10 @@ function DrawerBuy(props: Omit<DrawerBuyProps, 'children'>) {
           </Flex>
         </DrawerBody>
         <DrawerFooter px="16px" pb="30px" pt="10px" justifyContent="space-between">
-            <PrimaryButton w="165px" h="50px" onClick={handleCartOnclick} btntype={'Line'} btnstate={'Primary'} btnshape={'Round'}>
+            <PrimaryButton w="165px" h="50px" onClick={handelCartClickOne} btntype={'Line'} btnstate={'Primary'} btnshape={'Round'}>
               장바구니
             </PrimaryButton>
-            <PrimaryButton w="165px" h="50px" onClick={handleBuynowOnclick} btntype={'Solid'} btnstate={'Primary'} btnshape={'Round'}>
+            <PrimaryButton w="165px" h="50px" onClick={handleBuyNowClickOne} btntype={'Solid'} btnstate={'Primary'} btnshape={'Round'}>
               바로구매
             </PrimaryButton>
         </DrawerFooter>
