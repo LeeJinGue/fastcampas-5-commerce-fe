@@ -1,19 +1,14 @@
 import React from 'react';
 
 import {
-  Button,
   Drawer,
   DrawerBody,
   Text,
-  DrawerCloseButton,
   DrawerContent,
   DrawerFooter,
-  DrawerHeader,
   DrawerOverlay,
   DrawerProps,
   Flex,
-  Input,
-  Modal,
   useDisclosure,
 } from '@chakra-ui/react';
 import PrimaryButton from '@components/common/New/PrimaryButton';
@@ -22,7 +17,7 @@ import { ROUTES } from '@constants/routes';
 import CommerceCount from '@components/common/Card/CommerceCount';
 import { usePostCartItemMutation } from '@apis/cart/CartApi.mutation';
 import { useDispatch } from 'react-redux';
-import { addOrderItemType, orderItemSliceActions, orderItemType, setTotalType } from '@features/orderItem/orderItemSlice';
+import { orderItemSliceActions, orderItemType } from '@features/orderItem/orderItemSlice';
 import Popup from '@components/common/New/Popup';
 import { cart_popup_string } from '@constants/string';
 // 필요한 데이터: 상품, 유저, 장바구니
@@ -53,18 +48,18 @@ function DrawerBuy(props: Omit<DrawerBuyProps, 'children'>) {
     }).catch(error => {
     })
   }
-  const handleBuynowOnclick = () => {
+  const handleBuynowOnclick = async () => {
     // 바로구매 버튼 onClick 이벤트 함수
     const {id:productId, name, capacity, price} = productData
     const buyNowTotalCost = count * price
     const buyNowTotalDeliveryCost = (buyNowTotalCost <= 30000 ? 2500 : 0) 
-    const tempCartItemId = -1
+    const {cartItemId} = await cartItemMutate({productId, cartId, count})
     const buyNowOrderItem:orderItemType = {
-      cartItemId: tempCartItemId,
+      cartItemId,
       count,productId, name, capacity, price
     }
     dispatch(orderItemSliceActions.delAllOrderItem())
-    dispatch(orderItemSliceActions.addOrderItem({cartItemId:tempCartItemId, orderItem:buyNowOrderItem}))
+    dispatch(orderItemSliceActions.addOrderItem({cartItemId, orderItem:buyNowOrderItem}))
     dispatch(orderItemSliceActions.setTotal({totalCost:buyNowTotalCost, totalDeliveryCost:buyNowTotalDeliveryCost}))
     route.push({pathname:ROUTES.PAYMENT.MAIN})
   }
