@@ -18,7 +18,8 @@ import Popup from '@components/common/New/Popup';
 import { complete_review_popup_string } from '@constants/string';
 import { usePrevDupClick } from 'hooks/usePrevDupClick';
 
-const FILE_MAX_SIZE_MB = 10;
+const FILE_MAX_SIZE_MB = 10
+const MAX_REVIEW_IMAGE_NUMBER = 3
 interface MypageOrderhistoryWritereviewPageDataProps extends ChakraProps {
 }
 interface MypageOrderhistoryWritereviewPageProps extends MypageOrderhistoryWritereviewPageDataProps {
@@ -82,21 +83,28 @@ function MypageOrderhistoryWritereviewPage({
 
 
   const onChangeFile: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const file = e.target.files?.[0]
+    if (!file) return
     if (isOverSize(file, { maxSize: FILE_MAX_SIZE_MB })) {
       toast({
         status: 'info',
         description:
-          '용량이 초과된 파일입니다. 용량처리는 onSubmit 시점이 아닌 onChange 시점이 더욱 좋습니다. 지금은 onSubmit 에서 하도록 패쓰~',
-      });
-      return;
+          `용량이 초과된 사진입니다. ${FILE_MAX_SIZE_MB}MB 이하의 사진만 업로드해주세요.`,
+      })
+      return
+    }
+    if(reviewimagePath.length >= MAX_REVIEW_IMAGE_NUMBER){
+      toast({
+        status: 'error',
+        description: `사진은 ${MAX_REVIEW_IMAGE_NUMBER}개까지만 업로드 가능합니다.`
+      })
+      return
     }
     uploadFileMutate({file}).then(res => {
-      console.log("#url: ",res.url)
+      // console.log("#url: ",res.url)
       setReviewimageSet(prev => prev.concat(res.url))
     })
-  };
+  }
   const handleRatioOnclick = useCallback((index: number) => {
     setRatioList((prev) => {
       return prev.map((_, prevIndex) => {
@@ -136,7 +144,7 @@ function MypageOrderhistoryWritereviewPage({
           value={content} onChange={(e) => setContent(e.target.value)} />
       </Flex>
       <Divider mt="20px" />
-      <Text px="16px" mt="20px" textStyle="text" textColor="black">{`사진첨부 (0/3)`}</Text>
+      <Text px="16px" mt="20px" textStyle="text" textColor="black">{`사진첨부 (${reviewimagePath.length}/${MAX_REVIEW_IMAGE_NUMBER})`}</Text>
       <Flex   // 리뷰사진들
         px="16px" mt="30px" >
         <Button as="label" cursor="pointer"
@@ -162,7 +170,7 @@ function MypageOrderhistoryWritereviewPage({
     </Flex>
     <Popup isOpen={isPopupOpen} onClose={handleCompleteReviewOkButton} bodyMsg={bodyText} okMsg={okText} okOnclick={handleCompleteReviewOkButton} children={undefined} />
     </>
-  );
+  )
 }
 
 export default MypageOrderhistorywritereviewPageData;
