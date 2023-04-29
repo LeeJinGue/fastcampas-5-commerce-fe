@@ -13,6 +13,7 @@ import { Address, useDaumPostcodePopup } from 'react-daum-postcode';
 import { DAUM_ADDRESS_SCRIPT_URL } from '@constants/social';
 import CheckLineIcon from '@components/common/New/@Icons/System/CheckLine';
 import { usePrevDupSubmit } from 'hooks/usePrevDupClick';
+import { CONFIG } from '@config';
 type AddrType = "O" | "D"
 // O: Order(주문자 정보), D: Delivery(배송지 정보)
 const initialFormData = {
@@ -112,7 +113,13 @@ function PaymentPageView({
     setValue("delivery.address.base", fullAddress)
     setValue("delivery.address.post", data.zonecode)
   };
-
+  React.useEffect(() => {
+    if(CONFIG.ENV === "development"){
+      setValue("order", {name: "테스트 이름", phone: "010-1234-1234", address:{base: "경기 가평군 가평읍 가랫골길 1 (이화리)", post: "135-100", detail: "테스트주소"}})
+      setValue("delivery", {name: "테스트 이름", phone: "010-1234-1234", address:{base: "경기 가평군 가평읍 가랫골길 1 (이화리)", post: "135-100", detail: "테스트주소"}})
+      setValue("deliveryrequest", "테스트 요청사항")
+    }
+  }, [])
   const {oneOnSubmit:onSubmitOne} = usePrevDupSubmit({callBack: onSubmit})
   return (
     <Box as="form"
