@@ -10,6 +10,8 @@ import AdditionalInfoForm from './_fragments/AdditionalInfoForm';
 import TermsOfServiceForm from './_fragments/TermsOfServiceForm';
 import { UseFormReturn } from 'react-hook-form';
 import { SignupFormDataType } from './_hooks/useSignupForm';
+import { usePrevDupSubmit } from 'hooks/usePrevDupClick';
+import { CONFIG } from '@config';
 interface SignupPageProps extends BoxProps {
   formData: UseFormReturn<SignupFormDataType>;
 }
@@ -24,8 +26,13 @@ const SignupPageView = ({
   onSubmit,
   ...basisProps
 }: SignupPageProps) => {
+  
+  const {oneOnSubmit} = usePrevDupSubmit({callBack:onSubmit})
   return (
-    <Box as="form" onSubmit={onSubmit} bgColor="white" px="16px" {...basisProps}>
+    <Box as="form" onSubmit={(e) => {
+      e.preventDefault()
+      oneOnSubmit()
+    }} bgColor="white" px="16px" {...basisProps}>
       <Text textStyle="extraLargeBold" mt="10px">회원가입</Text>
       <ProfileForm mt="60px" errors={errors} register={register} onSubmit={onSubmit} />
       <AdditionalInfoForm control={control} errors={errors} />
