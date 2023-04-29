@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, ChakraProps, Button, Flex, Image, Text, BoxProps, Input, FormControl, Checkbox } from '@chakra-ui/react';
+import { Box, Flex, Text, BoxProps, Input, Checkbox } from '@chakra-ui/react';
 import { LAYOUT } from '@constants/layout';
 import { UseFormReturn, useWatch } from 'react-hook-form';
 import { FormDataType, OrderFormDataType } from './_hooks/useOrderForm';
@@ -8,11 +8,11 @@ import PrimaryButton from '@components/common/New/PrimaryButton';
 import CheckboxIcon from '@components/common/New/@Icons/System/CheckboxIcon';
 import TotalPaymentIcon from '@components/common/New/@Icons/Line/TotalPayment';
 import PriceCard from '@components/common/Card/PriceCard';
-import { CartDTOType } from '@apis/cart/CartApi.type';
-import { OrderItemStateType, orderItemType } from '@features/orderItem/orderItemSlice';
+import { OrderItemStateType } from '@features/orderItem/orderItemSlice';
 import { Address, useDaumPostcodePopup } from 'react-daum-postcode';
 import { DAUM_ADDRESS_SCRIPT_URL } from '@constants/social';
 import CheckLineIcon from '@components/common/New/@Icons/System/CheckLine';
+import { usePrevDupSubmit } from 'hooks/usePrevDupClick';
 type AddrType = "O" | "D"
 // O: Order(주문자 정보), D: Delivery(배송지 정보)
 const initialFormData = {
@@ -112,9 +112,14 @@ function PaymentPageView({
     setValue("delivery.address.base", fullAddress)
     setValue("delivery.address.post", data.zonecode)
   };
+
+  const {oneOnSubmit:onSubmitOne} = usePrevDupSubmit({callBack: onSubmit})
   return (
     <Box as="form"
-      {...basisProps} onSubmit={onSubmit} bgColor="white" w="375px" px="16px" pt={LAYOUT.HEADER.HEIGHT} pb="80px" flexDir="column">
+      {...basisProps} onSubmit={(e) => {
+        e.preventDefault()
+        onSubmitOne()
+      }} bgColor="white" w="375px" px="16px" pt={LAYOUT.HEADER.HEIGHT} pb="80px" flexDir="column">
       <Text mt="50px" textStyle="titleLarge" textColor="black">{"주문결제"}</Text>
       <Text mt="80px" textStyle="title" textColor="black">{"주문상품"}</Text>
       {orderItemList.map((orderItem) => <PriceCard key={orderItem.cartItemId} isshippingfeevisible={false} productid={orderItem.productId} count={orderItem.count} status={''} />)}
