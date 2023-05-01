@@ -32,6 +32,7 @@ const AllColor = {
     secondary: '#F9F9F9',
     tertiary: '#F2F3F4',
   },
+  bgHover: '#F2F3F4',
   dim: '#1A1A1A',
 } 
 
