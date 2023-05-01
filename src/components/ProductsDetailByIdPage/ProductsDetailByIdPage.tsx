@@ -51,7 +51,7 @@ function ProductsDetailByIdDataPage({
 
   return <ProductsDetailByIdViewPage cart_data={cartData[0]} user_id={user_id} {...basisProps} />
 }
-
+const DETAIL_BOX_BG_COLOR = "gray.200"
 function ProductsDetailByIdViewPage({
   product_data,
   user_id,
@@ -141,7 +141,7 @@ function ProductsDetailByIdViewPage({
       // 현재페이지가 마지막 페이지보다 크다면 마지막페이지로 이동합니다.
       // 페이지가 변경될 때 nowPage도 변경하기 때문에 nowPage를 변경하지 않습니다.
       setPage(lastPage)
-    }else{
+    } else {
       setNowPageReviewList(nowFilteredReviewList.slice(startIndex, endIndex))
     }
 
@@ -166,7 +166,8 @@ function ProductsDetailByIdViewPage({
           >
             {TAB_NAMES.map((tabName, index) =>
               <TabRadio key={tabName} onClick={() => {
-                refListForMove[index].current?.scrollIntoView({behavior: "smooth", block: "center"})}} 
+                refListForMove[index].current?.scrollIntoView({ behavior: "smooth", block: "center" })
+              }}
                 ml={index !== 0 ? "20px" : "0"} tabName={tabName}
                 {...getRadioProps({ value: tabName })} />
             )}
@@ -176,7 +177,8 @@ function ProductsDetailByIdViewPage({
         <Flex   // 상세 정보 박스
           overflow="hidden"
           w="375px" h={detailHeight}
-          mt="50px" flexDir="column" alignItems="center"
+          pt="50px" flexDir="column" alignItems="center"
+          bgColor={DETAIL_BOX_BG_COLOR}
           textAlign="center">
           <Text textColor="primary.500" ref={detailRef} textStyle="titleSmall">{"KEY POINT"}</Text>
           <Text textColor="black" textStyle="extraLarge">
@@ -201,7 +203,9 @@ function ProductsDetailByIdViewPage({
           </Text>
           <Image alignSelf="center" mt="73px" w="313px" h="938px" src="/images/lotion_detail1.png"></Image>
         </Flex>
-        <DetailUnfoldButton alignSelf="center" isclose={isDetailOpen} onClick={handelOpenDetail} />
+        <Container bgColor={DETAIL_BOX_BG_COLOR}>
+          <DetailUnfoldButton alignSelf="center" isclose={isDetailOpen} onClick={handelOpenDetail} />
+        </Container>
         <Flex // Text List/Menu text
           bgColor="gray.100"
           flexDir="column"
