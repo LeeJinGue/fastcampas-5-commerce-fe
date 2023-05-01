@@ -34,6 +34,7 @@ const AllColor = {
   },
   bgHover: '#F2F3F4',
   dim: '#1A1A1A',
+  kakao: getColorSchema('#FFDE32'),
 } 
 
 const Light = {
