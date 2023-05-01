@@ -1,13 +1,11 @@
-import { useDeleteCartItemByCartItemIdMutation, usePatchCartItemByCartItemIdMutation } from '@apis/cart/CartApi.mutation';
-import { CartDTOType, CartItemType } from '@apis/cart/CartApi.type';
+import { usePatchCartItemByCartItemIdMutation } from '@apis/cart/CartApi.mutation';
+import { CartItemType } from '@apis/cart/CartApi.type';
 import { useGetProductByIdQuery } from '@apis/product/ProductApi.query';
-import { ProductDetailDTOTType, ProductSimpleDTOType } from '@apis/product/ProductApi.type';
+import { ProductDetailDTOTType } from '@apis/product/ProductApi.type';
 import { Flex, FlexProps, Text, Image, Checkbox } from '@chakra-ui/react';
 import { orderItemSliceActions, orderItemType } from '@features/orderItem/orderItemSlice';
-import useAppStore from '@features/useAppStore';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux';
-import CartQuantityIcon from '../New/@Icons/System/CartQuantity';
 import CheckboxIcon from '../New/@Icons/System/CheckboxIcon';
 import XIcon from '../New/@Icons/System/XIcon';
 import CommerceCount from './CommerceCount';
@@ -17,8 +15,6 @@ interface CommerceProps extends FlexProps {
   itemdata: CartItemType,
   cartindex: number,
   handledeleteitem: (id: number, index: number) => void
-  // setischeckedlist: React.Dispatch<React.SetStateAction<boolean[]>>,
-  // setischeck: React.Dispatch<React.SetStateAction<boolean>>,
   ischeck: boolean
   changeByIndex: (index: number, value:boolean) => void
 }
@@ -34,7 +30,6 @@ function Commerce({ itemdata,...props }: CommerceProps) {
 }
 function CommerceView({...props}:CommerceViewProps){
   const dispatch = useDispatch()
-  const orderData = useAppStore(state => state.ORDER_ITEM)
   const { changeByIndex,ischeck, itemdata, settotalcost, settotaldeliverycost, cartindex, handledeleteitem, productdata, ...restProps } = props
   const { price, photo, name, capacity } = productdata
   const [count, setCount] = React.useState(itemdata.count)
@@ -81,7 +76,8 @@ function CommerceView({...props}:CommerceViewProps){
         px="16px" py="20px" bgColor="white" {...restProps}
       >
         <Checkbox
-          alignItems="start"
+          alignItems="start" 
+          h="fit-content"
           onChange={handleCheck} isChecked={ischeck}
           icon={<CheckboxIcon state={ischeck ? "Select" : "Default"} shape="Rectangle" />}>
         </Checkbox>

@@ -4,13 +4,15 @@ interface BadgeProps extends FlexProps{
   mode: modeType,
 }
 const Badge = ({ ...props }: BadgeProps) => {
-  const {children, mode, bgColor, textColor} = props
+  const {children, mode, textColor} = props
+  const bgColorByMode = mode === "on" ? "primary.500" : "gray.200"
+  const hoverColorByMode = mode === "on" ? "primary.700" : "gray.400"
   return (
     <Flex
     px="15px" py="6px"
     h="30px" w="full"
-    backgroundColor={bgColor ? bgColor : 
-      (mode==="on" ? "primary.500" : "gray.200")}
+    backgroundColor={bgColorByMode}
+    _hover={{backgroundColor:hoverColorByMode}}
     borderRadius="15px"
     justifyContent="center"
       {...props}>

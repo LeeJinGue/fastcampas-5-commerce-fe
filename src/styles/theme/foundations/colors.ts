@@ -1,23 +1,20 @@
 import { getColorSchema } from '@utils/color-generator';
-
 const AllColor = {
-  primary: {
-    100: '#FFE8D7',
-    500: '#FF710B',
-  },
-  secondary: {
-    100: '#FFF3E0',
-    500: '#FFAB2E',
-  },
+  primary: getColorSchema('#FF710B'),
+  secondary: getColorSchema('#FFAB2E'),
+  // {
+  //   100: '#FFF3E0',
+  //   500: '#FFAB2E',
+  // },
   point: '#FFAB2E',
   pointSub: '#FFFCEF',
-  warning: '#FF6060',
+  warning: getColorSchema('#FF6060'),
   warningSub: '#FFE3E6',
   alertWarning: '#FF001A',
-  success: '#FF710B',
+  success: getColorSchema('#FF710B'),
   successSub: '#CFE8FF',
   white: '#FFFFFF',
-  gray: {
+  gray:{
     50: '#FDFDFD',
     100: '#F9F9F9',
     200: '#F2F3F4',
@@ -35,7 +32,9 @@ const AllColor = {
     secondary: '#F9F9F9',
     tertiary: '#F2F3F4',
   },
+  bgHover: '#F2F3F4',
   dim: '#1A1A1A',
+  kakao: getColorSchema('#FFDE32'),
 } 
 
 const Light = {

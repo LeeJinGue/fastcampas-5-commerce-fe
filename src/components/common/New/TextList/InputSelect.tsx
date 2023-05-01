@@ -2,31 +2,36 @@ import { ActionMeta, ChakraStylesConfig, Select } from 'chakra-react-select';
 import React from 'react'
 
 const inputSelectStyle: ChakraStylesConfig = {
-  option: (provided, state) => {
-    return {
+  option: (provided, state) => ({
     ...provided,
-    background: state.isSelected ? 'grey' : "white",
-  }},
+    _hover: { backgroundColor: "bgHover" },
+    _focus: { backgroundColor: "bgHover" },
+    background: state.isSelected ? 'bgHover' : "white",
+    textColor: "black",
+  }),
   downChevron: (provided, state) => ({
-    w:"24px",
-    h:"24px"
+    w: "24px",
+    h: "24px"
   }),
   dropdownIndicator: (provided, state) => ({
     ...provided,
     background: "white",
-    p:0,
-  }),
-  valueContainer:(provided, state) => ({
-    ...provided,
     p: 0,
-    textStyle: "title",
+  }),
+  valueContainer: (provided, state) => ({
+      ...provided,
+      p: 0,
+      textStyle: "title",
+      textColor: "black",
+      _hover: {cursor:"pointer", backgroundColor: "bgHover"},
+      _focus: {cursor:"pointer", backgroundColor: "bgHover"},
   }),
   singleValue: (provided, state) => ({
     ...provided,
     p: 0,
     textStyle: "text",
   }),
-  placeholder:(provided, state) => ({
+  placeholder: (provided, state) => ({
     ...provided,
     p: 0,
     textStyle: "text",
@@ -34,7 +39,6 @@ const inputSelectStyle: ChakraStylesConfig = {
   }),
   container: (provided, state) => ({
     ...provided,
-    background: "white",
     border: "0px solid white",
     borderBottom: "2px solid #CBCED6",
     p: 0,
@@ -44,11 +48,11 @@ type selectOptionType = {
   value: string,
   label: string
 }
-interface InputSelectProps{
+interface InputSelectProps {
   selectOption: selectOptionType[],
-  placeholder:string,
+  placeholder: string,
   defaultValue?: selectOptionType,
-  onChange:(newValue: unknown, actionMeta: ActionMeta<unknown>) => void,
+  onChange: (newValue: unknown, actionMeta: ActionMeta<unknown>) => void,
 }
 
 const InputSelect = ({
@@ -57,19 +61,20 @@ const InputSelect = ({
   defaultValue,
   onChange,
   ...basisProps
-}:InputSelectProps) => {
+}: InputSelectProps) => {
   return (
-        <Select
-        defaultValue={defaultValue}
-        isSearchable={false}
-        chakraStyles={inputSelectStyle}
-        components={
-          {IndicatorSeparator : ()=>null,
+    <Select
+      defaultValue={defaultValue}
+      isSearchable={false}
+      chakraStyles={inputSelectStyle}
+      components={
+        {
+          IndicatorSeparator: () => null,
         }}
-        onChange={onChange}
-        placeholder={placeholder}
-        options={selectOption}
-        {...basisProps}
+      onChange={onChange}
+      placeholder={placeholder}
+      options={selectOption}
+      {...basisProps}
     />
   )
 }
