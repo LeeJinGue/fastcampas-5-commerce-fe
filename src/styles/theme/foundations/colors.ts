@@ -9,10 +9,10 @@ const AllColor = {
   point: '#FFAB2E',
   pointSub: '#FFFCEF',
   warning: getColorSchema('#FF6060'),
-  warningSub: getColorSchema('#FFE3E6'),
-  alertWarning: getColorSchema('#FF001A'),
+  warningSub: '#FFE3E6',
+  alertWarning: '#FF001A',
   success: getColorSchema('#FF710B'),
-  successSub: getColorSchema('#CFE8FF'),
+  successSub: '#CFE8FF',
   white: '#FFFFFF',
   gray: getColorSchema('#A8ADBA'),
   // {
