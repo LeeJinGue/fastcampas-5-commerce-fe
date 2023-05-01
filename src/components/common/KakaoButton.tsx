@@ -15,7 +15,8 @@ const KAKAO_BUTTON_STRING_ML = "40.55px";
 const KakaoButton = ({ data, ...props }: SocialButtonProps) => {
   return (
     <Button
-      bg="#FFDE32"
+      bg="kakao.500"
+      _hover={{backgroundColor:"kakao.700"}}
       w={BUTTON_WIDTH}
       h="45px"
       onClick={() => window.open(data.link)}

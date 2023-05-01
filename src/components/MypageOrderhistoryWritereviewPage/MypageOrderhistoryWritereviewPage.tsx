@@ -101,7 +101,6 @@ function MypageOrderhistoryWritereviewPage({
       return
     }
     uploadFileMutate({file}).then(res => {
-      // console.log("#url: ",res.url)
       setReviewimageSet(prev => prev.concat(res.url))
     })
   }
@@ -147,7 +146,7 @@ function MypageOrderhistoryWritereviewPage({
       <Text px="16px" mt="20px" textStyle="text" textColor="black">{`사진첨부 (${reviewimagePath.length}/${MAX_REVIEW_IMAGE_NUMBER})`}</Text>
       <Flex   // 리뷰사진들
         px="16px" mt="30px" >
-        <Button as="label" cursor="pointer"
+        <Button as="label" cursor="pointer" _hover={{backgroundColor:"bgHover"}}
           border="1px dashed" borderColor="gray.400" borderRadius="5px"
           w="80px" h="80px" mr="20px" aria-label='AddReviewPhoto'  >
             <UploadIcon iconcolor='Gray' />

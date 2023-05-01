@@ -33,15 +33,14 @@ function Pagination({ ...props }: PaginationProps) {
   return (
     <Flex // Pagination
       mt="50px" textStyle="title" alignSelf="center" {...restProps}>
-
-      <ListNumberArrowIcon mr="30px" visibility={startPage === 1 ? "hidden" : "visible" } 
-      direction='Left' _hover={{ cursor: "pointer" }} colortype={'Default'}
+      <ListNumberArrowIcon mr="30px" visibility={startPage === 1 ? "hidden" : "visible"}
+        direction='Left' _hover={{ cursor: "pointer", backgroundColor: "bgHover" }} colortype={'Default'}
         onClick={() => handleClickPrev()} />
       {Array.from({ length: 5 }, (_, index) => index + startPage).map((value) => {
-        if(value > lastPage) return
-        return <Text key={value} _hover={{ cursor: "pointer" }} mr="30px" onClick={() => handlePageClick(value)} textColor={value === page ? "black" : "gray.200"}>{value}</Text>
+        if (value > lastPage) return
+        return <Text key={value} _hover={{ color: "black", cursor: "pointer" }} mr="30px" onClick={() => handlePageClick(value)} textColor={value === page ? "black" : "gray.200"}>{value}</Text>
       })}
-      <ListNumberArrowIcon direction='Right' _hover={{ cursor: "pointer" }} colortype={'Default'}
+      <ListNumberArrowIcon direction='Right' _hover={{ cursor: "pointer", backgroundColor: "bgHover" }} colortype={'Default'}
         onClick={() => handleClickNext()} />
     </Flex>
   )

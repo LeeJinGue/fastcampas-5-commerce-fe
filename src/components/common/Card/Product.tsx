@@ -32,6 +32,7 @@ function Product({ productData, openCartDrawer, cart_id, ...props }: productProp
       bgColor="white"
       boxShadow="0px 0px 10px rgba(26, 26, 26, 0.1)"
       borderRadius="20px"
+      _hover={{backgroundColor: "bgHover"}}
       {...props}>
       <Flex // 버튼을 제외한 상품 정보
         flexDir="column"
