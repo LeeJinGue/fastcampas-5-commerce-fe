@@ -239,11 +239,11 @@ function ProductsDetailByIdViewPage({
             ref={reviewListRef}
           >
             <Text textStyle="title" textColor="black">{"리뷰"}<Text as="span" textColor="primary.500">{nowFilteredReviewList.length}</Text>{"건"}</Text>
-            {!isNoReview && <Flex>
+            <Flex>
               <Dropdown defaultmenu={'최신순'} children={['최신순', '평점 높은순', '평점 낮은순']} sortFunction={sortReviewList} />
               <Container as="span" w="10px" p="0" />
               <Dropdown defaultmenu={'전체보기'} children={['전체보기', '포토리뷰']} sortFunction={filterReviewList} />
-            </Flex>}
+            </Flex>
           </Flex>
           <Flex   // 평균 평점 및 평점 개수 
             h="70px" w="331px" alignSelf="center" justifyContent="space-between"
