@@ -223,7 +223,7 @@ const HomePageView = ({ ...basisProps }: HomePageViewProps) => {
           {"인스타그램을 방문하시면 더욱 다양한"}<br />
           {"인코스런의 이야기를 확인하실 수 있어요"}
         </Text>
-        <Button iconSpacing="5px" backgroundColor="transparent" mt="12px" leftIcon={<DefaultInstgramIcon iconColor='White' />} textColor="white" textStyle="button" onClick={handleInstagram}>{"INCOURSE.RUN"}</Button>
+        <Button iconSpacing="5px" backgroundColor="transparent" _hover={{backgroundColor:"primary.700"}} mt="12px" leftIcon={<DefaultInstgramIcon iconColor='White' />} textColor="white" textStyle="button" onClick={handleInstagram}>{"INCOURSE.RUN"}</Button>
       </Flex>
     </Flex>)
 }
