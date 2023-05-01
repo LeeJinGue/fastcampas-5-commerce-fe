@@ -17,8 +17,6 @@ interface CommerceProps extends FlexProps {
   itemdata: CartItemType,
   cartindex: number,
   handledeleteitem: (id: number, index: number) => void
-  // setischeckedlist: React.Dispatch<React.SetStateAction<boolean[]>>,
-  // setischeck: React.Dispatch<React.SetStateAction<boolean>>,
   ischeck: boolean
   changeByIndex: (index: number, value:boolean) => void
 }
@@ -82,6 +80,7 @@ function CommerceView({...props}:CommerceViewProps){
       >
         <Checkbox
           alignItems="start"
+          h="fit-content"
           onChange={handleCheck} isChecked={ischeck}
           icon={<CheckboxIcon state={ischeck ? "Select" : "Default"} shape="Rectangle" />}>
         </Checkbox>
